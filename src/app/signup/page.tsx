@@ -47,7 +47,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen py-2'>
+    <div className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
       <h1 className='mb-8'>{loading ? 'Processing...' : 'Sign Up'}</h1>
       <hr />
       <div className='flex flex-col  items-center  mb-4'>

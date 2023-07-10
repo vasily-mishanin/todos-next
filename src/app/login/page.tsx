@@ -42,7 +42,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen py-2'>
+    <div className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
       <h1 className='mb-8'>{loading ? 'Processing...' : 'Sign In'}</h1>
       <hr />
 
@@ -50,7 +50,7 @@ export default function LoginPage() {
         <label htmlFor='email'>Email</label>
         <input
           className='p-2 border rounded'
-          type='text'
+          type='email'
           name='email'
           id='email'
           placeholder='email'
