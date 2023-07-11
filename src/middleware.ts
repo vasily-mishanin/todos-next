@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 
+export const PUBLIC_PATHS = ['/login', '/signup', '/verifyemail'];
+
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const isPublicPath =
-    path === '/login' || path === '/signup' || path === '/verifyemail';
+  const isPublicPath = PUBLIC_PATHS.includes(path);
   const token = request.cookies.get('token')?.value || '';
 
   if (isPublicPath && token) {
