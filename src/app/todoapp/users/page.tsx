@@ -42,7 +42,7 @@ export default function Users() {
 
             <tbody className='bg-blue-200'>
               {users.map((user) => (
-                <tr>
+                <tr key={user.id}>
                   <td className='px-4 py-2'>{user.username}</td>{' '}
                   <td className='px-4 py-2'>{user.email}</td>
                 </tr>
