@@ -37,7 +37,7 @@ export default function SignupPage() {
       setLoading(true);
       const response = await axios.post('/api/users/signup', user);
       console.log('Signup success: ', response.data);
-      router.push('/login');
+      router.push('/todoapp/login');
     } catch (error: any) {
       console.log('Signup failed: ', error.message);
       toast.error(error.message);
@@ -47,7 +47,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
+    <main className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
       <h1 className='mb-8'>{loading ? 'Processing...' : 'Sign Up'}</h1>
       <hr />
       <div className='flex flex-col  items-center  mb-4'>
@@ -89,11 +89,15 @@ export default function SignupPage() {
         />
       </div>
 
-      <button className='p-1 border rounded' onClick={onSignup}>
-        {buttonDisabled ? 'No signup' : 'Sign Up'}
+      <button
+        className='p-1 border rounded'
+        onClick={onSignup}
+        disabled={buttonDisabled}
+      >
+        Sign Up
       </button>
 
       <Link href='/login'>Visit login page</Link>
-    </div>
+    </main>
   );
 }
