@@ -1,0 +1,14 @@
+.todo-wrapper {
+  @apply p-6 pt-10 border-2 rounded w-96 h-48;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+textarea {
+  resize: none;
+}

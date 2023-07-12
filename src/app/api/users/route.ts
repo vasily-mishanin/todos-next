@@ -5,7 +5,6 @@ import { connect } from '@/db/db-config';
 
 connect();
 
-// get cookies -> token -> get id from token -> find user by _id -> if user exists -> loggedIn
 export async function GET(request: NextRequest) {
   try {
     const userId = await getDataFromToken(request);
