@@ -8,9 +8,10 @@ import { useRouter } from 'next/navigation';
 
 export type NavigationProps = {
   loggedIn: boolean;
+  isAdmin: boolean;
 };
 
-export function Navigation({ loggedIn }: NavigationProps) {
+export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
   const router = useRouter();
 
   const logout = async () => {
@@ -26,6 +27,15 @@ export function Navigation({ loggedIn }: NavigationProps) {
 
   return (
     <nav className='flex items-center border-2 p-3'>
+      {loggedIn && isAdmin && (
+        <Link
+          href='/todoapp/users'
+          className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-100 hover:text-gray-600'
+        >
+          <span>Users</span>
+        </Link>
+      )}
+
       {loggedIn && (
         <>
           <Link

@@ -27,6 +27,7 @@ export const config = {
   matcher: [
     '/',
     '/todoapp',
+    '/todoapp/users',
     '/todoapp/profile',
     '/todoapp/profile/:id*',
     '/todoapp/login',

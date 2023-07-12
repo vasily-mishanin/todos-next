@@ -41,9 +41,9 @@ export function Header() {
   }, []);
 
   return (
-    <header className='flex gap-2 justify-between   border-2'>
+    <header className='flex gap-2 justify-between mb-8  border-2'>
       <Logo />
-      <Navigation loggedIn={!!auth.user.id} />
+      <Navigation loggedIn={!!auth.user.id} isAdmin={auth.user.isAdmin} />
     </header>
   );
 }
