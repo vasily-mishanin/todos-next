@@ -1,24 +1,24 @@
 import { NextResponse, NextRequest } from 'next/server';
 
-export const PUBLIC_PATHS = ['/login', '/signup', '/verifyemail'];
+export const PUBLIC_PATHS = [
+  '/todoapp/login',
+  '/todoapp/signup',
+  '/verifyemail',
+];
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const isPublicPath = PUBLIC_PATHS.includes(path);
   const token = request.cookies.get('token')?.value || '';
 
-  const isHomePath = path === '/';
-
-  // if (isHomePath) {
-  //   return NextResponse.redirect(new URL('/', request.nextUrl));
-  // }
+  const isPublicPath = PUBLIC_PATHS.includes(path);
+  const isHomePath = path === '/todoapp' || path === '/';
 
   if (isPublicPath && token) {
-    return NextResponse.redirect(new URL('/', request.nextUrl));
+    return NextResponse.redirect(new URL('/todoapp', request.nextUrl));
   }
 
   if (!isPublicPath && !isHomePath && !token) {
-    return NextResponse.redirect(new URL('/login', request.nextUrl));
+    return NextResponse.redirect(new URL('/todoapp/login', request.nextUrl));
   }
 }
 
@@ -26,11 +26,13 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
-    '/profile',
-    '/profile/:id*',
-    '/login',
-    '/signup',
+    '/todoapp',
+    '/todoapp/users',
+    '/todoapp/profile',
+    '/todoapp/profile/:id*',
+    '/todoapp/login',
+    '/todoapp/signup',
+    '/todoapp/todos',
     '/verifyemail',
-    '/todos',
   ],
 };
