@@ -2,14 +2,14 @@
 
 import axios from 'axios';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function VerifyEmailPage() {
   const [token, setToken] = useState('');
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState(false);
 
-  const verifyUserEmail = async () => {
+  const verifyUserEmail = useCallback(async () => {
     console.log('verifyUserEmail');
     try {
       await axios.post('api/users/verifyemail', { token });
@@ -20,7 +20,7 @@ export default function VerifyEmailPage() {
       setVerified(false);
       console.log(error.response.data);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     const urlToken = window.location.search.split('=')[1];
@@ -31,7 +31,7 @@ export default function VerifyEmailPage() {
     if (token.length > 0) {
       verifyUserEmail();
     }
-  }, [token]);
+  }, [token, verifyUserEmail]);
 
   return (
     <div className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
@@ -53,7 +53,7 @@ export default function VerifyEmailPage() {
 
       {error && (
         <div>
-          <h2 className='text-2xl text-orange-500 text-black'>
+          <h2 className='text-2xl bg-orange-500 text-black'>
             Your Email Not Verified - {error}
           </h2>
         </div>

@@ -32,7 +32,7 @@ export default function LoginPage() {
       const response = await axios.post('/api/users/login', user);
       console.log('Login success', response.data);
       toast.success('Login success');
-      router.push(`/profile`);
+      router.push(`/`);
     } catch (error: any) {
       console.log('Login failed');
       toast.error(error.message);
@@ -42,8 +42,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
-      <h1 className='mb-8'>{loading ? 'Processing...' : 'Sign In'}</h1>
+    <main className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
+      <h1 className='mb-8'>{loading ? 'Logging in...' : 'Sign In'}</h1>
       <hr />
 
       <div className='flex flex-col  items-center mb-4'>
@@ -72,11 +72,15 @@ export default function LoginPage() {
         />
       </div>
 
-      <button className='p-1 border rounded' onClick={onLogin}>
+      <button
+        className='p-1 border rounded'
+        onClick={onLogin}
+        disabled={buttonDisabled}
+      >
         Sign In
       </button>
 
       <Link href='/signup'>Visit signup page</Link>
-    </div>
+    </main>
   );
 }
