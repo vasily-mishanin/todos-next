@@ -80,7 +80,7 @@ export default function LoginPage() {
         Sign In
       </button>
 
-      <Link href='/signup'>Visit signup page</Link>
+      <Link href='/todoapp/signup'>Visit signup page</Link>
     </main>
   );
 }

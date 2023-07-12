@@ -1,49 +1,13 @@
 'use client';
 
 import { Header } from '@/containers/Header/Header';
-import { AuthContext, AuthProvider, User } from '@/store/AuthProvider';
-import axios from 'axios';
-import { useContext, useEffect } from 'react';
+import { AuthProvider } from '@/store/AuthProvider';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const auth = useContext(AuthContext);
-  console.log({ auth });
-
-  useEffect(() => {
-    const getUserDetails = async () => {
-      try {
-        const res = await axios.get('/api/users/me');
-        console.log(res.data);
-        console.log('User is Logged In');
-        const { _id, username, email, isAdmin, isVerified } = res.data.data;
-        const me: User = {
-          id: _id,
-          username,
-          email,
-          isAdmin,
-          isVerified,
-        };
-        console.log({ me });
-        auth.setUser(me);
-      } catch (error: any) {
-        auth.setUser({
-          id: '',
-          email: '',
-          username: '',
-          isAdmin: false,
-          isVerified: false,
-        });
-        console.log(error.message);
-      }
-    };
-
-    getUserDetails();
-  });
-
   return (
     <>
       <AuthProvider>
-        <Header loggedIn={!!auth.user.id} />
+        <Header />
         {children}
       </AuthProvider>
     </>

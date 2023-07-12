@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-export type AuthProps = {
+export type NavigationProps = {
   loggedIn: boolean;
 };
 
-export function Navigation({ loggedIn }: AuthProps) {
+export function Navigation({ loggedIn }: NavigationProps) {
   const router = useRouter();
 
   const logout = async () => {
