@@ -37,7 +37,12 @@ export default function Todos() {
       <div className='flex flex-wrap gap-4'>
         {todos &&
           todos.map((todo, ind) => (
-            <Todo key={todo._id} todo={todo} onUpdate={fetchTodos} />
+            <Todo
+              key={todo._id}
+              todo={todo}
+              onUpdate={fetchTodos}
+              onDelete={fetchTodos}
+            />
           ))}
         <NewTodo onAddNeWTodo={fetchTodos} />
       </div>

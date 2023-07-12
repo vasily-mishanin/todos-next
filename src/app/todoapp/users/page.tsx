@@ -36,15 +36,25 @@ export default function Users() {
 
           <table>
             <thead className='bg-blue-400'>
-              <th className='p-2'>Name</th>
-              <th className='p-2'>Email</th>
+              <tr>
+                <th key='name' className='p-2'>
+                  Name
+                </th>
+                <th key='email' className='p-2'>
+                  Email
+                </th>
+              </tr>
             </thead>
 
             <tbody className='bg-blue-200'>
               {users.map((user) => (
                 <tr key={user.id}>
-                  <td className='px-4 py-2'>{user.username}</td>{' '}
-                  <td className='px-4 py-2'>{user.email}</td>
+                  <td key={user.id + 'name'} className='px-4 py-2'>
+                    {user.username}
+                  </td>
+                  <td key={user.id + 'email'} className='px-4 py-2'>
+                    {user.email}
+                  </td>
                 </tr>
               ))}
             </tbody>

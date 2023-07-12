@@ -9,6 +9,14 @@
   right: 0.5rem;
 }
 
+.delete-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+
+  color: salmon;
+}
+
 textarea {
   resize: none;
 }

@@ -62,7 +62,28 @@ export async function PUT(request: NextRequest) {
       updatedTodo,
     });
   } catch (error: any) {
-    console.log('Eror with updating Todo');
+    console.log('Eror while updating Todo');
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  console.log('Delete TODO');
+  try {
+    const reqBody = await request.json();
+    const { _id } = reqBody;
+    console.log('deletedTodo', reqBody);
+
+    const deletedTodo = await Todo.deleteOne({ _id });
+
+    console.log({ deletedTodo });
+    return NextResponse.json({
+      message: `Todo deleted successfully`,
+      success: true,
+      deletedTodo,
+    });
+  } catch (error: any) {
+    console.log('Eror while deleting Todo');
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
