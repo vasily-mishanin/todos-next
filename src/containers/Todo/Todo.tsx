@@ -5,13 +5,7 @@ import { ArrowPathIcon, ArchiveBoxIcon } from '@heroicons/react/24/solid';
 import axios from 'axios';
 import { AuthContext } from '@/store/AuthProvider';
 import { toast } from 'react-hot-toast';
-
-export interface ITodo {
-  title: string;
-  details: string;
-  userId: string;
-  _id?: string;
-}
+import { ITodo } from '../NewTodo/NewTodo';
 
 type TodoProps = {
   todo: ITodo;
@@ -22,6 +16,8 @@ type TodoProps = {
 export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState(todo);
   const auth = useContext(AuthContext);
+
+  console.log('TODO', auth, todo);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -91,26 +87,33 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
           />
         </div>
 
-        <button
-          type='submit'
-          className='submit-btn  px-2 py-2 flex justify-center items-center rounded'
-          style={{ width: '2rem', height: '2rem' }}
-        >
-          <ArrowPathIcon
-            className='text-blue-500'
-            style={{ width: '1.5rem' }}
-          />
-        </button>
-
-        <button
-          type='button'
-          className='delete-btn  px-2 py-2 flex justify-center items-center rounded'
-          style={{ width: '1.5rem', height: '1.5rem' }}
-          onClick={deleteTodo}
-        >
-          <ArchiveBoxIcon className='text-blue-400' style={{ width: '1rem' }} />
-        </button>
+        {(auth.user.isAdmin || auth.user.id === todo.userId) && (
+          <>
+            <button
+              type='submit'
+              className='submit-btn  px-2 py-2 flex justify-center items-center rounded'
+              style={{ width: '2rem', height: '2rem' }}
+            >
+              <ArrowPathIcon
+                className='text-blue-500'
+                style={{ width: '1.5rem' }}
+              />
+            </button>
+            <button
+              type='button'
+              className='delete-btn  px-2 py-2 flex justify-center items-center rounded'
+              style={{ width: '1.5rem', height: '1.5rem' }}
+              onClick={deleteTodo}
+            >
+              <ArchiveBoxIcon
+                className='text-blue-400'
+                style={{ width: '1rem' }}
+              />
+            </button>
+          </>
+        )}
       </form>
+      <p className='by'>{todo.by}</p>
     </article>
   );
 }

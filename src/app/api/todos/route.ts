@@ -8,15 +8,17 @@ export async function POST(request: NextRequest) {
   console.log('Create TODO');
   try {
     const reqBody = await request.json();
-    const { title, details, userId } = reqBody;
-    console.log('newTodo', reqBody);
+    const { title, details, userId, by } = reqBody;
+    console.log('reqBody', reqBody);
 
     const newTodo = await new Todo({
       title,
       details,
       userId,
+      by,
     });
     // save new todo
+    console.log({ newTodo });
     const savedTodo = await newTodo.save();
     console.log({ savedTodo });
     return NextResponse.json({
