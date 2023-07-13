@@ -39,7 +39,7 @@ export default function Todos() {
   return (
     <section className='flex flex-col gap-4 py-4 px-10'>
       {loading && (
-        <h1 className='flex gap-4 self-center'>
+        <h1 className='flex gap-4 items-center self-center'>
           <Spinner /> Loading todos ...
         </h1>
       )}

@@ -45,7 +45,7 @@ export default function LoginPage() {
   return (
     <main className='flex flex-col gap-4 items-center justify-center py-2'>
       {loading ? (
-        <h1>
+        <h1 className='flex gap-4 self-center items-center'>
           <Spinner /> Logging in...
         </h1>
       ) : (
