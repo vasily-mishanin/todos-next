@@ -42,7 +42,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className='relative flex gap-2 justify-between mb-8 border-2'>
+    <header className='header relative flex gap-2 justify-between mb-8'>
       <Logo />
       <span className='user'>{auth.user.email}</span>
       <Navigation loggedIn={!!auth.user.id} isAdmin={auth.user.isAdmin} />

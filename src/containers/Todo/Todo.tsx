@@ -91,24 +91,21 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
           <>
             <button
               type='submit'
-              className='submit-btn  px-2 py-2 flex justify-center items-center rounded'
-              style={{ width: '2rem', height: '2rem' }}
+              className='submit-btn flex justify-center items-center rounded'
+              style={{ width: '1.5rem', height: '1.5rem' }}
             >
               <ArrowPathIcon
                 className='text-blue-500'
-                style={{ width: '1.5rem' }}
+                style={{ width: '1rem' }}
               />
             </button>
             <button
               type='button'
-              className='delete-btn  px-2 py-2 flex justify-center items-center rounded'
+              className='delete-btn flex justify-center items-center rounded'
               style={{ width: '1.5rem', height: '1.5rem' }}
               onClick={deleteTodo}
             >
-              <ArchiveBoxIcon
-                className='text-blue-400'
-                style={{ width: '1rem' }}
-              />
+              <ArchiveBoxIcon style={{ width: '1rem' }} />
             </button>
           </>
         )}
