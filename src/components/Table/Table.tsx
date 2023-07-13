@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 type TableProps = {
   columns: string[];
   rows: Record<any, any>[];
@@ -18,9 +20,11 @@ export default function Table({ columns, rows }: TableProps) {
 
       <tbody className='bg-blue-200'>
         {rows.map((row) => (
-          <tr>
+          <tr key={uuidv4()}>
             {Object.keys(row).map((key) => (
-              <td className='px-4 py-2 text-left text-sm'>{row[key]}</td>
+              <td key={key} className='px-4 py-2 text-left text-sm'>
+                {row[key]}
+              </td>
             ))}
           </tr>
         ))}
