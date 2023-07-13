@@ -1,8 +1,6 @@
 'use client';
 
 import { Logo } from '@/components/Logo/Logo';
-import { Header } from '@/containers/Header/Header';
-import { useEffect } from 'react';
 
 export default function Home() {
   console.log('Home');

@@ -18,7 +18,6 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
     try {
       await axios.get('/api/users/logout'); // deletes token from cookies
       router.push('/');
-      //router.refresh();
     } catch (error: any) {
       console.log('Error: ' + error.message);
       toast.error(error.message);

@@ -27,6 +27,7 @@ export default function Todos() {
       console.log('todos:', res.data.data);
       setTodos(res.data.data);
     } catch (error: any) {
+      setLoading(false);
       console.log('Todos fetch failed: ', error.message);
     }
   };
