@@ -14,4 +14,4 @@ Deploy: https://todos-next-self.vercel.app
 
 - Authentication
 - Authorization
-- CRUD opearations with todo items
+- CRUD operations with todo items

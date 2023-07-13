@@ -43,7 +43,7 @@ export default function Users() {
   return (
     <section className='flex flex-col gap-4 items-center justify-center min-h-full  py-2'>
       {loading && (
-        <h1 className='flex gap-4'>
+        <h1 className='flex gap-4 items-center'>
           <Spinner /> Loading users...
         </h1>
       )}
