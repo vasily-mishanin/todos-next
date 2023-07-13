@@ -63,7 +63,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
         className=' flex flex-col gap-2 w-full h-full'
         onSubmit={updateTodo}
       >
-        <div className='flex flex-col bg-green-400 p-8 text-xl'>
+        <div className='flex flex-col bg-green-400 text-xl'>
           <label htmlFor='title'></label>
           <input
             className='text-input'
@@ -74,9 +74,10 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
             onChange={handleChange}
           />
         </div>
+
         <hr />
 
-        <div className='flex flex-col bg-green-400 p-8 text-gray-600'>
+        <div className='flex flex-col bg-green-400 text-gray-600'>
           <label htmlFor='details'></label>
           <textarea
             className='text-input w-full h-full overflow-scroll resize-none'

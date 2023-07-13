@@ -3,8 +3,7 @@
   box-sizing: border-box;
 }
 
-.text-input,
-.details-area {
+.text-input {
   @apply outline-none border-transparent p-1;
   border-width: 1px;
   border-style: solid;
@@ -30,8 +29,14 @@
   color: salmon;
 }
 
+.submit-btn:hover,
+.delete-btn:hover {
+  opacity: 0.75;
+}
+
 .by {
   @apply absolute bottom-1 right-2 text-xs text-green-500;
+  cursor: default;
 }
 
 textarea {

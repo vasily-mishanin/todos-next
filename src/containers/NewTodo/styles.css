@@ -3,6 +3,18 @@
   box-sizing: border-box;
 }
 
+.text-input {
+  @apply outline-none border-transparent p-1;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.text-input:focus {
+  @apply border-green-200 rounded;
+  border-width: 1px;
+  border-style: solid;
+}
+
 .submit-btn {
   position: absolute;
   top: 0.5rem;
