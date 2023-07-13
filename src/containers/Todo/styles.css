@@ -1,6 +1,18 @@
 .todo-wrapper {
-  @apply p-6 pt-10 border-2 rounded w-96 h-48;
+  @apply p-6 pt-8 border-2 rounded w-96 h-48;
   box-sizing: border-box;
+}
+
+.text-input {
+  @apply outline-none border-transparent p-1;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.text-input:focus {
+  @apply border-green-200 rounded;
+  border-width: 1px;
+  border-style: solid;
 }
 
 .submit-btn {
@@ -17,8 +29,14 @@
   color: salmon;
 }
 
+.submit-btn:hover,
+.delete-btn:hover {
+  opacity: 0.75;
+}
+
 .by {
-  @apply absolute bottom-2 right-4 text-xs text-green-500;
+  @apply absolute bottom-1 right-2 text-xs text-green-500;
+  cursor: default;
 }
 
 textarea {

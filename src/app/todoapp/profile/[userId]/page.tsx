@@ -2,42 +2,45 @@
 
 import Spinner from '@/components/Spinner/Spinner';
 import { AuthContext } from '@/store/AuthProvider';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
-import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 export default function UserProfile({ params }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const auth = useContext(AuthContext);
 
-  const logout = async () => {
-    try {
-      setLoading(true);
-      await axios.get('/api/users/logout');
-      setLoading(false);
-      router.push('/');
-    } catch (error: any) {
-      setLoading(false);
-      console.log('Error: ' + error.message);
-      toast.error(error.message);
-    }
-  };
-
   return (
     <div className='flex flex-col gap-4 items-center justify-center min-h-full py-2'>
       {loading && <Spinner />}
       <h1 className='mb-8'>Profile</h1>
-      <p>{auth.user.username}</p>
-      <p>{auth.user.email}</p>
-      <p>{auth.user.isAdmin ? <span>admin</span> : <span>user</span>}</p>
-      <button
-        className='bg-blue-500 p-2 rounded hover:bg-blue-400 text-gray-100'
-        onClick={logout}
-      >
-        Logout
-      </button>
+      <article className='flex  gap-10 border rounded-lg border-gray-200 p-8'>
+        <div className='flex justify-center items-start w-32 h-32'>
+          <Image
+            src='/icons-avatar-80.png'
+            alt='avatar'
+            width='100'
+            height='100'
+          />
+        </div>
+        <div className='flex flex-col gap-4'>
+          <p>
+            Name: <span className='text-green-500'>{auth.user.username}</span>
+          </p>
+          <p>
+            Email: <span className='text-green-500'>{auth.user.email}</span>
+          </p>
+          <p>
+            Role:{' '}
+            {auth.user.isAdmin ? (
+              <span className='text-green-500'>admin</span>
+            ) : (
+              <span className='text-green-500'>user</span>
+            )}
+          </p>
+        </div>
+      </article>
     </div>
   );
 }

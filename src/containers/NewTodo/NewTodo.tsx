@@ -58,9 +58,10 @@ export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
         className=' flex flex-col gap-2 w-full h-full'
         onSubmit={handleSubmit}
       >
-        <div className='flex flex-col bg-green-400 p-8 text-xl'>
+        <div className='flex flex-col bg-green-400 text-xl'>
           <label htmlFor='title'></label>
           <input
+            className='text-input'
             type='text'
             name='title'
             id='title'
@@ -71,11 +72,11 @@ export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
         </div>
         <hr />
 
-        <div className='flex flex-col bg-green-400 p-8 text-gray-600'>
+        <div className='flex flex-col bg-green-400 text-gray-600'>
           <label htmlFor='details'></label>
           <textarea
-            rows={4}
-            className='w-full h-full overflow-scroll resize-none'
+            className='text-input w-full h-full overflow-scroll resize-none'
+            rows={3}
             name='details'
             id='details'
             placeholder='Details'
@@ -86,8 +87,8 @@ export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
 
         <button
           type='submit'
-          className='submit-btn border px-2 py-2 flex justify-center items-center rounded'
-          style={{ width: '2rem', height: '2rem' }}
+          className='submit-btn px-2 py-2 flex justify-center items-center rounded'
+          style={{ width: '1.5rem', height: '1.5rem' }}
         >
           <ArrowUpTrayIcon
             className='text-blue-500'

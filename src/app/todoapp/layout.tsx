@@ -8,7 +8,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <>
       <AuthProvider>
         <Header />
-        <main className='flex flex-col justify-center items-center'>
+        <main className='flex flex-col justify-center items-center px-4'>
           {children}
         </main>
       </AuthProvider>
