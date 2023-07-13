@@ -1,6 +1,6 @@
 ### Todos Next Web App
 
-Deploy: https://todos-next-self.vercel.app
+Deploy: https://todos-next-8qga16tqh-vasily-mishanin.vercel.app/todoapp
 
 #### Core Development Stack
 
