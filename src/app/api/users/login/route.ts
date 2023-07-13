@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
       user,
     });
 
+    response.headers.set('Cache-Control', 'no-store, max-age=0'); // for Vercel to logout correctly
     response.cookies.set('token', token, { httpOnly: true });
 
     return response;
