@@ -8,15 +8,17 @@ export async function POST(request: NextRequest) {
   console.log('Create TODO');
   try {
     const reqBody = await request.json();
-    const { title, details, userId } = reqBody;
-    console.log('newTodo', reqBody);
+    const { title, details, userId, by } = reqBody;
+    console.log('reqBody', reqBody);
 
     const newTodo = await new Todo({
       title,
       details,
       userId,
+      by,
     });
     // save new todo
+    console.log({ newTodo });
     const savedTodo = await newTodo.save();
     console.log({ savedTodo });
     return NextResponse.json({
@@ -62,7 +64,28 @@ export async function PUT(request: NextRequest) {
       updatedTodo,
     });
   } catch (error: any) {
-    console.log('Eror with updating Todo');
+    console.log('Eror while updating Todo');
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  console.log('Delete TODO');
+  try {
+    const reqBody = await request.json();
+    const { _id } = reqBody;
+    console.log('deletedTodo', reqBody);
+
+    const deletedTodo = await Todo.deleteOne({ _id });
+
+    console.log({ deletedTodo });
+    return NextResponse.json({
+      message: `Todo deleted successfully`,
+      success: true,
+      deletedTodo,
+    });
+  } catch (error: any) {
+    console.log('Eror while deleting Todo');
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

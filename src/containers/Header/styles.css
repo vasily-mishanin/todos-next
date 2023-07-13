@@ -1,0 +1,7 @@
+.header {
+  @apply border-b-2 border-gray-100;
+}
+
+.user {
+  @apply absolute top-2 right-2 text-xs p-0.5 px-2 text-purple-500;
+}

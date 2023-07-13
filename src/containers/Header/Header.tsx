@@ -1,5 +1,6 @@
 import { Logo } from '@/components/Logo/Logo';
 import { Navigation } from '@/components/Navigation/Navigation';
+import './styles.css';
 
 import { AuthContext, User } from '@/store/AuthProvider';
 import axios from 'axios';
@@ -41,8 +42,9 @@ export function Header() {
   }, []);
 
   return (
-    <header className='flex gap-2 justify-between mb-8 border-2'>
+    <header className='header relative flex gap-2 justify-between mb-8'>
       <Logo />
+      <span className='user'>{auth.user.email}</span>
       <Navigation loggedIn={!!auth.user.id} isAdmin={auth.user.isAdmin} />
     </header>
   );

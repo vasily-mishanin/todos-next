@@ -16,8 +16,6 @@ export default function UserProfile({ params }: any) {
   });
 
   return (
-    <div className='flex flex-col gap-4 items-center justify-center min-h-full py-2'>
-      <h1 className='mb-8'>Profile Page</h1>
-    </div>
+    <div className='flex flex-col gap-4 items-center justify-center min-h-full py-2'></div>
   );
 }

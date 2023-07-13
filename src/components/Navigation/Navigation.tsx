@@ -26,7 +26,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
   };
 
   return (
-    <nav className='flex items-center border-2 p-3'>
+    <nav className='flex items-center p-4'>
       {loggedIn && isAdmin && (
         <Link
           href='/todoapp/users'

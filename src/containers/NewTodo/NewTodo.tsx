@@ -9,12 +9,15 @@ export interface ITodo {
   title: string;
   details: string;
   userId: string;
+  _id?: string;
+  by: string;
 }
 
 const initialTodo: ITodo = {
   title: '',
   details: '',
   userId: '',
+  by: '',
 };
 
 type NewTodoProps = {
@@ -37,7 +40,11 @@ export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/api/todos', { ...currentTodo, userId: auth.user.id });
+      await axios.post('/api/todos', {
+        ...currentTodo,
+        userId: auth.user.id,
+        by: auth.user.username,
+      });
       onAddNeWTodo();
       setCurrentTodo(initialTodo);
     } catch (error: any) {

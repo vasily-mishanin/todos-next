@@ -9,6 +9,18 @@
   right: 0.5rem;
 }
 
+.delete-btn {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+
+  color: salmon;
+}
+
+.by {
+  @apply absolute bottom-2 right-4 text-xs text-green-500;
+}
+
 textarea {
   resize: none;
 }
