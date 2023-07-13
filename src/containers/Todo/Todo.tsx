@@ -66,6 +66,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
         <div className='flex flex-col bg-green-400 p-8 text-xl'>
           <label htmlFor='title'></label>
           <input
+            className='text-input'
             type='text'
             name='title'
             id='title'
@@ -78,8 +79,8 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
         <div className='flex flex-col bg-green-400 p-8 text-gray-600'>
           <label htmlFor='details'></label>
           <textarea
-            rows={4}
-            className='w-full h-full overflow-scroll resize-none'
+            className='text-input w-full h-full overflow-scroll resize-none'
+            rows={3}
             name='details'
             id='details'
             value={currentTodo.details}
