@@ -22,6 +22,7 @@ export default function Users() {
         console.log('users:', res.data.data);
         setUsers(res.data.data);
       } catch (error: any) {
+        setLoading(false);
         console.log(error.message);
       }
     };
