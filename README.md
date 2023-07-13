@@ -1,3 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### Todos Next Web App
 
 Deploy: https://todos-next-self.vercel.app
+
+#### Core Development Stack
+
+- Next JS 13 - https://nextjs.org/
+- Mongo DB Atlas - https://www.mongodb.com/atlas/database
+- Mongoose ODM - https://mongoosejs.com/
+- Nodemailer - https://nodemailer.com/about/
+- Mailtrap - https://mailtrap.io/home
+
+#### Core Features
+
+- Authentication
+- Authorization
+- CRUD opearations with todo items

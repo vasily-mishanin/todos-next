@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import Spinner from '@/components/Spinner/Spinner';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,12 +43,19 @@ export default function LoginPage() {
   };
 
   return (
-    <main className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
-      <h1 className='mb-8'>{loading ? 'Logging in...' : 'Sign In'}</h1>
-      <hr />
+    <main className='flex flex-col gap-4 items-center justify-center py-2'>
+      {loading ? (
+        <h1>
+          <Spinner /> Logging in...
+        </h1>
+      ) : (
+        <h1 className='mb-4 text-xl'>Sign In</h1>
+      )}
 
-      <div className='flex flex-col  items-center mb-4'>
-        <label htmlFor='email'>Email</label>
+      <div className='flex flex-col mb-4'>
+        <label className='text-sm' htmlFor='email'>
+          Email
+        </label>
         <input
           className='p-2 border rounded'
           type='email'
@@ -59,8 +67,10 @@ export default function LoginPage() {
         />
       </div>
 
-      <div className='flex flex-col  items-center mb-4'>
-        <label htmlFor='password'>Password</label>
+      <div className='flex flex-col mb-4'>
+        <label className='text-sm' htmlFor='password'>
+          Password
+        </label>
         <input
           className='p-2 border rounded'
           type='password'
@@ -73,14 +83,19 @@ export default function LoginPage() {
       </div>
 
       <button
-        className='p-1 border rounded'
+        className='p-1 border rounded cursor-pointer hover:bg-gray-100'
         onClick={onLogin}
         disabled={buttonDisabled}
       >
         Sign In
       </button>
 
-      <Link href='/todoapp/signup'>Visit signup page</Link>
+      <Link
+        className='text-blue-500 hover:text-blue-400'
+        href='/todoapp/signup'
+      >
+        Visit signup page
+      </Link>
     </main>
   );
 }

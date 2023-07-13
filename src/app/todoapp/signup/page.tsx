@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import Spinner from '@/components/Spinner/Spinner';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -47,11 +48,18 @@ export default function SignupPage() {
   };
 
   return (
-    <main className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
-      <h1 className='mb-8'>{loading ? 'Processing...' : 'Sign Up'}</h1>
-      <hr />
-      <div className='flex flex-col  items-center  mb-4'>
-        <label htmlFor='username'>Username</label>
+    <main className='flex flex-col gap-4 items-center justify-center py-2'>
+      {loading ? (
+        <h1>
+          <Spinner /> Registering...
+        </h1>
+      ) : (
+        <h1 className='mb-4 text-xl'>Sign Up</h1>
+      )}
+      <div className='flex flex-col  mb-4'>
+        <label className='text-sm' htmlFor='username'>
+          Username
+        </label>
         <input
           className='p-2 border rounded'
           type='text'
@@ -63,8 +71,10 @@ export default function SignupPage() {
         />
       </div>
 
-      <div className='flex flex-col  items-center mb-4'>
-        <label htmlFor='email'>Email</label>
+      <div className='flex flex-col mb-4'>
+        <label className='text-sm' htmlFor='email'>
+          Email
+        </label>
         <input
           className='p-2 border rounded'
           type='text'
@@ -76,8 +86,10 @@ export default function SignupPage() {
         />
       </div>
 
-      <div className='flex flex-col  items-center mb-4'>
-        <label htmlFor='password'>Password</label>
+      <div className='flex flex-col mb-4'>
+        <label className='text-sm' htmlFor='password'>
+          Password
+        </label>
         <input
           className='p-2 border rounded'
           type='password'
@@ -90,14 +102,16 @@ export default function SignupPage() {
       </div>
 
       <button
-        className='p-1 border rounded'
+        className='p-1 border rounded cursor-pointer hover:bg-gray-100'
         onClick={onSignup}
         disabled={buttonDisabled}
       >
         Sign Up
       </button>
 
-      <Link href='/todoapp/login'>Visit login page</Link>
+      <Link className='text-blue-500 hover:text-blue-400' href='/todoapp/login'>
+        Visit login page
+      </Link>
     </main>
   );
 }
