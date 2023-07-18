@@ -1,5 +1,5 @@
 .todo-wrapper {
-  @apply p-6 pt-8 border-2 rounded w-96 h-48;
+  @apply p-6 pt-8 border-2 rounded w-96 h-48 hover:shadow-md max-[600px]:w-80;
   box-sizing: border-box;
 }
 

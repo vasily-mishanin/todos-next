@@ -75,7 +75,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
   };
 
   return (
-    <article className='relative todo-wrapper'>
+    <article className='relative todo-wrapper '>
       <form
         className=' flex flex-col gap-2 w-full h-full'
         onSubmit={updateTodo}
