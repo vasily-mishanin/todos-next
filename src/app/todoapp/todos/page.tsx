@@ -43,7 +43,7 @@ export default function Todos() {
           <Spinner /> Loading todos ...
         </h1>
       )}
-      <div className='flex flex-wrap gap-4'>
+      <div className='flex flex-wrap gap-4 max-[600px]:justify-center'>
         {todos &&
           todos.map((todo, ind) => (
             <Todo

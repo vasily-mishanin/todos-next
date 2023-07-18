@@ -1,5 +1,5 @@
 .todo-wrapper {
-  @apply p-6 pt-8 border-2 rounded w-96 h-48;
+  @apply p-6 pt-8 border-2 rounded w-96 h-48 hover:shadow-md max-[600px]:w-80;
   box-sizing: border-box;
 }
 
@@ -29,16 +29,25 @@
   color: salmon;
 }
 
-.submit-btn:hover,
-.delete-btn:hover {
+.submit-btn:enabled:hover,
+.delete-btn:enabled:hover {
   opacity: 0.75;
 }
 
+.submit-btn:disabled,
+.delete-btn:disabled {
+  opacity: 0.5;
+}
+
 .by {
-  @apply absolute bottom-1 right-2 text-xs text-green-500;
+  @apply absolute flex gap-2 items-center bottom-1 right-2 text-xs text-gray-500;
   cursor: default;
 }
 
 textarea {
   resize: none;
+}
+
+.todo-validation-error {
+  @apply absolute text-sm text-red-300 right-1 top-1;
 }

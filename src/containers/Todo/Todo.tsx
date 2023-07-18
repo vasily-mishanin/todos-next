@@ -1,7 +1,11 @@
 'use client';
 import './styles.css';
 import { useContext, useState } from 'react';
-import { ArrowPathIcon, ArchiveBoxIcon } from '@heroicons/react/24/solid';
+import {
+  ArrowPathIcon,
+  ArchiveBoxIcon,
+  UserIcon,
+} from '@heroicons/react/24/solid';
 import axios from 'axios';
 import { AuthContext } from '@/store/AuthProvider';
 import { toast } from 'react-hot-toast';
@@ -15,6 +19,10 @@ type TodoProps = {
 
 export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState(todo);
+  const [validationError, setValidationError] = useState({
+    error: false,
+    message: '',
+  });
   const auth = useContext(AuthContext);
 
   console.log('TODO', auth, todo);
@@ -22,9 +30,18 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const enteredValue = e.target.value;
+    const name = e.target.name;
+
+    if (name === 'title' && !enteredValue) {
+      setValidationError({ error: true, message: 'Title required' });
+    } else {
+      setValidationError({ error: false, message: '' });
+    }
+
     setCurrentTodo((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: enteredValue,
     }));
   };
 
@@ -58,12 +75,12 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
   };
 
   return (
-    <article className='relative todo-wrapper'>
+    <article className='relative todo-wrapper '>
       <form
         className=' flex flex-col gap-2 w-full h-full'
         onSubmit={updateTodo}
       >
-        <div className='flex flex-col bg-green-400 text-xl'>
+        <div className='relative flex flex-col bg-green-400 text-xl'>
           <label htmlFor='title'></label>
           <input
             className='text-input'
@@ -73,11 +90,16 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
             value={currentTodo.title}
             onChange={handleChange}
           />
+          {validationError.error && (
+            <span className='todo-validation-error'>
+              {validationError.message}
+            </span>
+          )}
         </div>
 
         <hr />
 
-        <div className='flex flex-col bg-green-400 text-gray-600'>
+        <div className='flex flex-col bg-green-400 text-gray-600 text-sm'>
           <label htmlFor='details'></label>
           <textarea
             className='text-input w-full h-full overflow-scroll resize-none'
@@ -95,6 +117,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
               type='submit'
               className='submit-btn flex justify-center items-center rounded'
               style={{ width: '1.5rem', height: '1.5rem' }}
+              disabled={validationError.error}
             >
               <ArrowPathIcon
                 className='text-blue-500'
@@ -112,7 +135,10 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
           </>
         )}
       </form>
-      <p className='by'>{todo.by}</p>
+      <p className='by'>
+        <UserIcon style={{ width: '0.75rem' }} />
+        {todo.by}
+      </p>
     </article>
   );
 }
