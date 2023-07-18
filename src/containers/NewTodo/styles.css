@@ -1,5 +1,5 @@
-.todo-wrapper {
-  @apply p-6 pt-10 border-2 rounded w-96 h-48;
+.new-todo-wrapper {
+  @apply p-6 pt-10 border-2 border-dashed rounded w-96 h-48;
   box-sizing: border-box;
 }
 
@@ -21,6 +21,18 @@
   right: 0.5rem;
 }
 
+.submit-btn:enabled:hover {
+  opacity: 0.75;
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+}
+
 textarea {
   resize: none;
+}
+
+.todo-validation-error {
+  @apply absolute text-sm text-red-300 right-1 top-1;
 }
