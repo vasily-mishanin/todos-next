@@ -5,38 +5,30 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/Spinner/Spinner';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type Inputs = {
+  email: string;
+  password: string;
+  username: string;
+};
 
 export default function SignupPage() {
   const router = useRouter();
-  const [user, setUser] = useState({
-    email: '',
-    password: '',
-    username: '',
+  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    mode: 'onChange',
+    defaultValues: { email: '', password: '', username: '' },
   });
 
-  const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (
-      user.email.length > 0 &&
-      user.username.length > 0 &&
-      user.password.length > 0
-    ) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [user]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const onSignup = async () => {
+  const onSignup: SubmitHandler<Inputs> = async (formData) => {
     try {
       setLoading(true);
-      const response = await axios.post('/api/users/signup', user);
+      const response = await axios.post('/api/users/signup', formData);
       console.log('Signup success: ', response.data);
       router.push('/todoapp/login');
     } catch (error: any) {
@@ -47,6 +39,16 @@ export default function SignupPage() {
     }
   };
 
+  const inputBaseStyle =
+    'outline-none border p-2 rounded border-green-200  focus:border-green-400 ';
+  const inputErrorStyle = 'border-red-200 focus:border-red-400';
+  const inputUsernameStyle =
+    inputBaseStyle + `${errors.username?.message && inputErrorStyle}`;
+  const inputEmailStyle =
+    inputBaseStyle + `${errors.email?.message && inputErrorStyle}`;
+  const inputPasswordStyle =
+    inputBaseStyle + `${errors.password?.message && inputErrorStyle}`;
+
   return (
     <main className='flex flex-col gap-4 items-center justify-center py-2'>
       {loading ? (
@@ -54,60 +56,63 @@ export default function SignupPage() {
           <Spinner /> Registering...
         </h1>
       ) : (
-        <h1 className='mb-4 text-xl'>Sign Up</h1>
+        <h1 className='mb-4 text-xl text-gray-700'>Sign Up</h1>
       )}
-      <div className='flex flex-col  mb-4'>
-        <label className='text-sm' htmlFor='username'>
-          Username
-        </label>
-        <input
-          className='p-2 border rounded'
-          type='text'
-          name='username'
-          id='username'
-          placeholder='username'
-          value={user.username}
-          onChange={handleChange}
-        />
-      </div>
 
-      <div className='flex flex-col mb-4'>
-        <label className='text-sm' htmlFor='email'>
-          Email
-        </label>
-        <input
-          className='p-2 border rounded'
-          type='text'
-          name='email'
-          id='email'
-          placeholder='email'
-          value={user.email}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className='flex flex-col mb-4'>
-        <label className='text-sm' htmlFor='password'>
-          Password
-        </label>
-        <input
-          className='p-2 border rounded'
-          type='password'
-          name='password'
-          id='password'
-          placeholder='password'
-          value={user.password}
-          onChange={handleChange}
-        />
-      </div>
-
-      <button
-        className='p-1 border rounded cursor-pointer hover:bg-gray-100'
-        onClick={onSignup}
-        disabled={buttonDisabled}
+      <form
+        className='flex flex-col gap-2 mb-4 text-gray-700'
+        onSubmit={handleSubmit(onSignup)}
       >
-        Sign Up
-      </button>
+        <div className='flex flex-col'>
+          <span className='text-xs text-red-300 h-4'>
+            {errors.username?.message}
+          </span>
+
+          <input
+            className={inputUsernameStyle}
+            {...register('username', { required: 'Required' })}
+            placeholder='Username'
+          />
+        </div>
+
+        <div className='flex flex-col'>
+          <span className='text-xs text-red-300 h-4'>
+            {errors.email?.message}
+          </span>
+          <input
+            className={inputEmailStyle}
+            {...register('email', {
+              required: 'Required',
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                message: 'Enter valid email',
+              },
+            })}
+            placeholder='Email'
+          />
+        </div>
+
+        <div className='flex flex-col'>
+          <span className='text-xs text-red-300 h-4'>
+            {errors.password?.message}
+          </span>
+          <input
+            className={inputPasswordStyle}
+            type='password'
+            {...register('password', {
+              required: 'Required',
+              minLength: { value: 6, message: 'Min. length is 6 characters' },
+            })}
+            placeholder='Password'
+          />
+        </div>
+
+        <input
+          className=' mt-4 p-1 border rounded cursor-pointer hover:bg-green-100'
+          type='submit'
+          value='Sign Up'
+        />
+      </form>
 
       <Link className='text-blue-500 hover:text-blue-400' href='/todoapp/login'>
         Visit login page

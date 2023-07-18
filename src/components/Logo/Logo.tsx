@@ -11,7 +11,9 @@ export function Logo() {
           width='100'
           height='100'
         />
-        <span className='text-xl  font-bold tracking-wide'>TodosNext</span>
+        <span className='text-xl  font-bold tracking-wide text-gray-700'>
+          TodosNext
+        </span>
       </Link>
     </div>
   );
