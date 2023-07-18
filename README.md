@@ -1,6 +1,6 @@
 ### Todos Next Web App
 
-Deploy: https://todos-next-8qga16tqh-vasily-mishanin.vercel.app/todoapp
+Deploy: https://todos-next-self.vercel.app/
 
 #### Core Development Stack
 
@@ -9,6 +9,7 @@ Deploy: https://todos-next-8qga16tqh-vasily-mishanin.vercel.app/todoapp
 - Mongoose ODM - https://mongoosejs.com/
 - Nodemailer - https://nodemailer.com/about/
 - Mailtrap - https://mailtrap.io/home
+- React-Hook-Form - https://www.react-hook-form.com/
 
 #### Core Features
 
