@@ -32,7 +32,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
   };
 
   const linkBaseStyle =
-    'w-42 px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600';
+    'block w-full px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600';
 
   return (
     <nav className='flex items-center'>
@@ -55,7 +55,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
               className={linkBaseStyle + ' hover:bg-gray-100'}
               onClick={() => toggleMenu()}
             >
-              <span>Users</span>
+              Users
             </Link>
           </li>
         )}
@@ -68,7 +68,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
                 className={linkBaseStyle + ' hover:bg-gray-100'}
                 onClick={() => toggleMenu()}
               >
-                <span>Todos</span>
+                Todos
               </Link>
             </li>
             <li>
@@ -77,7 +77,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
                 className={linkBaseStyle + ' hover:bg-gray-100'}
                 onClick={() => toggleMenu()}
               >
-                <span>Profile</span>
+                Profile
               </Link>
             </li>
             <li>
@@ -85,7 +85,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
                 className={linkBaseStyle + ' hover:bg-red-200'}
                 onClick={logout}
               >
-                <span>Logout</span>
+                Logout
               </button>
             </li>
           </>
@@ -99,7 +99,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
                 className={linkBaseStyle + ' hover:bg-gray-100'}
                 onClick={() => toggleMenu()}
               >
-                <span>Login</span>
+                Login
               </Link>
             </li>
             <li>
@@ -108,7 +108,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
                 className={linkBaseStyle + ' hover:bg-gray-100'}
                 onClick={() => toggleMenu()}
               >
-                <span>Signup</span>
+                Signup
               </Link>
             </li>
           </>

@@ -13,15 +13,15 @@
   }
 
   .nav-items {
-    @apply bg-green-100  absolute z-10 flex-col pt-6  top-[100px] right-[-160px] w-[160px] h-[calc(100vh-102px)]  p-2;
+    @apply bg-green-100  absolute z-10 flex-col pt-6  top-[100px] right-0 w-0 overflow-hidden h-[calc(100vh-100px)] p-0;
     transition: all 0.3s ease-in;
   }
 
   .nav-items li {
-    @apply text-center;
+    @apply w-full text-center;
   }
 
   .nav-items.nav-active {
-    @apply right-0;
+    @apply w-[200px];
   }
 }
