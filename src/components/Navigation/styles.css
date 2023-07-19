@@ -1,0 +1,27 @@
+.nav-btn {
+  display: none;
+}
+
+.nav-items {
+  @apply flex items-center gap-4 p-4;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .nav-btn {
+    display: block;
+  }
+
+  .nav-items {
+    @apply bg-green-100  absolute z-10 flex-col pt-6  top-[100px] right-[-160px] w-[160px] h-[calc(100vh-102px)]  p-2;
+    transition: all 0.3s ease-in;
+  }
+
+  .nav-items li {
+    @apply text-center;
+  }
+
+  .nav-items.nav-active {
+    @apply right-0;
+  }
+}
