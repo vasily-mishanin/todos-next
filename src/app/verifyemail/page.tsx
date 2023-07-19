@@ -1,5 +1,4 @@
 'use client';
-
 import axios from 'axios';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
@@ -10,7 +9,6 @@ export default function VerifyEmailPage() {
   const [error, setError] = useState(false);
 
   const verifyUserEmail = useCallback(async () => {
-    console.log('verifyUserEmail');
     try {
       await axios.post('api/users/verifyemail', { token });
       setVerified(true);

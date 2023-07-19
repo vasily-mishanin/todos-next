@@ -8,11 +8,9 @@ import jwt from 'jsonwebtoken';
 connect();
 
 export async function POST(request: NextRequest) {
-  console.log('LOGIN');
   try {
     const reqBody = await request.json();
     const { email, password } = reqBody;
-    console.log('reqBody', reqBody);
 
     const user = await User.findOne({ email });
 

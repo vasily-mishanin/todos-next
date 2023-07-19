@@ -25,11 +25,9 @@ export default function LoginPage() {
   });
 
   const onLogin: SubmitHandler<Inputs> = async (formData) => {
-    console.log(formData);
     try {
       setLoading(true);
-      const response = await axios.post('/api/users/login', formData);
-      console.log('Login success', response.data);
+      await axios.post('/api/users/login', formData);
       toast.success('Login success');
       router.push(`/`);
     } catch (error: any) {

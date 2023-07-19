@@ -7,13 +7,6 @@ import { AuthContext } from '@/store/AuthProvider';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 
-// const mockTodo: ITodo = {
-//   title: 'Create App',
-//   details:
-//     'Create App using Create App using Create App using Create App using',
-//   userId: '332f3rf4',
-// };
-
 export default function Todos() {
   const auth = useContext(AuthContext);
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -24,7 +17,6 @@ export default function Todos() {
       setLoading(true);
       const res = await axios.get('/api/todos');
       setLoading(false);
-      console.log('todos:', res.data.data);
       setTodos(res.data.data);
     } catch (error: any) {
       setLoading(false);

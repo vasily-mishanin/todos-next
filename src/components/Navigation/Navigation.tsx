@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import './styles.css';
+import { Bars3Icon, Bars3BottomRightIcon } from '@heroicons/react/24/solid';
 
 export type NavigationProps = {
   loggedIn: boolean;
@@ -13,6 +15,7 @@ export type NavigationProps = {
 
 export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
   const router = useRouter();
+  const [showMobileNavbar, setShowMobileNavbar] = useState(false);
 
   const logout = async () => {
     try {
@@ -24,56 +27,93 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
     }
   };
 
+  const toggleMenu = () => {
+    setShowMobileNavbar((prev) => !prev);
+  };
+
+  const linkBaseStyle =
+    'w-42 px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600';
+
   return (
-    <nav className='flex items-center p-4'>
-      {loggedIn && isAdmin && (
-        <Link
-          href='/todoapp/users'
-          className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-100 hover:text-gray-600'
-        >
-          <span>Users</span>
-        </Link>
-      )}
+    <nav className='flex items-center'>
+      <div className='nav-btn cursor-pointer' onClick={toggleMenu}>
+        {showMobileNavbar ? (
+          <Bars3BottomRightIcon
+            className='text-gray-700'
+            style={{ width: '2rem' }}
+          />
+        ) : (
+          <Bars3Icon className='text-gray-700' style={{ width: '2rem' }} />
+        )}
+      </div>
 
-      {loggedIn && (
-        <>
-          <Link
-            href='/todoapp/todos'
-            className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-100 hover:text-gray-600'
-          >
-            <span>Todos</span>
-          </Link>
-          <Link
-            href='/todoapp/profile'
-            className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-100 hover:text-gray-600'
-          >
-            <span>Profile</span>
-          </Link>
-          <button
-            className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-red-200 hover:text-gray-600'
-            onClick={logout}
-          >
-            <span>Logout</span>
-          </button>
-        </>
-      )}
+      <ul className={'nav-items' + `${showMobileNavbar ? ' nav-active' : ''}`}>
+        {loggedIn && isAdmin && (
+          <li>
+            <Link
+              href='/todoapp/users'
+              className={linkBaseStyle + ' hover:bg-gray-100'}
+              onClick={() => toggleMenu()}
+            >
+              <span>Users</span>
+            </Link>
+          </li>
+        )}
 
-      {!loggedIn && (
-        <>
-          <Link
-            href='/todoapp/login'
-            className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-100 hover:text-gray-600'
-          >
-            <span>Login</span>
-          </Link>
-          <Link
-            href='/todoapp/signup'
-            className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-100 hover:text-gray-600'
-          >
-            <span>Signup</span>
-          </Link>
-        </>
-      )}
+        {loggedIn && (
+          <>
+            <li>
+              <Link
+                href='/todoapp/todos'
+                className={linkBaseStyle + ' hover:bg-gray-100'}
+                onClick={() => toggleMenu()}
+              >
+                <span>Todos</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href='/todoapp/profile'
+                className={linkBaseStyle + ' hover:bg-gray-100'}
+                onClick={() => toggleMenu()}
+              >
+                <span>Profile</span>
+              </Link>
+            </li>
+            <li>
+              <button
+                className={linkBaseStyle + ' hover:bg-red-200'}
+                onClick={logout}
+              >
+                <span>Logout</span>
+              </button>
+            </li>
+          </>
+        )}
+
+        {!loggedIn && (
+          <>
+            <li>
+              <Link
+                href='/todoapp/login'
+                className={linkBaseStyle + ' hover:bg-gray-100'}
+                onClick={() => toggleMenu()}
+              >
+                <span>Login</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href='/todoapp/signup'
+                className={linkBaseStyle + ' hover:bg-gray-100'}
+                onClick={() => toggleMenu()}
+              >
+                <span>Signup</span>
+              </Link>
+            </li>
+          </>
+        )}
+      </ul>
     </nav>
   );
 }

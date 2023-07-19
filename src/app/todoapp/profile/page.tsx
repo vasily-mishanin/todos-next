@@ -13,7 +13,6 @@ export default function UserProfile({ params }: any) {
       setLoading(true);
       const res = await axios.get('/api/users/me');
       setLoading(false);
-      console.log(res.data);
       router.push(`/todoapp/profile/${res.data.data._id}`);
     };
     getUserDetails();

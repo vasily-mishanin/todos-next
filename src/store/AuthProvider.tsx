@@ -28,7 +28,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>(initialState.user);
 
   const setCurrentUser = (user: User) => {
-    console.log('setCurrentUser', user);
     setUser((prev) => ({ ...prev, ...user }));
   };
 

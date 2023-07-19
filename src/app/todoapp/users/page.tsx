@@ -19,7 +19,6 @@ export default function Users() {
         setLoading(true);
         const res = await axios.get('/api/users');
         setLoading(false);
-        console.log('users:', res.data.data);
         setUsers(res.data.data);
       } catch (error: any) {
         setLoading(false);
