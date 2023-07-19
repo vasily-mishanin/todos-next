@@ -8,14 +8,11 @@ import { useContext, useEffect } from 'react';
 
 export function Header() {
   const auth = useContext(AuthContext);
-  console.log({ auth });
 
   useEffect(() => {
     const getUserDetails = async () => {
       try {
         const res = await axios.get('/api/users/me');
-        console.log(res.data);
-        console.log('User is Logged In');
         const { _id, username, email, isAdmin, isVerified } = res.data.data;
         const me: User = {
           id: _id,
@@ -24,7 +21,6 @@ export function Header() {
           isAdmin,
           isVerified,
         };
-        console.log({ me });
         auth.setUser(me);
       } catch (error: any) {
         auth.setUser({

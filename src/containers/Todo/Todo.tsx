@@ -25,8 +25,6 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
   });
   const auth = useContext(AuthContext);
 
-  console.log('TODO', auth, todo);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
