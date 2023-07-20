@@ -4,7 +4,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import './styles.css';
 import { Bars3Icon, Bars3BottomRightIcon } from '@heroicons/react/24/solid';
 
@@ -15,6 +15,7 @@ export type NavigationProps = {
 
 export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
   const router = useRouter();
+  const currentRoute = usePathname();
   const [showMobileNavbar, setShowMobileNavbar] = useState(false);
 
   const logout = async () => {
@@ -32,7 +33,9 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
   };
 
   const linkBaseStyle =
-    'block w-full px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600';
+    'block w-full px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600 hover:bg-gray-100';
+  const linkActiveStyle =
+    'block w-full px-3 py-2 rounded text-gray-400 items-center justify-center text-gray-600 bg-gray-100';
 
   return (
     <nav className='flex items-center'>
@@ -52,7 +55,11 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
           <li>
             <Link
               href='/todoapp/users'
-              className={linkBaseStyle + ' hover:bg-gray-100'}
+              className={
+                currentRoute === '/todoapp/users'
+                  ? linkActiveStyle
+                  : linkBaseStyle
+              }
               onClick={() => toggleMenu()}
             >
               Users
@@ -65,7 +72,11 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
             <li>
               <Link
                 href='/todoapp/todos'
-                className={linkBaseStyle + ' hover:bg-gray-100'}
+                className={
+                  currentRoute === '/todoapp/todos'
+                    ? linkActiveStyle
+                    : linkBaseStyle
+                }
                 onClick={() => toggleMenu()}
               >
                 Todos
@@ -74,7 +85,11 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
             <li>
               <Link
                 href='/todoapp/profile'
-                className={linkBaseStyle + ' hover:bg-gray-100'}
+                className={
+                  currentRoute.startsWith('/todoapp/profile')
+                    ? linkActiveStyle
+                    : linkBaseStyle
+                }
                 onClick={() => toggleMenu()}
               >
                 Profile
@@ -96,7 +111,11 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
             <li>
               <Link
                 href='/todoapp/login'
-                className={linkBaseStyle + ' hover:bg-gray-100'}
+                className={
+                  currentRoute === '/todoapp/login'
+                    ? linkActiveStyle
+                    : linkBaseStyle
+                }
                 onClick={() => toggleMenu()}
               >
                 Login
@@ -105,7 +124,11 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
             <li>
               <Link
                 href='/todoapp/signup'
-                className={linkBaseStyle + ' hover:bg-gray-100'}
+                className={
+                  currentRoute === '/todoapp/signup'
+                    ? linkActiveStyle
+                    : linkBaseStyle
+                }
                 onClick={() => toggleMenu()}
               >
                 Signup
