@@ -10,6 +10,7 @@ export interface ITodo {
   details: string;
   userId: string;
   _id?: string;
+  done: boolean;
   by: string;
 }
 
@@ -17,6 +18,7 @@ const initialTodo: ITodo = {
   title: '',
   details: '',
   userId: '',
+  done: false,
   by: '',
 };
 

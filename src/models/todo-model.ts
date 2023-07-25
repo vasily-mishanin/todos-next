@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const dodoSchema = new mongoose.Schema({
+const todoSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, 'Please, provide a title'],
@@ -16,11 +16,16 @@ const dodoSchema = new mongoose.Schema({
     required: [true, 'Please, provide user Id'],
   },
 
+  done: {
+    type: Boolean,
+    default: false,
+  },
+
   by: {
     type: String,
   },
 });
 
-const Todo = mongoose.models.todos || mongoose.model('todos', dodoSchema);
+const Todo = mongoose.models.todos || mongoose.model('todos', todoSchema);
 
 export default Todo;

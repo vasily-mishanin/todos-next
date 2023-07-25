@@ -5,6 +5,7 @@ import {
   ArrowPathIcon,
   ArchiveBoxIcon,
   UserIcon,
+  CheckCircleIcon,
 } from '@heroicons/react/24/solid';
 import axios from 'axios';
 import { AuthContext } from '@/store/AuthProvider';
@@ -72,6 +73,23 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
     }
   };
 
+  const doneTodo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCurrentTodo((prev) => ({ ...prev, done: !prev.done }));
+    try {
+      await axios.put('/api/todos', {
+        ...currentTodo,
+        done: !currentTodo.done,
+        userId: auth.user.id,
+        id_: todo._id,
+      });
+      toast.success('Todo updated');
+      onUpdate();
+    } catch (error: any) {
+      console.log('Update Todo Failed', error.message);
+    }
+  };
+
   return (
     <article className='relative todo-wrapper '>
       <form
@@ -109,6 +127,18 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
           />
         </div>
 
+        <button
+          type='button'
+          className={`done-btn flex justify-center items-center rounded ${
+            currentTodo.done ? 'done' : ''
+          }`}
+          style={{ width: '1.5rem', height: '1.5rem' }}
+          onClick={doneTodo}
+          disabled={!auth.user.isAdmin && auth.user.id !== todo.userId}
+        >
+          <CheckCircleIcon style={{ width: '1rem' }} />
+        </button>
+
         {(auth.user.isAdmin || auth.user.id === todo.userId) && (
           <>
             <button
@@ -122,6 +152,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
                 style={{ width: '1rem' }}
               />
             </button>
+
             <button
               type='button'
               className='delete-btn flex justify-center items-center rounded'

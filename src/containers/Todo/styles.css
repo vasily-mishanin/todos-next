@@ -25,12 +25,22 @@
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-
   color: salmon;
 }
 
+.done-btn {
+  @apply absolute text-gray-500;
+  top: 0.5rem;
+  left: 2.5rem;
+}
+
+.done {
+  @apply text-green-600;
+}
+
 .submit-btn:enabled:hover,
-.delete-btn:enabled:hover {
+.delete-btn:enabled:hover,
+.done-btn:enabled:hover {
   opacity: 0.75;
 }
 
