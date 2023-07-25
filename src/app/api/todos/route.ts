@@ -7,12 +7,13 @@ connect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { title, details, userId, by } = reqBody;
+    const { title, details, userId, done, by } = reqBody;
 
     const newTodo = await new Todo({
       title,
       details,
       userId,
+      done,
       by,
     });
     // save new todo
@@ -44,11 +45,11 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { title, details, userId, _id } = reqBody;
+    const { title, details, done, userId, _id } = reqBody;
 
     const updatedTodo = await Todo.findByIdAndUpdate(
       { _id },
-      { title, details }
+      { title, details, done }
     );
 
     return NextResponse.json({
