@@ -7,10 +7,19 @@ import { AuthContext } from '@/store/AuthProvider';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { IAuthState, authSlice } from '@/store/authSlice';
+import { RootState } from '@/store/store';
+
 export default function Todos() {
   const auth = useContext(AuthContext);
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const authSlice = useSelector((state: RootState) => state.auth.authState);
+  const dispatch = useDispatch();
+
+  console.log('authSlice', authSlice);
 
   const fetchTodos = async () => {
     try {
