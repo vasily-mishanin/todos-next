@@ -1,15 +1,15 @@
 'use client';
 
 import Spinner from '@/components/Spinner/Spinner';
-import { AuthContext } from '@/store/AuthProvider';
 import { useRouter } from 'next/navigation';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
+import { useAppSelector } from '@/store/hooks';
 
 export default function UserProfile({ params }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const auth = useContext(AuthContext);
+  const auth = useAppSelector((state) => state.auth.authState);
 
   return (
     <div className='flex flex-col gap-4 items-center justify-center min-h-full py-2'>
@@ -26,14 +26,14 @@ export default function UserProfile({ params }: any) {
         </div>
         <div className='flex flex-col gap-4'>
           <p>
-            Name: <span className='text-green-500'>{auth.user.username}</span>
+            Name: <span className='text-green-500'>{auth.username}</span>
           </p>
           <p>
-            Email: <span className='text-green-500'>{auth.user.email}</span>
+            Email: <span className='text-green-500'>{auth.email}</span>
           </p>
           <p>
             Role:{' '}
-            {auth.user.isAdmin ? (
+            {auth.isAdmin ? (
               <span className='text-green-500'>admin</span>
             ) : (
               <span className='text-green-500'>user</span>

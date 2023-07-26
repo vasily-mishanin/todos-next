@@ -2,13 +2,14 @@
 
 import Spinner from '@/components/Spinner/Spinner';
 import Table from '@/components/Table/Table';
-import { AuthContext, User } from '@/store/AuthProvider';
+import { useAppSelector } from '@/store/hooks';
+import { User } from '@/store/types';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 
 export default function Users() {
-  const auth = useContext(AuthContext);
+  const auth = useAppSelector((state) => state.auth.authState);
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,7 @@ export default function Users() {
       }
     };
 
-    if (auth.user.isAdmin) {
+    if (auth.isAdmin) {
       getUsers();
     } else {
       router.push('/todoapp');

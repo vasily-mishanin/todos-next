@@ -1,6 +1,6 @@
 'use client';
 import './styles.css';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import {
   ArrowPathIcon,
   ArchiveBoxIcon,
@@ -8,9 +8,9 @@ import {
   CheckCircleIcon,
 } from '@heroicons/react/24/solid';
 import axios from 'axios';
-import { AuthContext } from '@/store/AuthProvider';
 import { toast } from 'react-hot-toast';
 import { ITodo } from '../NewTodo/NewTodo';
+import { useAppSelector } from '@/store/hooks';
 
 type TodoProps = {
   todo: ITodo;
@@ -24,7 +24,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
     error: false,
     message: '',
   });
-  const auth = useContext(AuthContext);
+  const auth = useAppSelector((state) => state.auth.authState);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,7 +50,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
     try {
       await axios.put('/api/todos', {
         ...currentTodo,
-        userId: auth.user.id,
+        userId: auth.id,
         id_: todo._id,
       });
       toast.success('Todo updated');
@@ -80,7 +80,7 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
       await axios.put('/api/todos', {
         ...currentTodo,
         done: !currentTodo.done,
-        userId: auth.user.id,
+        userId: auth.id,
         id_: todo._id,
       });
       toast.success('Todo updated');
@@ -134,12 +134,12 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
           }`}
           style={{ width: '1.5rem', height: '1.5rem' }}
           onClick={doneTodo}
-          disabled={!auth.user.isAdmin && auth.user.id !== todo.userId}
+          disabled={!auth.isAdmin && auth.id !== todo.userId}
         >
           <CheckCircleIcon style={{ width: '1rem' }} />
         </button>
 
-        {(auth.user.isAdmin || auth.user.id === todo.userId) && (
+        {(auth.isAdmin || auth.id === todo.userId) && (
           <>
             <button
               type='submit'

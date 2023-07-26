@@ -3,23 +3,12 @@
 import Spinner from '@/components/Spinner/Spinner';
 import NewTodo, { ITodo } from '@/containers/NewTodo/NewTodo';
 import Todo from '@/containers/Todo/Todo';
-import { AuthContext } from '@/store/AuthProvider';
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { IAuthState, authSlice } from '@/store/authSlice';
-import { RootState } from '@/store/store';
+import { useEffect, useState } from 'react';
 
 export default function Todos() {
-  const auth = useContext(AuthContext);
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const authSlice = useSelector((state: RootState) => state.auth.authState);
-  const dispatch = useDispatch();
-
-  console.log('authSlice', authSlice);
 
   const fetchTodos = async () => {
     try {

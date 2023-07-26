@@ -1,16 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
-export interface User {
-  id: string;
-  email: string;
-  username: string;
-  isAdmin: boolean;
-  isVerified?: boolean;
-}
-
-export interface IAuthState {
-  authState: User;
-}
+import { IAuthState, User } from './types';
 
 const initialState: IAuthState = {
   authState: {

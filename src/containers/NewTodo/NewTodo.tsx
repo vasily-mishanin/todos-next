@@ -1,9 +1,9 @@
 'use client';
 import './styles.css';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
-import { AuthContext } from '@/store/AuthProvider';
+import { useAppSelector } from '@/store/hooks';
 
 export interface ITodo {
   title: string;
@@ -28,7 +28,7 @@ type NewTodoProps = {
 
 export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(initialTodo);
-  const auth = useContext(AuthContext);
+  const auth = useAppSelector((state) => state.auth.authState);
   const [validationError, setValidationError] = useState({
     error: false,
     message: '',
@@ -57,8 +57,8 @@ export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
     try {
       await axios.post('/api/todos', {
         ...currentTodo,
-        userId: auth.user.id,
-        by: auth.user.username,
+        userId: auth.id,
+        by: auth.username,
       });
       onAddNeWTodo();
       setCurrentTodo(initialTodo);
