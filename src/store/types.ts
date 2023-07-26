@@ -6,6 +6,11 @@ export interface User {
   isVerified?: boolean;
 }
 
+export interface Modal {
+  id: string;
+  isOpen: boolean;
+}
+
 export interface IAuthState {
-  authState: User;
+  user: User;
 }

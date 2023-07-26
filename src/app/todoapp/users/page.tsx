@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 
 export default function Users() {
-  const auth = useAppSelector((state) => state.auth.authState);
+  const auth = useAppSelector((state) => state.auth.user);
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);

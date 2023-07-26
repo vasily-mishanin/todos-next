@@ -10,7 +10,7 @@ import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { setAuthState } from '@/store/authSlice';
 
 export function Header() {
-  const auth = useAppSelector((state) => state.auth.authState);
+  const auth = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

@@ -10,12 +10,13 @@ import {
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { ITodo } from '../NewTodo/NewTodo';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { closeModal, setOpenModal } from '@/store/modalSlice';
 
 type TodoProps = {
   todo: ITodo;
-  onUpdate: () => {};
-  onDelete: () => {};
+  onUpdate: () => void;
+  onDelete: () => void;
 };
 
 export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
@@ -24,7 +25,9 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
     error: false,
     message: '',
   });
-  const auth = useAppSelector((state) => state.auth.authState);
+  const auth = useAppSelector((state) => state.auth.user);
+  const modalState = useAppSelector((state) => state.modal);
+  const dispatch = useAppDispatch();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -62,15 +65,18 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
 
   const deleteTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      if (todo._id) {
-        await axios.delete('/api/todos', { data: { _id: todo._id } });
-        toast.success('Todo deleted');
-        onDelete();
-      }
-    } catch (error: any) {
-      console.log('Delete Todo Failed', error.message);
-    }
+    console.log('deleteTodo');
+    dispatch(setOpenModal({ id: 'delete-todo-modal', isOpen: true }));
+
+    // try {
+    //   if (todo._id) {
+    //     await axios.delete('/api/todos', { data: { _id: todo._id } });
+    //     toast.success('Todo deleted');
+    //     onDelete();
+    //   }
+    // } catch (error: any) {
+    //   console.log('Delete Todo Failed', error.message);
+    // }
   };
 
   const doneTodo = async (e: React.FormEvent) => {

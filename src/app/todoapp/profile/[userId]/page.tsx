@@ -9,7 +9,7 @@ import { useAppSelector } from '@/store/hooks';
 export default function UserProfile({ params }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const auth = useAppSelector((state) => state.auth.authState);
+  const auth = useAppSelector((state) => state.auth.user);
 
   return (
     <div className='flex flex-col gap-4 items-center justify-center min-h-full py-2'>

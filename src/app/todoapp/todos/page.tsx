@@ -5,6 +5,7 @@ import NewTodo, { ITodo } from '@/containers/NewTodo/NewTodo';
 import Todo from '@/containers/Todo/Todo';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 export default function Todos() {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -18,7 +19,7 @@ export default function Todos() {
       setTodos(res.data.data);
     } catch (error: any) {
       setLoading(false);
-      console.log('Todos fetch failed: ', error.message);
+      toast.error(`'Todos fetch failed: ' ${error.message}`);
     }
   };
 
@@ -35,7 +36,7 @@ export default function Todos() {
       )}
       <div className='flex flex-wrap gap-4 max-[600px]:justify-center'>
         {todos &&
-          todos.map((todo, ind) => (
+          todos.map((todo: ITodo) => (
             <Todo
               key={todo._id}
               todo={todo}
