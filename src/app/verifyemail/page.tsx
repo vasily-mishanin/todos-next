@@ -43,7 +43,7 @@ export default function VerifyEmailPage() {
           <h2 className='text-2xl text-green-500'>
             Email Successfully Verified
           </h2>
-          <Link className='text-blue-500' href='/login'>
+          <Link className='text-blue-500' href='/todoapp/login'>
             Login
           </Link>
         </div>

@@ -2,12 +2,16 @@ import { Logo } from '@/components/Logo/Logo';
 import { Navigation } from '@/components/Navigation/Navigation';
 import './styles.css';
 
-import { AuthContext, User } from '@/store/AuthProvider';
+import { User } from '@/store/types';
 import axios from 'axios';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { setAuthState } from '@/store/authSlice';
 
 export function Header() {
-  const auth = useContext(AuthContext);
+  const auth = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getUserDetails = async () => {
@@ -21,15 +25,18 @@ export function Header() {
           isAdmin,
           isVerified,
         };
-        auth.setUser(me);
+        dispatch(setAuthState(me));
       } catch (error: any) {
-        auth.setUser({
-          id: '',
-          email: '',
-          username: '',
-          isAdmin: false,
-          isVerified: false,
-        });
+        dispatch(
+          setAuthState({
+            id: '',
+            email: '',
+            username: '',
+            isAdmin: false,
+            isVerified: false,
+          })
+        );
+
         console.log(error.message);
       }
     };
@@ -40,8 +47,8 @@ export function Header() {
   return (
     <header className='header relative flex gap-2 justify-between mb-8 font-sans px-4'>
       <Logo />
-      <span className='user'>{auth.user.email}</span>
-      <Navigation loggedIn={!!auth.user.id} isAdmin={auth.user.isAdmin} />
+      <span className='user'>{auth.email}</span>
+      <Navigation loggedIn={!!auth.id} isAdmin={auth.isAdmin} />
     </header>
   );
 }
