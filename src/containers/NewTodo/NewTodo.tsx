@@ -4,15 +4,9 @@ import { useState } from 'react';
 import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
-
-export interface ITodo {
-  title: string;
-  details: string;
-  userId: string;
-  _id?: string;
-  done: boolean;
-  by: string;
-}
+import { ITodo } from '@/store/types';
+import { useAddTodoMutation } from '@/store/services/todosApi';
+import { toast } from 'react-hot-toast';
 
 const initialTodo: ITodo = {
   title: '',
@@ -34,6 +28,13 @@ export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
     message: '',
   });
 
+  const [addTodo, result] = useAddTodoMutation();
+  const { isLoading, isError, error, data } = result;
+
+  if (isError) {
+    toast.error('Adding todo failed');
+  }
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -54,17 +55,20 @@ export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await axios.post('/api/todos', {
-        ...currentTodo,
-        userId: auth.id,
-        by: auth.username,
-      });
-      onAddNeWTodo();
-      setCurrentTodo(initialTodo);
-    } catch (error: any) {
-      console.log('New Todo Failed', error.message);
-    }
+    const res = addTodo({ ...currentTodo, userId: auth.id, by: auth.username });
+    console.log(res);
+    setCurrentTodo(initialTodo);
+    // try {
+    //   await axios.post('/api/todos', {
+    //     ...currentTodo,
+    //     userId: auth.id,
+    //     by: auth.username,
+    //   });
+    //   onAddNeWTodo();
+    //   setCurrentTodo(initialTodo);
+    // } catch (error: any) {
+    //   console.log('New Todo Failed', error.message);
+    // }
   };
 
   return (
