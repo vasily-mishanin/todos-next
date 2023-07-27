@@ -1,26 +1,23 @@
 .overlay {
-  @apply bg-gray-600;
-  position: fixed;
+  @apply fixed top-0 left-0 bg-gray-600/75;
   height: 100vh;
   width: 100vw;
-  left: 0;
-  top: 0;
+  min-height: 100%;
+  min-width: 100%;
   z-index: 50;
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .inner {
-  width: 50vw;
-  height: 50vh;
-  padding: 3.5rem 4.5rem;
-  min-height: 25rem;
-  max-height: calc(100% - 15rem);
-  max-width: 90vw;
+  @apply p-10 w-[80vw] h-[30vh] sm:w-[50vw] lg:w-[30vw];
+
   display: flex;
   flex-direction: column;
   position: relative;
+
   z-index: 100;
   background-color: #fff;
   border-radius: 1.2rem;
@@ -47,28 +44,19 @@
 }
 
 .btn-close-modal {
-  background: none;
-  border: none;
-  position: absolute;
-  bottom: calc(100% - 0.1rem);
-  left: calc(100% - 0.1rem);
+  @apply absolute -top-6 -right-6 p-2 bg-gray-400 rounded-full cursor-pointer;
   transition: transform 0.3s linear;
   transform-origin: center;
-  cursor: pointer;
 }
 
-btn-close-modal:hover {
-  transform: rotate(1turn);
+.btn-close-modal:hover {
+  opacity: 0.75;
 }
 
-btn-close-modal > svg {
-  width: 1.4rem;
-  height: 1.4rem;
+.btn-close-modal > svg {
+  width: 1rem;
 }
 
 .modal-title {
-  font-weight: 800;
-  font-size: 3.2rem;
-  margin: 3.5rem 5.5rem 5rem 4.7rem;
-  line-height: 4.4rem;
+  @apply text-lg font-bold leading-8;
 }

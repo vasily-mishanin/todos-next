@@ -2,6 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from './authSlice';
 import { modalSlice } from './modalSlice';
 
+//TODO: add todos slice
+
 export const store = configureStore({
   reducer: {
     [authSlice.name]: authSlice.reducer,

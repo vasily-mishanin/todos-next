@@ -65,8 +65,13 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
 
   const deleteTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('deleteTodo');
-    dispatch(setOpenModal({ id: 'delete-todo-modal', isOpen: true }));
+    dispatch(
+      setOpenModal({
+        id: 'delete-todo-modal',
+        isOpen: true,
+        data: { _id: todo._id },
+      })
+    );
 
     // try {
     //   if (todo._id) {

@@ -1,0 +1,7 @@
+.question {
+  @apply text-center;
+}
+
+.btn-delete-confirmation {
+  @apply p-2 border rounded-lg bg-red-400 opacity-80 hover:opacity-100;
+}

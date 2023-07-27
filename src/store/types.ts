@@ -9,6 +9,7 @@ export interface User {
 export interface Modal {
   id: string;
   isOpen: boolean;
+  data?: Record<any, any>;
 }
 
 export interface IAuthState {

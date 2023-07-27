@@ -13,6 +13,7 @@ export const modalSlice = createSlice({
     setOpenModal: (state, action: PayloadAction<Modal>) => {
       state.id = action.payload.id;
       state.isOpen = action.payload.isOpen;
+      state.data = action.payload.data;
     },
     closeModal: (state) => {
       state.id = '';
