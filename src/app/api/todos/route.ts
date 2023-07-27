@@ -4,6 +4,19 @@ import { connect } from '@/db/db-config';
 
 connect();
 
+export async function GET(request: NextRequest) {
+  try {
+    const todos = await Todo.find({});
+    return NextResponse.json({
+      message: 'Todos fetched',
+      success: true,
+      data: todos,
+    });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -21,24 +34,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: `Todo created successfully`,
       success: true,
-      savedTodo,
+      todo: savedTodo,
     });
   } catch (error: any) {
     console.log('Eror with new Todo');
     return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-export async function GET(request: NextRequest) {
-  try {
-    const todos = await Todo.find({});
-    return NextResponse.json({
-      message: 'Todos fetched',
-      success: true,
-      data: todos,
-    });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
 
@@ -55,7 +55,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({
       message: `Todo updated successfully`,
       success: true,
-      updatedTodo,
+      todo: updatedTodo,
     });
   } catch (error: any) {
     console.log('Eror while updating Todo');
@@ -73,7 +73,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({
       message: `Todo deleted successfully`,
       success: true,
-      deletedTodo,
+      todo: deletedTodo,
     });
   } catch (error: any) {
     console.log('Eror while deleting Todo');

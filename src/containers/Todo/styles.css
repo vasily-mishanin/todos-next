@@ -34,8 +34,12 @@
   left: 2.5rem;
 }
 
-.done {
+.done-btn.done {
   @apply text-green-600;
+}
+
+.done-btn.dimmed {
+  @apply opacity-60;
 }
 
 .submit-btn:enabled:hover,

@@ -39,7 +39,7 @@ export const Modal: FC<ModalProps> = ({ children, title, open, onClose }) => {
     <div className='overlay' onClick={onClose}>
       <div className='inner' onClick={(e) => e.stopPropagation()}>
         <button className='btn-close-modal' onClick={onClose}>
-          <XMarkIcon style={{ width: '1rem' }} />
+          <XMarkIcon />
         </button>
         {title && <h2 className='modal-title'>{title}</h2>}
         <div className='content'>{children}</div>
