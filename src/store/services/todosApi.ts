@@ -3,7 +3,7 @@ import { IPostTodoResult, ITodo, Methods } from '../types';
 
 export const todosApi = createApi({
   reducerPath: 'todosApi',
-  refetchOnFocus: true,
+  //refetchOnFocus: true,
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/',
   }),

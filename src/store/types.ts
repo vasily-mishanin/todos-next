@@ -1,3 +1,5 @@
+export type LoadingState = 'idle' | 'pending' | 'succeeded' | 'failed';
+
 export interface User {
   id: string;
   email: string;
@@ -23,6 +25,8 @@ export interface Modal {
 
 export interface IAuthState {
   user: User;
+  loading: LoadingState;
+  error: string;
 }
 
 export interface IPostTodoResult {
@@ -41,11 +45,49 @@ export enum Methods {
 export interface UsersState {
   users: User[];
   error: string;
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+  loading: LoadingState;
 }
 
 export interface UsersResponse {
   message: string;
   success: boolean;
   data: User[];
+}
+
+export interface ILoginCreds {
+  email: string;
+  password: string;
+  username?: string;
+}
+
+export interface LoginResponse {
+  data: {
+    message: string;
+    success: boolean;
+    user: User & { _id: string };
+  };
+}
+
+export interface MeResponse {
+  data: {
+    data: User & { _id: string };
+    message: string;
+    success: boolean;
+  };
+}
+
+export interface LogoutResponse {
+  data: {
+    message?: string;
+    success?: boolean;
+    error?: any;
+  };
+}
+
+export interface VerifyEmailResponse {
+  data: {
+    message?: string;
+    status?: number;
+    error?: any;
+  };
 }

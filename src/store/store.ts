@@ -8,10 +8,9 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export const store = configureStore({
   reducer: {
-    [authSlice.name]: authSlice.reducer,
+    [authSlice.name]: authSlice.reducer, //Thunks
     [modalSlice.name]: modalSlice.reducer,
-    //Thunks
-    [usersSlice.name]: usersSlice.reducer,
+    [usersSlice.name]: usersSlice.reducer, //Thunks
     //RTK Query
     [todosApi.reducerPath]: todosApi.reducer,
   },
