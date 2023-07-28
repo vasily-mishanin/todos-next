@@ -37,3 +37,15 @@ export enum Methods {
   PUT = 'PUT',
   DELETE = 'DELETE',
 }
+
+export interface UsersState {
+  users: User[];
+  error: string;
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+}
+
+export interface UsersResponse {
+  message: string;
+  success: boolean;
+  data: User[];
+}

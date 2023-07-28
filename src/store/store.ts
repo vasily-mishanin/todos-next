@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from './authSlice';
 import { modalSlice } from './modalSlice';
+import { usersSlice } from './usersSlice';
 
 import { todosApi } from './services/todosApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
@@ -9,7 +10,9 @@ export const store = configureStore({
   reducer: {
     [authSlice.name]: authSlice.reducer,
     [modalSlice.name]: modalSlice.reducer,
-    //RTK
+    //Thunks
+    [usersSlice.name]: usersSlice.reducer,
+    //RTK Query
     [todosApi.reducerPath]: todosApi.reducer,
   },
   devTools: true,
