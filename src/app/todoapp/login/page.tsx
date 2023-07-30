@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 import Spinner from '@/components/Spinner/Spinner';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { login } from '@/store/authSlice';
+import { login, setLoading } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 type Inputs = {
@@ -21,13 +21,17 @@ export default function LoginPage() {
   const { loading, error, user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
+    if (loading === 'failed' && !user.id) {
+      toast.error('Invalid login or password!');
+      dispatch(setLoading('idle'));
+    }
+
     if (loading === 'idle' && user.id) {
-      toast.success('Login success');
       router.push(`/todoapp/todos`);
     }
 
     if (loading === 'idle' && error) {
-      toast.error(error);
+      toast.error(error + ' IN');
     }
   }, [error, loading, user.id]);
 
@@ -41,7 +45,7 @@ export default function LoginPage() {
   });
 
   const onLogin: SubmitHandler<Inputs> = async (formData) => {
-    dispatch(login(formData));
+    await dispatch(login(formData));
   };
 
   const inputBaseStyle =
@@ -54,7 +58,7 @@ export default function LoginPage() {
 
   return (
     <main className='flex flex-col gap-4 items-center justify-center py-2'>
-      {loading === 'pending' && <Spinner text='Logging in...' />}
+      {loading === 'pending' && <Spinner text='Checking...' />}
 
       <h1 className='mb-4 text-xl text-gray-700'>Sign In</h1>
       <form

@@ -10,18 +10,23 @@ import toast from 'react-hot-toast';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { loading, error, user } = useAppSelector((state) => state.auth);
-  const isLoggedIn = !!user.id;
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(me());
+    const checkLogin = async () => {
+      await dispatch(me());
+    };
+
+    checkLogin();
   }, []);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
+    const isLoggedIn = !!user.id;
+
+    // if (error) {
+    //   toast.error(error + 'Lay');
+    // }
 
     if (!isLoggedIn) {
       router.push('/todoapp/login');
@@ -30,7 +35,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     if (isLoggedIn) {
       router.push('/todoapp/todos');
     }
-  }, [error, isLoggedIn]);
+  }, [user.id]);
 
   console.log('Layout todoapp');
   return (

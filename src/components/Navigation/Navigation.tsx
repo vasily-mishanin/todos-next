@@ -21,15 +21,16 @@ export function Navigation() {
   const isLoggedIn = !!user.id;
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error(error + 'Nav');
+  //   }
+  // }, [error]);
 
   const handleLogout = async () => {
-    dispatch(logout());
+    await dispatch(logout());
     window.location.reload();
+    router.push('/todoapp');
   };
 
   const toggleMenu = () => {

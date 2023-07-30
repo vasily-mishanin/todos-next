@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   IAuthState,
   ILoginCreds,
+  LoadingState,
   LoginResponse,
   LogoutResponse,
   MeResponse,
@@ -13,11 +14,15 @@ import axios from 'axios';
 export const signup = createAsyncThunk(
   'auth/signup',
   async (formData: ILoginCreds, thunkAPI) => {
-    const response: LoginResponse = await axios.post(
-      '/api/users/signup',
-      formData
-    );
-    return response.data;
+    try {
+      const response: LoginResponse = await axios.post(
+        '/api/users/signup',
+        formData
+      );
+      return response.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response.data.error);
+    }
   }
 );
 
@@ -52,9 +57,8 @@ export const me = createAsyncThunk('auth/me', async (thunkAPI) => {
 });
 
 export const logout = createAsyncThunk('auth/logout', async (thunkAPI) => {
-  const response: LogoutResponse = await axios.get('/api/users/logout');
-  console.log('logout', response.data);
-  return response.data;
+  await axios.get('/api/users/logout');
+  return initialState;
 });
 
 export const verifyUserEmail = createAsyncThunk(
@@ -87,63 +91,67 @@ export const authSlice = createSlice({
     setAuthState: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
+    setLoading: (state, action: PayloadAction<LoadingState>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
     builder
       .addCase(signup.pending, (state, action) => {
-        state.loading = 'pending';
         state.error = '';
+        state.loading = 'pending';
       })
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = 'idle';
       })
       .addCase(signup.rejected, (state, action) => {
         state.loading = 'idle';
-        if (action.error.message) {
-          state.error = action.error.message;
+        if (action.error) {
+          state.error = action.payload as string;
         }
       })
       .addCase(login.pending, (state, action) => {
-        state.loading = 'pending';
         state.error = '';
+        state.loading = 'pending';
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = 'idle';
         state.user = action.payload.user;
       })
       .addCase(login.rejected, (state, action) => {
-        state.loading = 'idle';
-        state = initialState;
+        state.loading = 'failed';
       })
       .addCase(me.pending, (state, action) => {
-        state.loading = 'pending';
         state.error = '';
+        state.loading = 'pending';
       })
       .addCase(me.fulfilled, (state, action) => {
         state.loading = 'idle';
         state.user = action.payload;
-        state.error = '';
       })
       .addCase(me.rejected, (state, action) => {
         state.loading = 'idle';
         state = initialState;
       })
       .addCase(logout.pending, (state, action) => {
-        state.loading = 'pending';
         state.error = '';
+        state.loading = 'pending';
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.loading = 'idle';
-        state = initialState;
+        state = action.payload;
       })
       .addCase(logout.rejected, (state, action) => {
         state.loading = 'idle';
         state = initialState;
       })
       .addCase(verifyUserEmail.pending, (state, action) => {
-        state.loading = 'pending';
         state.error = '';
+        state.loading = 'pending';
       })
       .addCase(verifyUserEmail.fulfilled, (state, action) => {
         state.loading = 'idle';
@@ -159,4 +167,4 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuthState } = authSlice.actions;
+export const { setAuthState, setLoading, setError } = authSlice.actions;

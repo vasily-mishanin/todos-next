@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { signup } from '@/store/authSlice';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { setError } from '@/store/authSlice';
 
 type Inputs = {
   email: string;
@@ -19,6 +20,13 @@ export default function SignupPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { loading, error, user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (loading === 'idle' && error) {
+      toast.error(error + ' UP');
+      dispatch(setError(''));
+    }
+  }, [loading, error]);
 
   const {
     register,
