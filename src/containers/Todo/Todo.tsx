@@ -13,8 +13,8 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { closeModal, setOpenModal } from '@/store/modalSlice';
 import { ITodo, ModalTypes } from '@/store/types';
 import { useUpdateTodoMutation } from '@/store/services/todosApi';
-import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { TodoProps, TodoStatus, ValidationError } from './types';
+import { Button } from '@/components/Button/Button';
 
 export default function Todo({ todo }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
@@ -149,14 +149,6 @@ export default function Todo({ todo }: TodoProps) {
 
   const isActionAuthorized = user.isAdmin || user.id === todo.userId;
 
-  const doneTodoStyle = `btn done-btn ${currentTodo.done ? 'done' : ''} ${
-    !isActionAuthorized ? 'dimmed' : ''
-  }`;
-
-  const updateTodoStyle = `btn submit-btn ${
-    status === 'IN_EDIT' ? 'active' : ''
-  }`;
-
   const todoCardStyle = `todo-wrapper ${
     status === 'IN_DELETE'
       ? 'to-be-deleted'
@@ -168,7 +160,7 @@ export default function Todo({ todo }: TodoProps) {
   return (
     <article className={todoCardStyle} ref={wrapperRef}>
       <form
-        className=' flex flex-col gap-2 w-full h-full'
+        className='flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}
       >
         <div className='relative flex flex-col bg-green-400 text-xl'>
@@ -202,32 +194,30 @@ export default function Todo({ todo }: TodoProps) {
           />
         </div>
 
-        <button
+        <Button
           type='button'
-          className={doneTodoStyle}
-          onClick={doneTodo}
+          btnType='done'
           disabled={!isActionAuthorized}
+          isActive={todo.done}
+          clickHandler={doneTodo}
         >
           <CheckCircleIcon />
-        </button>
+        </Button>
 
         {(user.isAdmin || user.id === todo.userId) && (
           <>
-            <button
+            <Button
               type='submit'
-              className={updateTodoStyle}
+              btnType='submit'
               disabled={validationError.error}
+              isActive={status === 'IN_EDIT'}
             >
               <ArrowPathIcon />
-            </button>
+            </Button>
 
-            <button
-              type='button'
-              className='btn delete-btn'
-              onClick={deleteTodo}
-            >
+            <Button type='button' btnType='delete' clickHandler={deleteTodo}>
               <ArchiveBoxIcon />
-            </button>
+            </Button>
           </>
         )}
       </form>

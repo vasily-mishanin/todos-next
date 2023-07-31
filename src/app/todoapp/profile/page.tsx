@@ -1,6 +1,5 @@
 'use client';
 import Spinner from '@/components/Spinner/Spinner';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';

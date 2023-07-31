@@ -2,7 +2,7 @@ export default function Spinner({ text }: { text?: string }) {
   return (
     <div
       role='status'
-      className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-4 z-12'
+      className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-4 z-30'
     >
       <svg
         aria-hidden='true'

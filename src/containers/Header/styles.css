@@ -1,5 +1,5 @@
 .header {
-  @apply flex gap-2 justify-between mb-4 font-sans px-4 border-b-2 border-gray-100 bg-green-100;
+  @apply flex gap-2 justify-between p-2 mb-4 font-sans px-4 border-b-2 border-gray-100 bg-green-100;
   position: sticky;
   top: 0;
   width: 100%;
@@ -8,5 +8,5 @@
 }
 
 .user {
-  @apply absolute top-2 right-2 text-xs p-0.5 px-2 text-purple-500;
+  @apply absolute top-1 right-1 text-xs p-0.5 px-2 text-purple-500;
 }

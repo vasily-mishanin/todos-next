@@ -1,8 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/Spinner/Spinner';
 import { useForm, SubmitHandler } from 'react-hook-form';

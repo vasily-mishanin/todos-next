@@ -2,11 +2,11 @@
 import './styles.css';
 import { useState } from 'react';
 import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
 import { ITodo } from '@/store/types';
 import { useAddTodoMutation } from '@/store/services/todosApi';
 import { toast } from 'react-hot-toast';
+import { Button } from '@/components/Button/Button';
 
 const initialTodo: ITodo = {
   title: '',
@@ -95,17 +95,14 @@ export default function NewTodo() {
           />
         </div>
 
-        <button
+        <Button
           type='submit'
-          className='submit-btn px-2 py-2 flex justify-center items-center rounded'
-          style={{ width: '1.5rem', height: '1.5rem' }}
+          btnType='submit'
           disabled={validationError.error}
+          isActive={!validationError.error}
         >
-          <ArrowUpTrayIcon
-            className='text-blue-500'
-            style={{ width: '1.25rem' }}
-          />
-        </button>
+          <ArrowUpTrayIcon />
+        </Button>
       </form>
     </article>
   );

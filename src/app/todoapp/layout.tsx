@@ -5,7 +5,6 @@ import { me } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import toast from 'react-hot-toast';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
