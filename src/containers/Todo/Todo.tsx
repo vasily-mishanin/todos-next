@@ -222,7 +222,7 @@ export default function Todo({ todo }: TodoProps) {
         )}
       </form>
       <p className='by'>
-        <UserIcon style={{ width: '0.75rem' }} />
+        <UserIcon className='user-icon' />
         {todo.by}
       </p>
     </article>

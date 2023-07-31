@@ -35,3 +35,7 @@ textarea {
 .to-be-updated {
   @apply border-orange-400 bg-orange-300;
 }
+
+.user-icon {
+  @apply w-3;
+}

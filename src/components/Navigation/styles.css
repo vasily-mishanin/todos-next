@@ -2,6 +2,10 @@
   display: none;
 }
 
+.hamburger {
+  @apply w-8 text-gray-700;
+}
+
 .nav-items {
   @apply flex items-center gap-4 p-4;
   box-sizing: border-box;
