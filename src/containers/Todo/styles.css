@@ -1,10 +1,10 @@
 .todo-wrapper {
-  @apply p-6 pt-8 border-2 rounded w-96 h-48 hover:shadow-md max-[600px]:w-80;
+  @apply relative p-6 pt-8 border-2 rounded w-96 h-48 hover:shadow-md max-[600px]:w-80;
   box-sizing: border-box;
 }
 
 .text-input {
-  @apply outline-none border-transparent p-1;
+  @apply outline-none border-transparent p-1 rounded-sm;
   border-width: 1px;
   border-style: solid;
 }
@@ -15,10 +15,16 @@
   border-style: solid;
 }
 
+.btn {
+  @apply flex justify-center items-center rounded w-5 h-5;
+}
+
 .submit-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  @apply absolute top-2 right-2 text-gray-400;
+}
+
+.submit-btn.active {
+  @apply text-blue-500;
 }
 
 .delete-btn {
@@ -64,4 +70,12 @@ textarea {
 
 .todo-validation-error {
   @apply absolute text-sm text-red-300 right-1 top-1;
+}
+
+.to-be-deleted {
+  @apply border-red-400 bg-red-300;
+}
+
+.to-be-updated {
+  @apply border-orange-400 bg-orange-300;
 }

@@ -6,11 +6,18 @@ import './styles.css';
 export type ModalProps = {
   open: boolean;
   title?: string;
+  showCloseBtn?: boolean;
   children: ReactNode;
   onClose: () => void;
 };
 
-export const Modal: FC<ModalProps> = ({ children, title, open, onClose }) => {
+export const Modal: FC<ModalProps> = ({
+  children,
+  title,
+  open,
+  showCloseBtn,
+  onClose,
+}) => {
   const hasWindow = typeof window !== 'undefined';
   const rootElement = useRef<Element | null>(null);
   const isShown = open && rootElement?.current !== null;
@@ -38,9 +45,11 @@ export const Modal: FC<ModalProps> = ({ children, title, open, onClose }) => {
   const modal = (
     <div className='overlay' onClick={onClose}>
       <div className='inner' onClick={(e) => e.stopPropagation()}>
-        <button className='btn-close-modal' onClick={onClose}>
-          <XMarkIcon />
-        </button>
+        {showCloseBtn && (
+          <button className='btn-close-modal' onClick={onClose}>
+            <XMarkIcon />
+          </button>
+        )}
         {title && <h2 className='modal-title'>{title}</h2>}
         <div className='content'>{children}</div>
       </div>

@@ -16,11 +16,7 @@ const initialTodo: ITodo = {
   by: '',
 };
 
-type NewTodoProps = {
-  onAddNeWTodo: () => void;
-};
-
-export default function NewTodo({ onAddNeWTodo }: NewTodoProps) {
+export default function NewTodo() {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(initialTodo);
   const auth = useAppSelector((state) => state.auth.user);
   const [validationError, setValidationError] = useState({

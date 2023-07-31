@@ -1,9 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IAuthState, Modal } from './types';
+import { Modal, ModalTypes } from './types';
 
 const initialState: Modal = {
-  id: '',
+  id: ModalTypes.NONE,
   isOpen: false,
+  data: {},
 };
 
 export const modalSlice = createSlice({
@@ -16,8 +17,9 @@ export const modalSlice = createSlice({
       state.data = action.payload.data;
     },
     closeModal: (state) => {
-      state.id = '';
+      state.id = ModalTypes.NONE;
       state.isOpen = false;
+      state.data = {};
     },
   },
 });

@@ -18,7 +18,7 @@ export interface ITodo {
 }
 
 export interface Modal {
-  id: string;
+  id: ModalTypes;
   isOpen: boolean;
   data?: Record<any, any>;
 }
@@ -90,4 +90,10 @@ export interface VerifyEmailResponse {
     status?: number;
     error?: any;
   };
+}
+
+export enum ModalTypes {
+  NONE = 'NONE',
+  DELETE_TODO = 'DELETE_TODO',
+  UPDATE_TODO = 'UPDATE_TODO',
 }

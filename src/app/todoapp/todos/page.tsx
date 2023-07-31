@@ -15,22 +15,14 @@ export default function Todos() {
     toast.error(`'Todos fetch failed: ' ${error}`);
   }
 
-  const fetchTodos = async () => {};
-
+  console.log('Todos page');
   return (
     <section className='flex flex-col gap-4 py-4 px-10'>
       {isLoading || (isFetching && <Spinner text='Loading todos ...' />)}
       <div className='flex flex-wrap gap-4 max-[600px]:justify-center'>
         {todos &&
-          todos.map((todo: ITodo) => (
-            <Todo
-              key={todo._id}
-              todo={todo}
-              onUpdate={fetchTodos}
-              onDelete={fetchTodos}
-            />
-          ))}
-        <NewTodo onAddNeWTodo={fetchTodos} />
+          todos.map((todo: ITodo) => <Todo key={todo._id} todo={todo} />)}
+        <NewTodo />
       </div>
     </section>
   );

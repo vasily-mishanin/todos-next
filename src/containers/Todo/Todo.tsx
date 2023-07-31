@@ -1,6 +1,6 @@
 'use client';
 import './styles.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
   ArrowPathIcon,
   ArchiveBoxIcon,
@@ -11,42 +11,95 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { closeModal, setOpenModal } from '@/store/modalSlice';
-import { ITodo } from '@/store/types';
+import { ITodo, ModalTypes } from '@/store/types';
 import { useUpdateTodoMutation } from '@/store/services/todosApi';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { TodoProps, TodoStatus, ValidationError } from './types';
 
-type TodoProps = {
-  todo: ITodo;
-  onUpdate: () => void;
-  onDelete: () => void;
-};
+export default function Todo({ todo }: TodoProps) {
+  console.log('Todo');
 
-export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
-  const [currentTodo, setCurrentTodo] = useState(todo);
-  const [validationError, setValidationError] = useState({
-    error: false,
-    message: '',
-  });
-  const auth = useAppSelector((state) => state.auth.user);
-  const modalState = useAppSelector((state) => state.modal);
-  const dispatch = useAppDispatch();
+  const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
+  const [status, setStatus] = useState<TodoStatus>('IDLE');
 
   const [updateTodo, result] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = result;
+
+  const wrapperRef = useRef<HTMLElement>(null);
+
+  const modalState = useAppSelector((state) => state.modal);
+  const dispatch = useAppDispatch();
+
+  const {
+    loading,
+    error: authError,
+    user,
+  } = useAppSelector((state) => state.auth);
+
   if (isError) {
     toast.error('Updating todo failed');
   }
+
+  const [validationError, setValidationError] = useState<ValidationError>({
+    error: false,
+    message: '',
+  });
+
+  useEffect(() => {
+    if (!modalState.isOpen && modalState.id === ModalTypes.NONE) {
+      setStatus('IDLE');
+      setCurrentTodo(todo); // cancel changes
+    }
+  }, [modalState, todo]);
+
+  useEffect(() => {
+    if (isTodoChanged(todo, currentTodo)) {
+      setStatus('IN_EDIT');
+    } else {
+      setStatus('IDLE');
+    }
+  }, [currentTodo]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: Event) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        handleTodoOutsideClick();
+      }
+    };
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  });
+
+  const validateTodo = (name: string, enteredValue: string) => {
+    if (name === 'title' && !enteredValue) {
+      setValidationError({ error: true, message: 'Title required' });
+    } else {
+      setValidationError({ error: false, message: '' });
+    }
+  };
+
+  const isTodoChanged = (prevTodo: ITodo, currentTodo: ITodo) => {
+    return Object.keys(prevTodo).some((key) => {
+      const prev = prevTodo[key as keyof ITodo];
+      const current = currentTodo[key as keyof ITodo];
+      if (typeof prev === 'string' && typeof current === 'string') {
+        return prev.trim() != current.trim();
+      }
+      return prev != current;
+    });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const enteredValue = e.target.value;
     const name = e.target.name;
-
-    if (name === 'title' && !enteredValue) {
-      setValidationError({ error: true, message: 'Title required' });
-    } else {
-      setValidationError({ error: false, message: '' });
-    }
+    validateTodo(name, enteredValue);
 
     setCurrentTodo((prev) => ({
       ...prev,
@@ -56,21 +109,8 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
 
   const handleUpdateTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-
     console.log('handleUpdateTodo');
-    await updateTodo({ ...currentTodo, userId: auth.id, _id: todo._id });
-
-    // try {
-    //   await axios.put('/api/todos', {
-    //     ...currentTodo,
-    //     userId: auth.id,
-    //     id_: todo._id,
-    //   });
-    //   toast.success('Todo updated');
-    //   onUpdate();
-    // } catch (error: any) {
-    //   console.log('Update Todo Failed', error.message);
-    // }
+    await updateTodo({ ...currentTodo, userId: user.id, _id: todo._id });
   };
 
   const doneTodo = async (e: React.FormEvent) => {
@@ -82,62 +122,56 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
     await updateTodo({
       ...currentTodo,
       done: !currentTodo.done,
-      userId: auth.id,
+      userId: user.id,
       _id: todo._id,
     });
-
-    // try {
-    //   await axios.put('/api/todos', {
-    //     ...currentTodo,
-    //     done: !currentTodo.done,
-    //     userId: auth.id,
-    //     id_: todo._id,
-    //   });
-    //   toast.success('Todo updated');
-    //   onUpdate();
-    // } catch (error: any) {
-    //   console.log('Update Todo Failed', error.message);
-    // }
   };
 
   const deleteTodo = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus('IN_DELETE');
     dispatch(
       setOpenModal({
-        id: 'delete-todo-modal',
+        id: ModalTypes.DELETE_TODO,
         isOpen: true,
         data: { _id: todo._id },
       })
     );
-
-    // try {
-    //   if (todo._id) {
-    //     await axios.delete('/api/todos', { data: { _id: todo._id } });
-    //     toast.success('Todo deleted');
-    //     onDelete();
-    //   }
-    // } catch (error: any) {
-    //   console.log('Delete Todo Failed', error.message);
-    // }
   };
 
-  // useEffect(() => {
-  //   updateTodo({
-  //     ...currentTodo,
-  //     done: currentTodo.done,
-  //     userId: auth.id,
-  //     _id: todo._id,
-  //   });
-  // }, [currentTodo.done]);
+  function handleTodoOutsideClick() {
+    if (status === 'IN_EDIT') {
+      setStatus('IN_UPDATE');
+      dispatch(
+        setOpenModal({
+          id: ModalTypes.UPDATE_TODO,
+          isOpen: true,
+          data: { ...currentTodo, userId: user.id, _id: todo._id },
+        })
+      );
+    }
+  }
 
-  const isActionAuthorized = auth.isAdmin || auth.id === todo.userId;
+  const isActionAuthorized = user.isAdmin || user.id === todo.userId;
 
-  const doneTodoStyle = `done-btn flex justify-center items-center rounded ${
-    currentTodo.done ? 'done' : ''
-  } ${!isActionAuthorized ? 'dimmed' : ''}`;
+  const doneTodoStyle = `btn done-btn ${currentTodo.done ? 'done' : ''} ${
+    !isActionAuthorized ? 'dimmed' : ''
+  }`;
+
+  const updateTodoStyle = `btn submit-btn ${
+    status === 'IN_EDIT' ? 'active' : ''
+  }`;
+
+  const todoCardStyle = `todo-wrapper ${
+    status === 'IN_DELETE'
+      ? 'to-be-deleted'
+      : status === 'IN_UPDATE'
+      ? 'to-be-updated'
+      : ''
+  }`;
 
   return (
-    <article className='relative todo-wrapper '>
+    <article className={todoCardStyle} ref={wrapperRef}>
       <form
         className=' flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}
@@ -176,34 +210,28 @@ export default function Todo({ todo, onUpdate, onDelete }: TodoProps) {
         <button
           type='button'
           className={doneTodoStyle}
-          style={{ width: '1.5rem', height: '1.5rem' }}
           onClick={doneTodo}
           disabled={!isActionAuthorized}
         >
-          <CheckCircleIcon style={{ width: '1rem' }} />
+          <CheckCircleIcon />
         </button>
 
-        {(auth.isAdmin || auth.id === todo.userId) && (
+        {(user.isAdmin || user.id === todo.userId) && (
           <>
             <button
               type='submit'
-              className='submit-btn flex justify-center items-center rounded'
-              style={{ width: '1.5rem', height: '1.5rem' }}
+              className={updateTodoStyle}
               disabled={validationError.error}
             >
-              <ArrowPathIcon
-                className='text-blue-500'
-                style={{ width: '1rem' }}
-              />
+              <ArrowPathIcon />
             </button>
 
             <button
               type='button'
-              className='delete-btn flex justify-center items-center rounded'
-              style={{ width: '1.5rem', height: '1.5rem' }}
+              className='btn delete-btn'
               onClick={deleteTodo}
             >
-              <ArchiveBoxIcon style={{ width: '1rem' }} />
+              <ArchiveBoxIcon />
             </button>
           </>
         )}

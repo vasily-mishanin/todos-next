@@ -1,0 +1,15 @@
+.content-wrapper {
+  @apply flex flex-col gap-4 sm:gap-10 items-center justify-center;
+}
+
+.question {
+  @apply text-center;
+}
+
+.btn-update-confirmation {
+  @apply p-2 border rounded-lg bg-orange-400 opacity-80 hover:opacity-100;
+}
+
+.btn-update-cancel {
+  @apply p-2 border rounded-lg bg-purple-400 opacity-80 hover:opacity-100;
+}
