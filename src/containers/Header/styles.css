@@ -1,5 +1,10 @@
 .header {
-  @apply border-b-2 border-gray-100;
+  @apply flex gap-2 justify-between mb-4 font-sans px-4 border-b-2 border-gray-100 bg-green-100;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  opacity: 0.95;
 }
 
 .user {

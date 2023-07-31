@@ -17,7 +17,7 @@ export default function Todos() {
 
   console.log('Todos page');
   return (
-    <section className='flex flex-col gap-4 py-4 px-10'>
+    <section className='flex flex-col gap-4 py-4 lg:p-8'>
       {isLoading || (isFetching && <Spinner text='Loading todos ...' />)}
       <div className='flex flex-wrap gap-4 max-[600px]:justify-center'>
         {todos &&

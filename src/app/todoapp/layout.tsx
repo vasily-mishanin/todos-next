@@ -4,7 +4,7 @@ import { Header } from '@/containers/Header/Header';
 import { me } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/navigation';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -23,10 +23,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const isLoggedIn = !!user.id;
-
-    // if (error) {
-    //   toast.error(error + 'Lay');
-    // }
 
     if (!isLoggedIn) {
       router.push('/todoapp/login');
