@@ -12,7 +12,7 @@
 }
 
 .inner {
-  @apply p-10 w-[80vw] h-[30vh] sm:w-[50vw] lg:w-[30vw];
+  @apply p-8 w-[80vw] h-[30vh] sm:w-[50vw] lg:w-[30vw];
 
   display: flex;
   flex-direction: column;
@@ -24,9 +24,12 @@
 }
 
 .content {
+  display: flex;
   flex-grow: 1;
   overflow-y: auto;
   scrollbar-gutter: stable;
+  justify-content: center;
+  align-items: center;
 }
 
 .content::-webkit-scrollbar {
