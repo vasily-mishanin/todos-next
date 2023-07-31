@@ -7,7 +7,6 @@ import { useAppSelector } from '@/store/hooks';
 export function Header() {
   const auth = useAppSelector((state) => state.auth);
 
-  console.log('Header');
   return (
     <header className='header'>
       <Logo />

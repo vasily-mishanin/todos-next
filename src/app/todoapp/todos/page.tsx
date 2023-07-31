@@ -15,7 +15,6 @@ export default function Todos() {
     toast.error(`'Todos fetch failed: ' ${error}`);
   }
 
-  console.log('Todos page');
   return (
     <section className='flex flex-col gap-4 py-4 lg:p-8'>
       {isLoading || (isFetching && <Spinner text='Loading todos ...' />)}

@@ -33,7 +33,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }, [user.id]);
 
-  console.log('Layout todoapp');
   return (
     <>
       <Header />

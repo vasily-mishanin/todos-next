@@ -17,8 +17,6 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { TodoProps, TodoStatus, ValidationError } from './types';
 
 export default function Todo({ todo }: TodoProps) {
-  console.log('Todo');
-
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
   const [status, setStatus] = useState<TodoStatus>('IDLE');
 
@@ -109,14 +107,11 @@ export default function Todo({ todo }: TodoProps) {
 
   const handleUpdateTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('handleUpdateTodo');
     await updateTodo({ ...currentTodo, userId: user.id, _id: todo._id });
   };
 
   const doneTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log('handleDoneTodo');
     setCurrentTodo((prev) => ({ ...prev, done: !prev.done }));
 
     await updateTodo({
