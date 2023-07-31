@@ -29,7 +29,7 @@ export default function VerifyEmailPage() {
       </h2>
 
       {user.isVerified && (
-        <div>
+        <div className='flex flex-col justify-center items-center'>
           <h2 className='text-2xl text-green-500'>
             Email Successfully Verified
           </h2>

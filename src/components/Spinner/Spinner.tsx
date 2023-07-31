@@ -21,7 +21,7 @@ export default function Spinner({ text }: { text?: string }) {
         />
       </svg>
 
-      <span className='text-blue-600'>{text}</span>
+      <span className='text-green-600'>{text}</span>
     </div>
   );
 }
