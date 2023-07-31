@@ -23,7 +23,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (loading === 'idle' && error) {
-      toast.error(error + ' UP');
+      toast.error(error);
       dispatch(setError(''));
     }
   }, [loading, error]);

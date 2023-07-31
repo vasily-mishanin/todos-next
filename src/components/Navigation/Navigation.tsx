@@ -1,15 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import './styles.css';
 import { Bars3Icon, Bars3BottomRightIcon } from '@heroicons/react/24/solid';
 
 import { logout } from '@/store/authSlice';
-import { setAuthState } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export function Navigation() {
@@ -17,15 +14,9 @@ export function Navigation() {
   const currentRoute = usePathname();
   const [showMobileNavbar, setShowMobileNavbar] = useState(false);
 
-  const { loading, error, user } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const isLoggedIn = !!user.id;
   const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error + 'Nav');
-  //   }
-  // }, [error]);
 
   const handleLogout = async () => {
     await dispatch(logout());
@@ -37,12 +28,9 @@ export function Navigation() {
     setShowMobileNavbar((prev) => !prev);
   };
 
-  const linkBaseStyle =
-    'block w-full px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600 hover:bg-gray-100';
-  const linkActiveStyle =
-    'block w-full px-3 py-2 rounded text-gray-400 items-center justify-center text-gray-600 bg-gray-100';
+  const linkStyle = (linkHref: string) =>
+    `nav-link ${currentRoute.startsWith(linkHref) ? 'active' : ''}`;
 
-  console.log('Navigation');
   return (
     <nav className='flex items-center'>
       <div className='nav-btn cursor-pointer' onClick={toggleMenu}>
@@ -61,11 +49,7 @@ export function Navigation() {
           <li>
             <Link
               href='/todoapp/users'
-              className={
-                currentRoute === '/todoapp/users'
-                  ? linkActiveStyle
-                  : linkBaseStyle
-              }
+              className={linkStyle('/todoapp/users')}
               onClick={() => toggleMenu()}
             >
               Users
@@ -78,11 +62,7 @@ export function Navigation() {
             <li>
               <Link
                 href='/todoapp/todos'
-                className={
-                  currentRoute === '/todoapp/todos'
-                    ? linkActiveStyle
-                    : linkBaseStyle
-                }
+                className={linkStyle('/todoapp/todos')}
                 onClick={() => toggleMenu()}
               >
                 Todos
@@ -91,21 +71,14 @@ export function Navigation() {
             <li>
               <Link
                 href='/todoapp/profile'
-                className={
-                  currentRoute.startsWith('/todoapp/profile')
-                    ? linkActiveStyle
-                    : linkBaseStyle
-                }
+                className={linkStyle('/todoapp/profile')}
                 onClick={() => toggleMenu()}
               >
                 Profile
               </Link>
             </li>
             <li>
-              <button
-                className={linkBaseStyle + ' hover:bg-red-200'}
-                onClick={handleLogout}
-              >
+              <button className={'logout-btn'} onClick={handleLogout}>
                 Logout
               </button>
             </li>
@@ -117,11 +90,7 @@ export function Navigation() {
             <li>
               <Link
                 href='/todoapp/login'
-                className={
-                  currentRoute === '/todoapp/login'
-                    ? linkActiveStyle
-                    : linkBaseStyle
-                }
+                className={linkStyle('/todoapp/login')}
                 onClick={() => toggleMenu()}
               >
                 Login
@@ -130,11 +99,7 @@ export function Navigation() {
             <li>
               <Link
                 href='/todoapp/signup'
-                className={
-                  currentRoute === '/todoapp/signup'
-                    ? linkActiveStyle
-                    : linkBaseStyle
-                }
+                className={linkStyle('/todoapp/signup')}
                 onClick={() => toggleMenu()}
               >
                 Signup

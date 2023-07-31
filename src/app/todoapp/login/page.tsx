@@ -31,7 +31,7 @@ export default function LoginPage() {
     }
 
     if (loading === 'idle' && error) {
-      toast.error(error + ' IN');
+      toast.error(error);
     }
   }, [error, loading, user.id]);
 

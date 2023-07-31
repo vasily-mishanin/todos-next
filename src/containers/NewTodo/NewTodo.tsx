@@ -52,19 +52,7 @@ export default function NewTodo() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = addTodo({ ...currentTodo, userId: auth.id, by: auth.username });
-    console.log(res);
     setCurrentTodo(initialTodo);
-    // try {
-    //   await axios.post('/api/todos', {
-    //     ...currentTodo,
-    //     userId: auth.id,
-    //     by: auth.username,
-    //   });
-    //   onAddNeWTodo();
-    //   setCurrentTodo(initialTodo);
-    // } catch (error: any) {
-    //   console.log('New Todo Failed', error.message);
-    // }
   };
 
   return (

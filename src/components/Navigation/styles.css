@@ -7,6 +7,18 @@
   box-sizing: border-box;
 }
 
+.nav-link {
+  @apply block w-full px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600 hover:bg-gray-100;
+}
+
+.logout-btn {
+  @apply block w-full px-3 py-2 rounded text-gray-400 items-center justify-center  hover:text-gray-600 hover:bg-red-200;
+}
+
+.nav-link.active {
+  @apply text-gray-600 bg-gray-100;
+}
+
 @media (max-width: 600px) {
   .nav-btn {
     display: block;

@@ -25,7 +25,6 @@ export default function DeleteTodoModal() {
 
   const handleDeleteTodo = async () => {
     const { data: modalData } = modalState;
-    console.log('handleDeleteTodo', { modalState });
 
     await deleteTodo({ _id: modalData?._id });
     handleClose();

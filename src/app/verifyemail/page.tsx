@@ -6,24 +6,9 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export default function VerifyEmailPage() {
   const [token, setToken] = useState('');
-  //const [verified, setVerified] = useState(false);
-  //const [error, setError] = useState(false);
 
   const dispatch = useAppDispatch();
   const { loading, user, error } = useAppSelector((state) => state.auth);
-
-  // const handleVerifyUserEmail = useCallback(async () => {
-  //   dispatch(verifyUserEmail({token}));
-  //   // try {
-  //   //   await axios.post('api/users/verifyemail', { token });
-  //   //   setVerified(true);
-  //   //   setError(false);
-  //   // } catch (error: any) {
-  //   //   setError(true);
-  //   //   setVerified(false);
-  //   //   console.log(error.response.data);
-  //   // }
-  // }, [token]);
 
   useEffect(() => {
     const urlToken = window.location.search.split('=')[1];
@@ -44,7 +29,7 @@ export default function VerifyEmailPage() {
       </h2>
 
       {user.isVerified && (
-        <div>
+        <div className='flex flex-col justify-center items-center'>
           <h2 className='text-2xl text-green-500'>
             Email Successfully Verified
           </h2>

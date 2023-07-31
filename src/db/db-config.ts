@@ -12,7 +12,7 @@ export async function connect() {
       console.log('Mongo DB connection Error ' + err);
     });
   } catch (error) {
-    console.log('Something goes wrong');
+    console.log('Mongo: something goes wrong');
     console.log(error);
   }
 }
