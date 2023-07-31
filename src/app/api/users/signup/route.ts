@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     if (user) {
       return NextResponse.json(
         { error: 'User already exists' },
-        { status: 400 }
+        { status: 404 }
       );
     }
 
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: `User ${email} created successfully`,
       success: true,
-      savedUser,
+      user: savedUser,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

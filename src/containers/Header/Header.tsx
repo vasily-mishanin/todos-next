@@ -2,53 +2,17 @@ import { Logo } from '@/components/Logo/Logo';
 import { Navigation } from '@/components/Navigation/Navigation';
 import './styles.css';
 
-import { User } from '@/store/types';
-import axios from 'axios';
-import { useEffect } from 'react';
-
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { setAuthState } from '@/store/authSlice';
+import { useAppSelector } from '@/store/hooks';
 
 export function Header() {
-  const auth = useAppSelector((state) => state.auth.user);
-  const dispatch = useAppDispatch();
+  const auth = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    const getUserDetails = async () => {
-      try {
-        const res = await axios.get('/api/users/me');
-        const { _id, username, email, isAdmin, isVerified } = res.data.data;
-        const me: User = {
-          id: _id,
-          username,
-          email,
-          isAdmin,
-          isVerified,
-        };
-        dispatch(setAuthState(me));
-      } catch (error: any) {
-        dispatch(
-          setAuthState({
-            id: '',
-            email: '',
-            username: '',
-            isAdmin: false,
-            isVerified: false,
-          })
-        );
-
-        console.log(error.message);
-      }
-    };
-
-    getUserDetails();
-  }, []);
-
+  console.log('Header');
   return (
     <header className='header relative flex gap-2 justify-between mb-8 font-sans px-4'>
       <Logo />
-      <span className='user'>{auth.email}</span>
-      <Navigation loggedIn={!!auth.id} isAdmin={auth.isAdmin} />
+      <span className='user'>{auth.user.email}</span>
+      <Navigation />
     </header>
   );
 }

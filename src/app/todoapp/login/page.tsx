@@ -7,6 +7,9 @@ import { toast } from 'react-hot-toast';
 import Spinner from '@/components/Spinner/Spinner';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import { login, setLoading } from '@/store/authSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+
 type Inputs = {
   email: string;
   password: string;
@@ -14,7 +17,24 @@ type Inputs = {
 
 export default function LoginPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const { loading, error, user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (loading === 'failed' && !user.id) {
+      toast.error('Invalid login or password!');
+      dispatch(setLoading('idle'));
+    }
+
+    if (loading === 'idle' && user.id) {
+      router.push(`/todoapp/todos`);
+    }
+
+    if (loading === 'idle' && error) {
+      toast.error(error + ' IN');
+    }
+  }, [error, loading, user.id]);
+
   const {
     register,
     handleSubmit,
@@ -25,17 +45,7 @@ export default function LoginPage() {
   });
 
   const onLogin: SubmitHandler<Inputs> = async (formData) => {
-    try {
-      setLoading(true);
-      await axios.post('/api/users/login', formData);
-      toast.success('Login success');
-      router.push(`/`);
-    } catch (error: any) {
-      console.log('Login failed');
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+    await dispatch(login(formData));
   };
 
   const inputBaseStyle =
@@ -48,14 +58,9 @@ export default function LoginPage() {
 
   return (
     <main className='flex flex-col gap-4 items-center justify-center py-2'>
-      {loading ? (
-        <h1 className='flex gap-4 self-center items-center'>
-          <Spinner /> Logging in...
-        </h1>
-      ) : (
-        <h1 className='mb-4 text-xl text-gray-700'>Sign In</h1>
-      )}
+      {loading === 'pending' && <Spinner text='Checking...' />}
 
+      <h1 className='mb-4 text-xl text-gray-700'>Sign In</h1>
       <form
         className='flex flex-col gap-2 mb-4 text-gray-700'
         onSubmit={handleSubmit(onLogin)}

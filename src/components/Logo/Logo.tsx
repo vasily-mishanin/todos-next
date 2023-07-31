@@ -10,6 +10,7 @@ export function Logo() {
           alt='logo toods'
           width='100'
           height='100'
+          priority={false}
         />
         <span className='text-xl  font-bold tracking-wide text-gray-700'>
           TodosNext

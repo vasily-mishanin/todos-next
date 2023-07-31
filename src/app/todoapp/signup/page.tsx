@@ -1,11 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/Spinner/Spinner';
 import { useForm, SubmitHandler } from 'react-hook-form';
+
+import { signup } from '@/store/authSlice';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { setError } from '@/store/authSlice';
 
 type Inputs = {
   email: string;
@@ -15,7 +18,16 @@ type Inputs = {
 
 export default function SignupPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const { loading, error, user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (loading === 'idle' && error) {
+      toast.error(error + ' UP');
+      dispatch(setError(''));
+    }
+  }, [loading, error]);
+
   const {
     register,
     handleSubmit,
@@ -26,16 +38,8 @@ export default function SignupPage() {
   });
 
   const onSignup: SubmitHandler<Inputs> = async (formData) => {
-    try {
-      setLoading(true);
-      const response = await axios.post('/api/users/signup', formData);
-      router.push('/todoapp/login');
-    } catch (error: any) {
-      console.log('Signup failed: ', error.message);
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+    await dispatch(signup(formData));
+    router.push('/todoapp/login');
   };
 
   const inputBaseStyle =
@@ -50,14 +54,9 @@ export default function SignupPage() {
 
   return (
     <main className='flex flex-col gap-4 items-center justify-center py-2'>
-      {loading ? (
-        <h1 className='flex gap-4 self-center items-center'>
-          <Spinner /> Registering...
-        </h1>
-      ) : (
-        <h1 className='mb-4 text-xl text-gray-700'>Sign Up</h1>
-      )}
+      {loading === 'pending' && <Spinner text='Registering...' />}
 
+      <h1 className='mb-4 text-xl text-gray-700'>Sign Up</h1>
       <form
         className='flex flex-col gap-2 mb-4 text-gray-700'
         onSubmit={handleSubmit(onSignup)}
@@ -112,7 +111,6 @@ export default function SignupPage() {
           value='Sign Up'
         />
       </form>
-
       <Link className='text-blue-500 hover:text-blue-400' href='/todoapp/login'>
         Visit login page
       </Link>

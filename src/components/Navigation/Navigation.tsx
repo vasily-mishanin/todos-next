@@ -2,30 +2,35 @@
 
 import Link from 'next/link';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter, usePathname } from 'next/navigation';
 import './styles.css';
 import { Bars3Icon, Bars3BottomRightIcon } from '@heroicons/react/24/solid';
 
-export type NavigationProps = {
-  loggedIn: boolean;
-  isAdmin: boolean;
-};
+import { logout } from '@/store/authSlice';
+import { setAuthState } from '@/store/authSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
+export function Navigation() {
   const router = useRouter();
   const currentRoute = usePathname();
   const [showMobileNavbar, setShowMobileNavbar] = useState(false);
 
-  const logout = async () => {
-    try {
-      await axios.get('/api/users/logout'); // deletes token from cookies
-      router.push('/');
-    } catch (error: any) {
-      console.log('Error: ' + error.message);
-      toast.error(error.message);
-    }
+  const { loading, error, user } = useAppSelector((state) => state.auth);
+  const isLoggedIn = !!user.id;
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error(error + 'Nav');
+  //   }
+  // }, [error]);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    window.location.reload();
+    router.push('/todoapp');
   };
 
   const toggleMenu = () => {
@@ -37,6 +42,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
   const linkActiveStyle =
     'block w-full px-3 py-2 rounded text-gray-400 items-center justify-center text-gray-600 bg-gray-100';
 
+  console.log('Navigation');
   return (
     <nav className='flex items-center'>
       <div className='nav-btn cursor-pointer' onClick={toggleMenu}>
@@ -51,7 +57,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
       </div>
 
       <ul className={'nav-items' + `${showMobileNavbar ? ' nav-active' : ''}`}>
-        {loggedIn && isAdmin && (
+        {isLoggedIn && user.isAdmin && (
           <li>
             <Link
               href='/todoapp/users'
@@ -67,7 +73,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
           </li>
         )}
 
-        {loggedIn && (
+        {isLoggedIn && (
           <>
             <li>
               <Link
@@ -98,7 +104,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
             <li>
               <button
                 className={linkBaseStyle + ' hover:bg-red-200'}
-                onClick={logout}
+                onClick={handleLogout}
               >
                 Logout
               </button>
@@ -106,7 +112,7 @@ export function Navigation({ loggedIn, isAdmin }: NavigationProps) {
           </>
         )}
 
-        {!loggedIn && (
+        {!isLoggedIn && (
           <>
             <li>
               <Link

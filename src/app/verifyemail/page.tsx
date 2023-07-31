@@ -1,24 +1,29 @@
 'use client';
-import axios from 'axios';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { verifyUserEmail } from '@/store/authSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export default function VerifyEmailPage() {
   const [token, setToken] = useState('');
-  const [verified, setVerified] = useState(false);
-  const [error, setError] = useState(false);
+  //const [verified, setVerified] = useState(false);
+  //const [error, setError] = useState(false);
 
-  const verifyUserEmail = useCallback(async () => {
-    try {
-      await axios.post('api/users/verifyemail', { token });
-      setVerified(true);
-      setError(false);
-    } catch (error: any) {
-      setError(true);
-      setVerified(false);
-      console.log(error.response.data);
-    }
-  }, [token]);
+  const dispatch = useAppDispatch();
+  const { loading, user, error } = useAppSelector((state) => state.auth);
+
+  // const handleVerifyUserEmail = useCallback(async () => {
+  //   dispatch(verifyUserEmail({token}));
+  //   // try {
+  //   //   await axios.post('api/users/verifyemail', { token });
+  //   //   setVerified(true);
+  //   //   setError(false);
+  //   // } catch (error: any) {
+  //   //   setError(true);
+  //   //   setVerified(false);
+  //   //   console.log(error.response.data);
+  //   // }
+  // }, [token]);
 
   useEffect(() => {
     const urlToken = window.location.search.split('=')[1];
@@ -27,9 +32,9 @@ export default function VerifyEmailPage() {
 
   useEffect(() => {
     if (token.length > 0) {
-      verifyUserEmail();
+      dispatch(verifyUserEmail({ token }));
     }
-  }, [token, verifyUserEmail]);
+  }, [token]);
 
   return (
     <div className='flex flex-col gap-4 items-center justify-center min-h-screen py-2'>
@@ -38,12 +43,12 @@ export default function VerifyEmailPage() {
         {token ? `Verification Token: ${token}` : 'no token'}
       </h2>
 
-      {verified && (
+      {user.isVerified && (
         <div>
           <h2 className='text-2xl text-green-500'>
             Email Successfully Verified
           </h2>
-          <Link className='text-blue-500' href='/todoapp/login'>
+          <Link className='text-blue-500 text-lg' href='/todoapp/login'>
             Login
           </Link>
         </div>
