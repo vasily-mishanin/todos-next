@@ -19,4 +19,4 @@ Deploy: https://todos-next-self.vercel.app/
 - Authentication
 - Authorization
 - CRUD operations with todo items
-- Comprehensive UI/UX
+- Comprehensive responsive UI/UX

@@ -2,11 +2,11 @@ export default function Spinner({ text }: { text?: string }) {
   return (
     <div
       role='status'
-      className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-4 z-10'
+      className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-4 z-12'
     >
       <svg
         aria-hidden='true'
-        className='w-[100px] h-[100px] mr-2 text-gray-200 animate-spin  fill-green-200'
+        className='w-[75px] h-[75px] mr-2 text-gray-200 animate-spin  fill-green-200'
         viewBox='0 0 100 101'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
