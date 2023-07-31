@@ -8,12 +8,11 @@ import { useAppSelector } from '@/store/hooks';
 
 export default function UserProfile({ params }: any) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const auth = useAppSelector((state) => state.auth.user);
+  const { loading, user, error } = useAppSelector((state) => state.auth);
 
   return (
     <div className='flex flex-col gap-4 items-center justify-center min-h-full py-2'>
-      {loading && <Spinner />}
+      {loading === 'pending' && <Spinner text='Loading profile' />}
       <h1 className='mb-8'>Profile</h1>
       <article className='flex  gap-10 border rounded-lg border-gray-200 p-8'>
         <div className='flex justify-center items-start w-32 h-32'>
@@ -26,17 +25,17 @@ export default function UserProfile({ params }: any) {
         </div>
         <div className='flex flex-col gap-4'>
           <p>
-            Name: <span className='text-green-500'>{auth.username}</span>
+            Name: <span className='text-green-500'>{user.username}</span>
           </p>
           <p>
-            Email: <span className='text-green-500'>{auth.email}</span>
+            Email: <span className='text-green-500'>{user.email}</span>
           </p>
           <p>
-            Role:{' '}
-            {auth.isAdmin ? (
-              <span className='text-green-500'>admin</span>
+            Role:
+            {user.isAdmin ? (
+              <span className='text-green-500'> admin</span>
             ) : (
-              <span className='text-green-500'>user</span>
+              <span className='text-green-500'> user</span>
             )}
           </p>
         </div>
