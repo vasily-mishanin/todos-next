@@ -1,0 +1,39 @@
+.btn {
+  @apply flex justify-center items-center rounded w-5 h-5;
+}
+
+.btn-submit {
+  @apply absolute top-2 right-2 text-gray-400;
+}
+
+.btn-delete {
+  @apply absolute top-2 left-2 text-red-400;
+}
+
+.btn-done {
+  @apply absolute top-2 left-10 text-gray-500;
+}
+
+.btn-submit.active {
+  @apply text-blue-500;
+}
+
+.btn-done.done {
+  @apply text-green-600;
+}
+
+.btn-done.dimmed {
+  @apply opacity-60;
+}
+
+.btn-submit:enabled:hover,
+.btn-delete:enabled:hover,
+.btn-done:enabled:hover {
+  opacity: 0.75;
+}
+
+.btn-submit:disabled,
+.btn-delete:disabled,
+.btn-done:disabled {
+  opacity: 0.5;
+}

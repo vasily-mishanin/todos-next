@@ -7,9 +7,9 @@ export function Logo() {
       <Image
         src='/icon-done-200.svg'
         alt='logo toods'
-        width='100'
-        height='100'
-        priority={false}
+        width='75'
+        height='75'
+        priority={true}
       />
       <span className='text-xl  font-bold tracking-wide text-gray-700'>
         TodosNext

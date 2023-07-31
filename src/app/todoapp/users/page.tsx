@@ -3,13 +3,14 @@
 import Spinner from '@/components/Spinner/Spinner';
 import Table from '@/components/Table/Table';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { fetchUsers } from '@/store/usersSlice';
 import './styles.css';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { toast } from 'react-hot-toast';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import { Button } from '@/components/Button/Button';
 
 export default function Users() {
   const { user } = useAppSelector((state) => state.auth);
@@ -47,15 +48,17 @@ export default function Users() {
         <>
           <h1 className='mb-4'>Todos Users</h1>
 
-          <button
-            type='button'
-            className='self-end flex justify-center items-center rounded text-blue-500'
-            style={{ width: '1.5rem', height: '1.5rem' }}
-            onClick={handleUpdateUsers}
-          >
-            <ArrowPathIcon />
-          </button>
-
+          <div className='relative h-6 z-10 self-end'>
+            <Button
+              type='button'
+              btnType='submit'
+              clickHandler={handleUpdateUsers}
+              isActive={true}
+              disabled={false}
+            >
+              <ArrowPathIcon />
+            </Button>
+          </div>
           <Table columns={['Name', 'Email', 'Role']} rows={tableData} />
         </>
       )}

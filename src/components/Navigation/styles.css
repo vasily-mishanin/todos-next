@@ -16,7 +16,7 @@
 }
 
 .nav-link.active {
-  @apply text-gray-600 bg-gray-100;
+  @apply text-gray-600 bg-green-200;
 }
 
 @media (max-width: 600px) {

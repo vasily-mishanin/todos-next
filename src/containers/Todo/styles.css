@@ -15,50 +15,6 @@
   border-style: solid;
 }
 
-.btn {
-  @apply flex justify-center items-center rounded w-5 h-5;
-}
-
-.submit-btn {
-  @apply absolute top-2 right-2 text-gray-400;
-}
-
-.submit-btn.active {
-  @apply text-blue-500;
-}
-
-.delete-btn {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  color: salmon;
-}
-
-.done-btn {
-  @apply absolute text-gray-500;
-  top: 0.5rem;
-  left: 2.5rem;
-}
-
-.done-btn.done {
-  @apply text-green-600;
-}
-
-.done-btn.dimmed {
-  @apply opacity-60;
-}
-
-.submit-btn:enabled:hover,
-.delete-btn:enabled:hover,
-.done-btn:enabled:hover {
-  opacity: 0.75;
-}
-
-.submit-btn:disabled,
-.delete-btn:disabled {
-  opacity: 0.5;
-}
-
 .by {
   @apply absolute flex gap-2 items-center bottom-1 right-2 text-xs text-gray-500;
   cursor: default;
