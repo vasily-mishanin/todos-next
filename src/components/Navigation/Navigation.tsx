@@ -35,12 +35,9 @@ export function Navigation() {
     <nav className='flex items-center'>
       <div className='nav-btn cursor-pointer' onClick={toggleMenu}>
         {showMobileNavbar ? (
-          <Bars3BottomRightIcon
-            className='text-gray-700'
-            style={{ width: '2rem' }}
-          />
+          <Bars3BottomRightIcon className='hamburger' />
         ) : (
-          <Bars3Icon className='text-gray-700' style={{ width: '2rem' }} />
+          <Bars3Icon className='hamburger' />
         )}
       </div>
 
