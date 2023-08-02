@@ -48,7 +48,7 @@ export default function Users() {
         <>
           <h1 className='mb-4'>Todos Users</h1>
 
-          <div className='relative h-6 z-10 self-end'>
+          <div className='relative h-6 self-end'>
             <Button
               type='button'
               btnType='submit'

@@ -209,7 +209,7 @@ export default function Todo({ todo }: TodoProps) {
             <Button
               type='submit'
               btnType='submit'
-              disabled={validationError.error}
+              disabled={validationError.error || status !== 'IN_EDIT'}
               isActive={status === 'IN_EDIT'}
             >
               <ArrowPathIcon />
