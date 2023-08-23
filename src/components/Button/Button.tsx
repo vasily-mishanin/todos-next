@@ -2,7 +2,7 @@ import './style.css';
 
 export type ButtonProps = {
   type: 'submit' | 'button';
-  btnType: 'delete' | 'done' | 'submit';
+  btnType: 'delete' | 'done' | 'submit' | 'update';
   disabled?: boolean;
   isActive?: boolean;
   clickHandler?: (e: React.UIEvent) => Promise<void> | void;
