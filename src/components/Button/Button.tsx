@@ -13,6 +13,7 @@ const btnClassMap = {
   delete: 'btn-delete',
   done: 'btn-done',
   submit: 'btn-submit',
+  update: 'btn-update',
 };
 
 export function Button({
