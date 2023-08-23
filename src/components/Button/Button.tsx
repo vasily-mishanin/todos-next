@@ -2,7 +2,7 @@ import './style.css';
 
 export type ButtonProps = {
   type: 'submit' | 'button';
-  btnType: 'delete' | 'done' | 'submit';
+  btnType: 'delete' | 'done' | 'submit' | 'update';
   disabled?: boolean;
   isActive?: boolean;
   clickHandler?: (e: React.UIEvent) => Promise<void> | void;
@@ -13,6 +13,7 @@ const btnClassMap = {
   delete: 'btn-delete',
   done: 'btn-done',
   submit: 'btn-submit',
+  update: 'btn-update',
 };
 
 export function Button({
