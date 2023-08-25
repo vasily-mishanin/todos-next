@@ -18,7 +18,7 @@ export default function Todos() {
   return (
     <section className='flex flex-col gap-4 py-4 lg:p-8'>
       {isLoading || (isFetching && <Spinner text='Loading todos ...' />)}
-      <div className='flex flex-wrap gap-4 max-[600px]:justify-center'>
+      <div className='flex flex-wrap gap-4 justify-center'>
         {todos &&
           todos.map((todo: ITodo) => <Todo key={todo._id} todo={todo} />)}
         <NewTodo />
