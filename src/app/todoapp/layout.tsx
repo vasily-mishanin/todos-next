@@ -24,6 +24,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const isLoggedIn = !!user.id;
 
     if (!isLoggedIn) {
+      //console.log({ user });
       router.push('/todoapp/login');
     }
 

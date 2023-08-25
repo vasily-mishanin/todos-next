@@ -1,10 +1,10 @@
 .todo-wrapper {
-  @apply relative p-4 pt-8 border-2 rounded w-80 sm:w-96 h-48 hover:shadow-md;
+  @apply relative p-4 pt-8 border-2 rounded w-80 h-40  lg:w-96 lg:h-48  hover:shadow-md;
   box-sizing: border-box;
 }
 
 .text-input {
-  @apply outline-none border-transparent p-1 rounded-sm;
+  @apply outline-none border-transparent rounded-sm text-sm lg:p-1 lg:text-base;
   border-width: 1px;
   border-style: solid;
 }
@@ -21,6 +21,7 @@
 }
 
 textarea {
+  @apply text-sm lg:text-base;
   resize: none;
 }
 

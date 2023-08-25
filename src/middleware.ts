@@ -30,7 +30,7 @@ export const config = {
     '/todoapp/users',
     '/todoapp/profile',
     '/todoapp/profile/:id*',
-    '/todoapp/login',
+    //'/todoapp/login',
     '/todoapp/signup',
     '/todoapp/todos',
     '/verifyemail',
