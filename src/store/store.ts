@@ -3,8 +3,9 @@ import { authSlice } from './authSlice';
 import { modalSlice } from './modalSlice';
 import { usersSlice } from './usersSlice';
 
-import { todosApi } from './services/todosApi';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
+import { todosApi } from './services/todosApi';
+import { boardsApi } from './services/boardsApi';
 
 export const store = configureStore({
   reducer: {
@@ -13,10 +14,14 @@ export const store = configureStore({
     [usersSlice.name]: usersSlice.reducer, //Thunks
     //RTK Query
     [todosApi.reducerPath]: todosApi.reducer,
+    [boardsApi.reducerPath]: boardsApi.reducer,
   },
   devTools: true,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({}).concat([todosApi.middleware]),
+    getDefaultMiddleware({}).concat([
+      todosApi.middleware,
+      boardsApi.middleware,
+    ]),
 });
 
 setupListeners(store.dispatch);
