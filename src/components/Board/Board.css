@@ -1,5 +1,5 @@
 .board__wrapper {
-  @apply p-2 border border-green-600 rounded w-72 h-20  lg:w-80 lg:h-32 hover:shadow-md max-[600px]:w-80;
+  @apply p-2 border border-green-600 rounded w-60 h-20  lg:w-80 lg:h-32 hover:shadow-md max-[600px]:w-80;
 }
 
 .board__title {
