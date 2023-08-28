@@ -97,3 +97,8 @@ export enum ModalTypes {
   DELETE_TODO = 'DELETE_TODO',
   UPDATE_TODO = 'UPDATE_TODO',
 }
+
+export interface IBoard {
+  _id?: string;
+  title: string;
+}

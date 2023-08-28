@@ -56,7 +56,7 @@ export default function LoginPage() {
     inputBaseStyle + `${errors.password?.message && inputErrorStyle}`;
 
   return (
-    <main className='flex flex-col gap-4 items-center justify-center py-2'>
+    <section className='flex flex-col gap-4 items-center justify-center py-2'>
       {loading === 'pending' && <Spinner text='Checking...' />}
 
       <h1 className='mb-4 text-xl text-gray-700'>Sign In</h1>
@@ -109,6 +109,6 @@ export default function LoginPage() {
       >
         Visit signup page
       </Link>
-    </main>
+    </section>
   );
 }

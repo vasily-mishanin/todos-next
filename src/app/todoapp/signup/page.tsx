@@ -53,7 +53,7 @@ export default function SignupPage() {
     inputBaseStyle + `${errors.password?.message && inputErrorStyle}`;
 
   return (
-    <main className='flex flex-col gap-4 items-center justify-center py-2'>
+    <section className='flex flex-col gap-4 items-center justify-center py-2'>
       {loading === 'pending' && <Spinner text='Registering...' />}
 
       <h1 className='mb-4 text-xl text-gray-700'>Sign Up</h1>
@@ -114,6 +114,6 @@ export default function SignupPage() {
       <Link className='text-blue-500 hover:text-blue-400' href='/todoapp/login'>
         Visit login page
       </Link>
-    </main>
+    </section>
   );
 }

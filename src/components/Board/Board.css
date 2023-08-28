@@ -1,0 +1,15 @@
+.board__wrapper {
+  @apply p-2 border border-green-600 rounded w-72 h-20  lg:w-80 lg:h-32 hover:shadow-md max-[600px]:w-80;
+}
+
+.board__title {
+  @apply flex flex-col grow;
+}
+
+.board__title_input {
+  @apply outline-none border-b focus:border-green-200 pl-4;
+}
+
+.board__add-btn {
+  @apply w-5 h-5 text-blue-400  self-end hover:text-blue-500;
+}
