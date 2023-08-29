@@ -19,15 +19,21 @@ export default function BoardPage({}: KanbanBoardProps) {
   }
 
   return (
-    <section className='flex gap-4'>
-      {isLoading || (isFetching && <Spinner text='Loading boards ...' />)}
-      <div className='flex gap-4 justify-center'>
-        {boards &&
-          boards.map((board: IBoard) => (
-            <Board key={board._id} board={board} />
-          ))}
-        <NewBoard />
-      </div>
-    </section>
+    <>
+      <section className='flex gap-4'>
+        {isLoading || (isFetching && <Spinner text='Loading boards ...' />)}
+        <div className='flex gap-4 justify-center'>
+          {boards &&
+            boards.map((board: IBoard) => (
+              <Board key={board._id} board={board} />
+            ))}
+          <NewBoard />
+        </div>
+      </section>
+      <p>- Minimize Todo+NewTodo</p>
+      <p>- Add Todos to Boards</p>
+      <p>- Add NewTodo to First of the Boards</p>
+      <p>- Only Admin can sort todos</p>
+    </>
   );
 }

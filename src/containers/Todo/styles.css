@@ -1,32 +1,29 @@
 .todo-wrapper {
-  @apply relative p-4 pt-8 border-2 rounded w-80 h-40  lg:w-96 lg:h-48  hover:shadow-md;
+  @apply relative p-2 pt-7 border rounded w-60 h-32  lg:w-64 lg:h-36  hover:shadow-md;
   box-sizing: border-box;
 }
 
-.text-input {
-  @apply outline-none border-transparent rounded-sm text-sm lg:p-1 lg:text-base;
-  border-width: 1px;
-  border-style: solid;
+.todo__text-input {
+  border-bottom: 1px solid gray;
+  font-weight: bold;
+  @apply outline-none border-b border-gray-300  pl-2 text-xs lg:p-1 focus:border-green-200;
 }
 
-.text-input:focus {
-  @apply border-green-200 rounded;
-  border-width: 1px;
-  border-style: solid;
+.todo__text-area {
+  @apply outline-none border border-transparent pl-2 text-xs lg:p-1 focus:border-green-200;
 }
 
 .by {
-  @apply absolute flex gap-2 items-center bottom-1 right-2 text-xs text-gray-500;
+  @apply absolute flex gap-2 items-center bottom-1 right-2 text-[0.65rem] text-gray-500;
   cursor: default;
 }
 
 textarea {
-  @apply text-sm lg:text-base;
   resize: none;
 }
 
 .todo-validation-error {
-  @apply absolute text-sm text-red-300 right-1 top-1;
+  @apply absolute text-xs text-red-300 right-1;
 }
 
 .to-be-deleted {
