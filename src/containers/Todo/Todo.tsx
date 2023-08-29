@@ -7,10 +7,9 @@ import {
   UserIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/solid';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { closeModal, setOpenModal } from '@/store/modalSlice';
+import { setOpenModal } from '@/store/modalSlice';
 import { ITodo, ModalTypes } from '@/store/types';
 import { useUpdateTodoMutation } from '@/store/services/todosApi';
 import { TodoProps, TodoStatus, ValidationError } from './types';
@@ -163,10 +162,10 @@ export default function Todo({ todo }: TodoProps) {
         className='flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}
       >
-        <div className='relative flex flex-col bg-green-400 text-xl'>
+        <div className='relative flex flex-col bg-green-400'>
           <label htmlFor='title'></label>
           <input
-            className='text-input'
+            className='todo__text-input'
             type='text'
             name='title'
             id='title'
@@ -180,12 +179,10 @@ export default function Todo({ todo }: TodoProps) {
           )}
         </div>
 
-        <hr />
-
-        <div className='flex flex-col bg-green-400 text-gray-600 text-sm'>
+        <div className='flex flex-col bg-green-400 text-gray-600 text-xs'>
           <label htmlFor='details'></label>
           <textarea
-            className='text-input w-full h-full overflow-scroll resize-none'
+            className='todo__text-area w-full h-full overflow-scroll resize-none'
             rows={3}
             name='details'
             id='details'

@@ -34,6 +34,7 @@ export default function NewTodo() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    console.log('handleChange');
     const enteredValue = e.target.value;
     const name = e.target.name;
 
@@ -64,7 +65,7 @@ export default function NewTodo() {
         <div className='relative flex flex-col bg-green-400 text-xl'>
           <label htmlFor='title'></label>
           <input
-            className='text-input'
+            className='new-todo__text-input'
             type='text'
             name='title'
             id='title'
@@ -74,18 +75,16 @@ export default function NewTodo() {
             onBlur={() => setValidationError({ error: false, message: '' })}
           />
           {validationError.error && (
-            <span className='todo-validation-error'>
+            <span className='new-todo__validation-error'>
               {validationError.message}
             </span>
           )}
         </div>
 
-        <hr />
-
         <div className='flex flex-col bg-green-400 text-gray-600'>
           <label htmlFor='details'></label>
           <textarea
-            className='text-input w-full h-full overflow-scroll resize-none'
+            className='new-todo__text-area w-full h-full overflow-scroll resize-none'
             rows={3}
             name='details'
             id='details'
@@ -98,7 +97,7 @@ export default function NewTodo() {
         <Button
           type='submit'
           btnType='submit'
-          disabled={validationError.error}
+          disabled={!currentTodo.title || validationError.error}
           isActive={!validationError.error}
         >
           <ArrowUpTrayIcon />
