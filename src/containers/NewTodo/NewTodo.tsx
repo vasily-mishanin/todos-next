@@ -16,7 +16,11 @@ const initialTodo: ITodo = {
   by: '',
 };
 
-export default function NewTodo() {
+type NewTodoProps = {
+  boardId?: string;
+};
+
+export default function NewTodo({ boardId }: NewTodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(initialTodo);
   const auth = useAppSelector((state) => state.auth.user);
   const [validationError, setValidationError] = useState({
@@ -52,7 +56,13 @@ export default function NewTodo() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = addTodo({ ...currentTodo, userId: auth.id, by: auth.username });
+    const res = addTodo({
+      ...currentTodo,
+      userId: auth.id,
+      by: auth.username,
+      boardId,
+      order: 100,
+    });
     setCurrentTodo(initialTodo);
   };
 

@@ -29,6 +29,10 @@ const todoSchema = new mongoose.Schema({
   by: {
     type: String,
   },
+
+  order: {
+    type: Number,
+  },
 });
 
 const Todo = mongoose.models.todos || mongoose.model('todos', todoSchema);

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Todo from '@/models/todo-model';
 import { connect } from '@/db/db-config';
+import { ITodo } from '@/store/types';
 
 connect();
 
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { title, details, userId, done, by } = reqBody;
+    const { title, details, userId, done, by, boardId, order } = reqBody;
 
     const newTodo = await new Todo({
       title,
@@ -28,6 +29,8 @@ export async function POST(request: NextRequest) {
       userId,
       done,
       by,
+      boardId,
+      order,
     });
     // save new todo
     const savedTodo = await newTodo.save();
