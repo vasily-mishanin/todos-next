@@ -1,5 +1,5 @@
 .board__wrapper {
-  @apply p-2 border border-green-600 rounded w-60  lg:w-80  hover:shadow-md max-[600px]:w-80;
+  @apply p-2 border border-green-600 rounded w-60 lg:w-80  hover:shadow-md max-[600px]:w-80;
 }
 
 .board__title {
@@ -12,4 +12,8 @@
 
 .board__add-btn {
   @apply w-5 h-5 text-blue-400  self-end hover:text-blue-500;
+}
+
+.board__drag-over {
+  @apply shadow-xl;
 }

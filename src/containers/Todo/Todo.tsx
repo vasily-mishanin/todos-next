@@ -156,8 +156,52 @@ export default function Todo({ todo }: TodoProps) {
       : ''
   }`;
 
+  const handleDragStart = (e: React.DragEvent) => {
+    console.log({ todo });
+    if (todo._id) {
+      e.dataTransfer.setData('todoId', todo._id);
+      e.dataTransfer.setData('boardId', todo.boardId || '');
+      console.log(
+        e.dataTransfer.getData('todoId'),
+        e.dataTransfer.getData('boardId')
+      );
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    document.getElementById(todo._id || '')?.classList.add('todo__drag-over');
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    document
+      .getElementById(todo._id || '')
+      ?.classList.remove('todo__drag-over');
+  };
+
+  const handleTodoOnDrop = (e: React.DragEvent) => {
+    const draggedTodoBoardId = e.dataTransfer.getData('boardId');
+    const draggedTodoId = e.dataTransfer.getData('todoId');
+    if (draggedTodoBoardId === todo.boardId) {
+      console.log({ draggedTodoId }, todo._id);
+    }
+    document
+      .getElementById(todo._id || '')
+      ?.classList.remove('todo__drag-over');
+  };
+
   return (
-    <article className={todoCardStyle} ref={wrapperRef}>
+    <article
+      draggable
+      className={todoCardStyle}
+      ref={wrapperRef}
+      id={todo._id}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleTodoOnDrop}
+    >
       <form
         className='flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}

@@ -24,6 +24,7 @@ export default function BoardPage({}: KanbanBoardProps) {
     data: todosData,
     error: todosError,
   } = useGetTodosQuery(null);
+
   const boards = boardsData?.data;
   const todos = todosData?.data;
 
@@ -57,7 +58,8 @@ export default function BoardPage({}: KanbanBoardProps) {
       </section>
       <p>- Minimize Todo+NewTodo ✅</p>
       <p>- Add Todos to Boards ✅ </p>
-      <p>- Update Board</p>
+      <p>- Update Board ✅</p>
+      <p>- Filter Todo By Order Board ✅</p>
       <p>- Delete Board if it has no todos</p>
       <p>- Only Admin can sort todos</p>
     </>

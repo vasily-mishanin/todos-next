@@ -18,9 +18,10 @@ const initialTodo: ITodo = {
 
 type NewTodoProps = {
   boardId?: string;
+  index: number;
 };
 
-export default function NewTodo({ boardId }: NewTodoProps) {
+export default function NewTodo({ boardId, index }: NewTodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(initialTodo);
   const auth = useAppSelector((state) => state.auth.user);
   const [validationError, setValidationError] = useState({
@@ -61,7 +62,7 @@ export default function NewTodo({ boardId }: NewTodoProps) {
       userId: auth.id,
       by: auth.username,
       boardId,
-      order: 100,
+      order: index,
     });
     setCurrentTodo(initialTodo);
   };
