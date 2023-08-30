@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import NewTodo from '@/containers/NewTodo/NewTodo';
 import Todo from '@/containers/Todo/Todo';
+import { useUpdateBoardMutation } from '@/store/services/boardsApi';
+import Spinner from '../Spinner/Spinner';
 
 type BoardProps = {
   board: IBoard;
@@ -27,15 +29,19 @@ export default function Board({
     mode: 'onChange',
   });
 
-  const updateBoard: SubmitHandler<Inputs> = (formData) => {
-    console.log({ formData });
+  const [updateBoard, result] = useUpdateBoardMutation();
+  const { isLoading: isUpdateBoardLoading } = result;
+
+  const handleUpdateBoard: SubmitHandler<Inputs> = (formData) => {
+    updateBoard({ ...formData, order, _id });
   };
 
   return (
     <section className='board__wrapper'>
+      {isUpdateBoardLoading && <Spinner text='Updating...' />}
       <form
         className='flex items-center justify-between gap-2 mb-4'
-        onSubmit={handleSubmit(updateBoard)}
+        onSubmit={handleSubmit(handleUpdateBoard)}
       >
         <div className='board__title'>
           <span className='text-xs text-red-300 h-4'>

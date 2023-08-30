@@ -56,8 +56,9 @@ export default function BoardPage({}: KanbanBoardProps) {
         </div>
       </section>
       <p>- Minimize Todo+NewTodo ✅</p>
-      <p>- Add Todos to Boards</p>
-      <p>- Add NewTodo to First of the Boards</p>
+      <p>- Add Todos to Boards ✅ </p>
+      <p>- Update Board</p>
+      <p>- Delete Board if it has no todos</p>
       <p>- Only Admin can sort todos</p>
     </>
   );

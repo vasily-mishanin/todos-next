@@ -22,7 +22,20 @@ export const boardsApi = createApi({
       }),
       invalidatesTags: ['Boards'],
     }),
+
+    updateBoard: builder.mutation<IPostTodoResult, Partial<IBoard>>({
+      query: (body) => ({
+        url: 'boards',
+        method: Methods.PUT,
+        body,
+      }),
+      invalidatesTags: ['Boards'],
+    }),
   }),
 });
 
-export const { useGetBoardsQuery, useAddBoardMutation } = boardsApi;
+export const {
+  useGetBoardsQuery,
+  useAddBoardMutation,
+  useUpdateBoardMutation,
+} = boardsApi;
