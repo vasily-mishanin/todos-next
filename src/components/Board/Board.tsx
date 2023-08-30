@@ -1,17 +1,23 @@
-import { IBoard } from '@/store/types';
+import { IBoard, ITodo } from '@/store/types';
 import './Board.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import NewTodo from '@/containers/NewTodo/NewTodo';
+import Todo from '@/containers/Todo/Todo';
 
 type BoardProps = {
   board: IBoard;
+  todos?: ITodo[];
 };
 
 type Inputs = {
   title: string;
 };
 
-export default function Board({ board: { title } }: BoardProps) {
+export default function Board({
+  board: { title, order, _id },
+  todos,
+}: BoardProps) {
   const {
     register,
     handleSubmit,
@@ -28,7 +34,7 @@ export default function Board({ board: { title } }: BoardProps) {
   return (
     <section className='board__wrapper'>
       <form
-        className='flex items-center justify-between gap-2'
+        className='flex items-center justify-between gap-2 mb-4'
         onSubmit={handleSubmit(updateBoard)}
       >
         <div className='board__title'>
@@ -53,6 +59,10 @@ export default function Board({ board: { title } }: BoardProps) {
           <ArrowPathIcon />
         </button>
       </form>
+      <div className='flex flex-col gap-1 items-center'>
+        {todos && todos.map((todo) => <Todo key={todo._id} todo={todo} />)}
+        <NewTodo boardId={_id} />
+      </div>
     </section>
   );
 }

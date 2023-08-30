@@ -9,10 +9,12 @@ export interface User {
 }
 
 export interface ITodo {
+  _id?: string;
+  boardId?: string;
+  order?: number;
   title: string;
   details: string;
   userId: string;
-  _id?: string;
   done: boolean;
   by: string;
 }
@@ -100,5 +102,6 @@ export enum ModalTypes {
 
 export interface IBoard {
   _id?: string;
+  order?: number;
   title: string;
 }
