@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import NewTodo from '@/containers/NewTodo/NewTodo';
 import Todo from '@/containers/Todo/Todo';
+import { useUpdateBoardMutation } from '@/store/services/boardsApi';
+import Spinner from '../Spinner/Spinner';
 
 type BoardProps = {
   board: IBoard;
@@ -18,6 +20,13 @@ export default function Board({
   board: { title, order, _id },
   todos,
 }: BoardProps) {
+  const sordtedByOrderTodos = todos?.sort((a, b) => {
+    if (a.order && b.order) {
+      return a.order - b.order;
+    }
+    return 1;
+  });
+
   const {
     register,
     handleSubmit,
@@ -27,15 +36,41 @@ export default function Board({
     mode: 'onChange',
   });
 
-  const updateBoard: SubmitHandler<Inputs> = (formData) => {
-    console.log({ formData });
+  const [updateBoard, result] = useUpdateBoardMutation();
+  const { isLoading: isUpdateBoardLoading } = result;
+
+  const handleUpdateBoard: SubmitHandler<Inputs> = (formData) => {
+    updateBoard({ ...formData, order, _id });
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    document.getElementById(_id || '')?.classList.add('board__drag-over');
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    document.getElementById(_id || '')?.classList.remove('board__drag-over');
+  };
+
+  const handleTodoOnDrop = (e: React.DragEvent) => {
+    const draggedTodoBoardId = e.dataTransfer.getData('boardId');
+    const draggedTodoId = e.dataTransfer.getData('todoId');
+    document.getElementById(_id || '')?.classList.remove('board__drag-over');
   };
 
   return (
-    <section className='board__wrapper'>
+    <section
+      id={_id}
+      className='board__wrapper'
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleTodoOnDrop}
+    >
+      {isUpdateBoardLoading && <Spinner text='Updating...' />}
       <form
         className='flex items-center justify-between gap-2 mb-4'
-        onSubmit={handleSubmit(updateBoard)}
+        onSubmit={handleSubmit(handleUpdateBoard)}
       >
         <div className='board__title'>
           <span className='text-xs text-red-300 h-4'>
@@ -60,8 +95,11 @@ export default function Board({
         </button>
       </form>
       <div className='flex flex-col gap-1 items-center'>
-        {todos && todos.map((todo) => <Todo key={todo._id} todo={todo} />)}
-        <NewTodo boardId={_id} />
+        {sordtedByOrderTodos &&
+          sordtedByOrderTodos.map((todo) => (
+            <Todo key={todo._id} todo={todo} />
+          ))}
+        <NewTodo boardId={_id} index={todos?.length || 0} />
       </div>
     </section>
   );

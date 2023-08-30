@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Board from '@/models/board-model';
 import { connect } from '@/db/db-config';
+import { IBoard } from '@/store/types';
 
 connect();
 
@@ -47,6 +48,35 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.log('Eror with new Board');
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const reqBody = await request.json();
+    const { title, _id, order } = reqBody as IBoard;
+
+    const updatedBoard = await Board.findByIdAndUpdate(
+      { _id },
+      { title, order }
+    );
+
+    if (!updatedBoard) {
+      return NextResponse.json({
+        message: 'Error while updating board',
+        success: false,
+        data: updatedBoard,
+      });
+    }
+
+    return NextResponse.json({
+      message: `Board updated successfully`,
+      success: true,
+      board: updatedBoard,
+    });
+  } catch (error: any) {
+    console.log('Eror with updating Board');
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
