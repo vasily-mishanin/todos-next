@@ -11,7 +11,7 @@ export interface User {
 export interface ITodo {
   _id?: string;
   boardId?: string;
-  order?: number;
+  order: number;
   title: string;
   details: string;
   userId: string;

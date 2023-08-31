@@ -14,6 +14,7 @@ const initialTodo: ITodo = {
   userId: '',
   done: false,
   by: '',
+  order: 0,
 };
 
 type NewTodoProps = {
