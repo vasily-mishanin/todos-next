@@ -41,3 +41,7 @@ textarea {
 .todo__drag-over {
   @apply bg-slate-50;
 }
+
+.todo__dimmed {
+  @apply opacity-50;
+}

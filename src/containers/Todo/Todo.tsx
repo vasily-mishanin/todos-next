@@ -15,7 +15,7 @@ import { useUpdateTodoMutation } from '@/store/services/todosApi';
 import { TodoProps, TodoStatus, ValidationError } from './types';
 import { Button } from '@/components/Button/Button';
 
-export default function Todo({ todo }: TodoProps) {
+export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
   const [status, setStatus] = useState<TodoStatus>('IDLE');
 
@@ -156,21 +156,24 @@ export default function Todo({ todo }: TodoProps) {
       : ''
   }`;
 
+  //DND
   const handleDragStart = (e: React.DragEvent) => {
-    console.log({ todo });
     if (todo._id) {
       e.dataTransfer.setData('todoId', todo._id);
       e.dataTransfer.setData('boardId', todo.boardId || '');
+      e.dataTransfer.setData('todoOrder', todo.order.toString());
       console.log(
+        'Start',
         e.dataTransfer.getData('todoId'),
         e.dataTransfer.getData('boardId')
       );
     }
+    document.getElementById(todo._id || '')?.classList.add('todo__dimmed');
   };
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
     document.getElementById(todo._id || '')?.classList.add('todo__drag-over');
+    e.preventDefault();
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
@@ -183,12 +186,57 @@ export default function Todo({ todo }: TodoProps) {
   const handleTodoOnDrop = (e: React.DragEvent) => {
     const draggedTodoBoardId = e.dataTransfer.getData('boardId');
     const draggedTodoId = e.dataTransfer.getData('todoId');
-    if (draggedTodoBoardId === todo.boardId) {
-      console.log({ draggedTodoId }, todo._id);
-    }
+    const draggedTodoOrder = parseInt(e.dataTransfer.getData('todoOrder'));
+    const draggedTodo = {
+      _id: draggedTodoId,
+      order: draggedTodoOrder,
+      boardId: draggedTodoBoardId,
+    };
+    onTodoDrop && onTodoDrop(draggedTodo, todo);
+    // // drag inside the board
+    // if (draggedTodoBoardId === todo.boardId) {
+    //   if (draggedTodoOrder < todo.order) {
+    //     const updatedBoardTodos = boardTodos?.map((boardTodo) => {
+    //       if (
+    //         boardTodo.order > todo.order ||
+    //         boardTodo.order < draggedTodoOrder
+    //       ) {
+    //         return boardTodo;
+    //       }
+    //       if (boardTodo._id === draggedTodoId) {
+    //         return { ...boardTodo, order: todo.order };
+    //       }
+    //       return { ...boardTodo, order: boardTodo.order - 1 };
+    //     });
+    //     updatedBoardTodos?.forEach((todo) => {
+    //       updateTodo(todo);
+    //     });
+    //   }
+
+    //   if (draggedTodoOrder > todo.order) {
+    //     const updatedBoardTodos = boardTodos?.map((boardTodo) => {
+    //       if (
+    //         boardTodo.order < todo.order ||
+    //         boardTodo.order > draggedTodoOrder
+    //       ) {
+    //         return boardTodo;
+    //       }
+    //       if (boardTodo._id === draggedTodoId) {
+    //         return { ...boardTodo, order: todo.order };
+    //       }
+    //       return { ...boardTodo, order: boardTodo.order + 1 };
+    //     });
+    //     updatedBoardTodos?.forEach((todo) => {
+    //       updateTodo(todo);
+    //     });
+    //   }
+    // }
     document
       .getElementById(todo._id || '')
       ?.classList.remove('todo__drag-over');
+    document
+      .querySelectorAll('.todo-wrapper')
+      .forEach((el) => el.classList.remove('todo__dimmed'));
   };
 
   return (
@@ -201,7 +249,9 @@ export default function Todo({ todo }: TodoProps) {
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleTodoOnDrop}
+      // onDragEnter={handleDragEnter}
     >
+      <p style={{ textAlign: 'right' }}>{todo.order}</p>
       <form
         className='flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}

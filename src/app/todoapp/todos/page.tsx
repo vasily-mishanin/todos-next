@@ -21,7 +21,7 @@ export default function Todos() {
       <div className='flex flex-wrap gap-4 justify-center'>
         {todos &&
           todos.map((todo: ITodo) => <Todo key={todo._id} todo={todo} />)}
-        <NewTodo />
+        <NewTodo index={todos?.length || 0} />
       </div>
     </section>
   );

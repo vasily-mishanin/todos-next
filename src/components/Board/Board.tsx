@@ -6,6 +6,9 @@ import NewTodo from '@/containers/NewTodo/NewTodo';
 import Todo from '@/containers/Todo/Todo';
 import { useUpdateBoardMutation } from '@/store/services/boardsApi';
 import Spinner from '../Spinner/Spinner';
+import { useUpdateTodoMutation } from '@/store/services/todosApi';
+import { DraggedTodo } from '@/containers/Todo/types';
+import { useState } from 'react';
 
 type BoardProps = {
   board: IBoard;
@@ -20,12 +23,9 @@ export default function Board({
   board: { title, order, _id },
   todos,
 }: BoardProps) {
-  const sordtedByOrderTodos = todos?.sort((a, b) => {
-    if (a.order && b.order) {
-      return a.order - b.order;
-    }
-    return 1;
-  });
+  const [updateTodo, todoUpdateResult] = useUpdateTodoMutation();
+  const { isLoading, isError, error, data } = todoUpdateResult;
+  const [boardTodos, setBoardTodos] = useState(sortTodosByOrder(todos || []));
 
   const {
     register,
@@ -57,6 +57,56 @@ export default function Board({
     const draggedTodoBoardId = e.dataTransfer.getData('boardId');
     const draggedTodoId = e.dataTransfer.getData('todoId');
     document.getElementById(_id || '')?.classList.remove('board__drag-over');
+  };
+
+  const handleTodoDrop = (draggedTodo: DraggedTodo, droppedOnTodo: ITodo) => {
+    // drag inside the board
+    if (draggedTodo.boardId === droppedOnTodo.boardId) {
+      console.log('DROP');
+      if (draggedTodo.order < droppedOnTodo.order) {
+        console.log('from UP');
+
+        const updatedBoardTodos = boardTodos?.map((boardTodo) => {
+          if (
+            boardTodo.order > droppedOnTodo.order ||
+            boardTodo.order < draggedTodo.order
+          ) {
+            return boardTodo;
+          }
+          if (boardTodo._id === draggedTodo._id) {
+            return { ...boardTodo, order: droppedOnTodo.order };
+          }
+          return { ...boardTodo, order: boardTodo.order - 1 };
+        });
+        setBoardTodos(sortTodosByOrder(updatedBoardTodos));
+        updatedBoardTodos?.forEach((todo) => {
+          updateTodo(todo);
+        });
+        return;
+      }
+
+      if (draggedTodo.order > droppedOnTodo.order) {
+        console.log('from DOWN');
+
+        const updatedBoardTodos = boardTodos?.map((boardTodo) => {
+          if (
+            boardTodo.order < droppedOnTodo.order ||
+            boardTodo.order > draggedTodo.order
+          ) {
+            return boardTodo;
+          }
+          if (boardTodo._id === draggedTodo._id) {
+            return { ...boardTodo, order: droppedOnTodo.order };
+          }
+          return { ...boardTodo, order: boardTodo.order + 1 };
+        });
+        setBoardTodos(sortTodosByOrder(updatedBoardTodos));
+        updatedBoardTodos?.forEach((todo) => {
+          updateTodo(todo);
+        });
+        return;
+      }
+    }
   };
 
   return (
@@ -95,12 +145,26 @@ export default function Board({
         </button>
       </form>
       <div className='flex flex-col gap-1 items-center'>
-        {sordtedByOrderTodos &&
-          sordtedByOrderTodos.map((todo) => (
-            <Todo key={todo._id} todo={todo} />
+        {boardTodos &&
+          boardTodos.map((todo) => (
+            <Todo
+              key={todo._id}
+              todo={todo}
+              boardTodos={boardTodos}
+              onTodoDrop={handleTodoDrop}
+            />
           ))}
         <NewTodo boardId={_id} index={todos?.length || 0} />
       </div>
     </section>
   );
+}
+
+function sortTodosByOrder(todos: ITodo[]) {
+  return todos?.sort((a, b) => {
+    if (a.order > b.order) {
+      return 1;
+    }
+    return -1;
+  });
 }
