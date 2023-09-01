@@ -24,6 +24,7 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
   const { isLoading, isError, error, data } = result;
 
   const wrapperRef = useRef<HTMLElement>(null);
+  useOutsideClick(wrapperRef, handleTodoOutsideClick);
 
   const modalState = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
@@ -57,22 +58,6 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
       setStatus('IDLE');
     }
   }, [currentTodo, todo]);
-
-  useOutsideClick(wrapperRef, handleTodoOutsideClick);
-  // useEffect(() => {
-  //   const handleClickOutside = (e: Event) => {
-  //     if (
-  //       wrapperRef.current &&
-  //       !wrapperRef.current.contains(e.target as Node)
-  //     ) {
-  //       handleTodoOutsideClick();
-  //     }
-  //   };
-  //   document.addEventListener('mousedown', handleClickOutside, true);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside, true);
-  //   };
-  // });
 
   const validateTodo = (name: string, enteredValue: string) => {
     if (name === 'title' && !enteredValue) {
