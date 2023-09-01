@@ -14,6 +14,7 @@ import { ITodo, ModalTypes } from '@/store/types';
 import { useUpdateTodoMutation } from '@/store/services/todosApi';
 import { TodoProps, TodoStatus, ValidationError } from './types';
 import { Button } from '@/components/Button/Button';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
 
 export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
@@ -55,22 +56,23 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
     } else {
       setStatus('IDLE');
     }
-  }, [currentTodo]);
+  }, [currentTodo, todo]);
 
-  useEffect(() => {
-    const handleClickOutside = (e: Event) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(e.target as Node)
-      ) {
-        handleTodoOutsideClick();
-      }
-    };
-    document.addEventListener('click', handleClickOutside, true);
-    return () => {
-      document.removeEventListener('click', handleClickOutside, true);
-    };
-  });
+  useOutsideClick(wrapperRef, handleTodoOutsideClick);
+  // useEffect(() => {
+  //   const handleClickOutside = (e: Event) => {
+  //     if (
+  //       wrapperRef.current &&
+  //       !wrapperRef.current.contains(e.target as Node)
+  //     ) {
+  //       handleTodoOutsideClick();
+  //     }
+  //   };
+  //   document.addEventListener('mousedown', handleClickOutside, true);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside, true);
+  //   };
+  // });
 
   const validateTodo = (name: string, enteredValue: string) => {
     if (name === 'title' && !enteredValue) {
@@ -193,44 +195,6 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
       boardId: draggedTodoBoardId,
     };
     onTodoDrop && onTodoDrop(draggedTodo, todo);
-    // // drag inside the board
-    // if (draggedTodoBoardId === todo.boardId) {
-    //   if (draggedTodoOrder < todo.order) {
-    //     const updatedBoardTodos = boardTodos?.map((boardTodo) => {
-    //       if (
-    //         boardTodo.order > todo.order ||
-    //         boardTodo.order < draggedTodoOrder
-    //       ) {
-    //         return boardTodo;
-    //       }
-    //       if (boardTodo._id === draggedTodoId) {
-    //         return { ...boardTodo, order: todo.order };
-    //       }
-    //       return { ...boardTodo, order: boardTodo.order - 1 };
-    //     });
-    //     updatedBoardTodos?.forEach((todo) => {
-    //       updateTodo(todo);
-    //     });
-    //   }
-
-    //   if (draggedTodoOrder > todo.order) {
-    //     const updatedBoardTodos = boardTodos?.map((boardTodo) => {
-    //       if (
-    //         boardTodo.order < todo.order ||
-    //         boardTodo.order > draggedTodoOrder
-    //       ) {
-    //         return boardTodo;
-    //       }
-    //       if (boardTodo._id === draggedTodoId) {
-    //         return { ...boardTodo, order: todo.order };
-    //       }
-    //       return { ...boardTodo, order: boardTodo.order + 1 };
-    //     });
-    //     updatedBoardTodos?.forEach((todo) => {
-    //       updateTodo(todo);
-    //     });
-    //   }
-    // }
     document
       .getElementById(todo._id || '')
       ?.classList.remove('todo__drag-over');
@@ -249,9 +213,17 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleTodoOnDrop}
-      // onDragEnter={handleDragEnter}
     >
-      <p style={{ textAlign: 'right' }}>{todo.order}</p>
+      <p
+        style={{
+          position: 'absolute',
+          top: '1.5rem',
+          right: '1rem',
+          color: 'red',
+        }}
+      >
+        {todo.order}
+      </p>
       <form
         className='flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}
