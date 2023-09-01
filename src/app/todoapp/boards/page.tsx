@@ -49,8 +49,10 @@ export default function BoardPage({}: KanbanBoardProps) {
             boards.map((board: IBoard) => (
               <Board
                 key={board._id}
-                board={board}
-                todos={getBoardsTodos(board._id, todos)}
+                title={board.title}
+                order={board.order || 0}
+                _id={board._id || ''}
+                todos={todos}
               />
             ))}
           <NewBoard />
@@ -64,10 +66,4 @@ export default function BoardPage({}: KanbanBoardProps) {
       <p>- Only Admin can sort todos</p>
     </>
   );
-}
-
-function getBoardsTodos(boardId?: string, todos?: ITodo[]) {
-  if (todos) {
-    return todos.filter((todo) => todo.boardId === boardId);
-  }
 }

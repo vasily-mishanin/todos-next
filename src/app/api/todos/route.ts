@@ -48,11 +48,11 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { title, details, done, userId, _id, order } = reqBody;
+    const { title, details, done, userId, _id, order, boardId } = reqBody;
 
     const updatedTodo = await Todo.findByIdAndUpdate(
       { _id },
-      { title, details, done, order }
+      { title, details, done, order, boardId }
     );
 
     return NextResponse.json({
