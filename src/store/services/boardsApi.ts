@@ -31,6 +31,15 @@ export const boardsApi = createApi({
       }),
       invalidatesTags: ['Boards'],
     }),
+
+    deleteBoard: builder.mutation<IPostTodoResult, Pick<IBoard, '_id'>>({
+      query: (body) => ({
+        url: 'boards',
+        method: Methods.DELETE,
+        body,
+      }),
+      invalidatesTags: ['Boards'],
+    }),
   }),
 });
 
@@ -38,4 +47,5 @@ export const {
   useGetBoardsQuery,
   useAddBoardMutation,
   useUpdateBoardMutation,
+  useDeleteBoardMutation,
 } = boardsApi;

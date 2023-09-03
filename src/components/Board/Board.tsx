@@ -1,14 +1,20 @@
-import { IBoard, ITodo } from '@/store/types';
+import { IBoard, ITodo, ModalTypes } from '@/store/types';
 import './Board.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import { ArchiveBoxIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import NewTodo from '@/containers/NewTodo/NewTodo';
 import Todo from '@/containers/Todo/Todo';
-import { useUpdateBoardMutation } from '@/store/services/boardsApi';
+import {
+  useDeleteBoardMutation,
+  useUpdateBoardMutation,
+} from '@/store/services/boardsApi';
 import Spinner from '../Spinner/Spinner';
 import { useUpdateTodoMutation } from '@/store/services/todosApi';
 import { DraggedTodo } from '@/containers/Todo/types';
 import { useEffect, useState } from 'react';
+import { Button } from '../Button/Button';
+import { useAppDispatch } from '@/store/hooks';
+import { setOpenModal } from '@/store/modalSlice';
 
 type BoardProps = {
   title: string;
@@ -29,9 +35,12 @@ export default function Board({
 }: BoardProps) {
   const [updateTodo, todoUpdateResult] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = todoUpdateResult;
+  const [deleteBoard, deleteBoardResult] = useDeleteBoardMutation();
   const [boardTodos, setBoardTodos] = useState(
     getSortedBoardTodos(boardId, todos || [])
   );
+
+  const dispatch = useAppDispatch();
 
   console.log('Board - ' + title);
 
@@ -158,6 +167,21 @@ export default function Board({
     updatedBoardTodos.forEach((todo) => updateTodo(todo));
   };
 
+  const handleDeleteBoard = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (boardTodos.length != 0) {
+      return;
+    }
+    console.log('DELETE BOARD');
+    dispatch(
+      setOpenModal({
+        id: ModalTypes.DELETE_BOARD,
+        isOpen: true,
+        data: { _id: boardId },
+      })
+    );
+  };
+
   return (
     <section
       id={boardId}
@@ -192,6 +216,9 @@ export default function Board({
         >
           <ArrowPathIcon />
         </button>
+        <Button type='button' btnType='delete' clickHandler={handleDeleteBoard}>
+          <ArchiveBoxIcon />
+        </Button>
       </form>
       <div className='flex flex-col gap-1 items-center'>
         {boardTodos &&
