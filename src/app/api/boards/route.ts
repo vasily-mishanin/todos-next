@@ -80,3 +80,21 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const reqBody = await request.json();
+    const { _id } = reqBody;
+
+    const deletedBoard = await Board.deleteOne({ _id });
+
+    return NextResponse.json({
+      message: `Board deleted successfully`,
+      success: true,
+      board: deletedBoard,
+    });
+  } catch (error: any) {
+    console.log('Eror while deleting Board');
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

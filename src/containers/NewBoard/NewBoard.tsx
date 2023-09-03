@@ -17,6 +17,7 @@ export function NewBoard({}: NewBoardProps) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Inputs>({
     defaultValues: { title: '' },
     mode: 'onChange',
@@ -32,6 +33,7 @@ export function NewBoard({}: NewBoardProps) {
   const onAddNewBoard: SubmitHandler<Inputs> = (formData) => {
     console.log(formData);
     addBoard(formData);
+    reset();
   };
 
   return (

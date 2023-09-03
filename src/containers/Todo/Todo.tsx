@@ -12,13 +12,13 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setOpenModal } from '@/store/modalSlice';
 import { ITodo, ModalTypes } from '@/store/types';
 import { useUpdateTodoMutation } from '@/store/services/todosApi';
-import { TodoProps, TodoStatus, ValidationError } from './types';
+import { TodoProps, CardStatus, ValidationError } from './types';
 import { Button } from '@/components/Button/Button';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 
 export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
-  const [status, setStatus] = useState<TodoStatus>('IDLE');
+  const [status, setStatus] = useState<CardStatus>('IDLE');
 
   const [updateTodo, result] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = result;

@@ -22,7 +22,7 @@ export interface ITodo {
 export interface Modal {
   id: ModalTypes;
   isOpen: boolean;
-  data?: Record<any, any>;
+  data?: Record<string, any>;
 }
 
 export interface IAuthState {
@@ -98,6 +98,8 @@ export enum ModalTypes {
   NONE = 'NONE',
   DELETE_TODO = 'DELETE_TODO',
   UPDATE_TODO = 'UPDATE_TODO',
+  DELETE_BOARD = 'DELETE_BOARD',
+  UPDATE_BOARD = 'UPDATE_BOARD',
 }
 
 export interface IBoard {
