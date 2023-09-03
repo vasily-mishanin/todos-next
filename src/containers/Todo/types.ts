@@ -13,4 +13,4 @@ export type ValidationError = {
   message: string;
 };
 
-export type TodoStatus = 'IDLE' | 'IN_DELETE' | 'IN_EDIT' | 'IN_UPDATE';
+export type CardStatus = 'IDLE' | 'IN_DELETE' | 'IN_EDIT' | 'IN_UPDATE';

@@ -39,6 +39,7 @@ export default function Board({
   const [boardTodos, setBoardTodos] = useState(
     getSortedBoardTodos(boardId, todos || [])
   );
+  const [currentTitle, setCurrentTitle] = useState(title);
 
   const dispatch = useAppDispatch();
 
@@ -172,7 +173,6 @@ export default function Board({
     if (boardTodos.length != 0) {
       return;
     }
-    console.log('DELETE BOARD');
     dispatch(
       setOpenModal({
         id: ModalTypes.DELETE_BOARD,
@@ -207,15 +207,19 @@ export default function Board({
             })}
             type='text'
             placeholder='Board title'
+            onChange={(e) => setCurrentTitle(e.target.value.trim())}
           />
         </div>
-        <button
-          className='board__add-btn '
+
+        <Button
           type='submit'
-          disabled={!!errors.title}
+          btnType='submit'
+          disabled={currentTitle === title}
+          isActive={currentTitle !== title}
         >
           <ArrowPathIcon />
-        </button>
+        </Button>
+
         <Button type='button' btnType='delete' clickHandler={handleDeleteBoard}>
           <ArchiveBoxIcon />
         </Button>
