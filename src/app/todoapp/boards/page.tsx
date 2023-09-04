@@ -26,7 +26,8 @@ export default function BoardPage({}: KanbanBoardProps) {
   } = useGetTodosQuery(null);
 
   const boards = boardsData?.data;
-  const todos = todosData?.data;
+
+  const todos = todosData?.data.filter((todo) => todo.order >= 0);
 
   if (!boardsIsLoading && !boardsIsFetching && boardsError) {
     console.log({ boardsError });

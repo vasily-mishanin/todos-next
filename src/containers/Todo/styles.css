@@ -1,5 +1,6 @@
 .todo-wrapper {
   @apply relative p-2 pt-7 border rounded w-56 h-32  lg:w-64 lg:h-36  hover:shadow-md;
+  transition: all 0.2s;
   box-sizing: border-box;
 }
 
@@ -39,7 +40,7 @@ textarea {
 }
 
 .todo__drag-over {
-  @apply bg-slate-50;
+  @apply bg-slate-50 -translate-y-2;
 }
 
 .todo__dimmed {
