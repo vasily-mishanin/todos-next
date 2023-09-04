@@ -21,6 +21,7 @@ type BoardProps = {
   order: number;
   _id: string;
   todos?: ITodo[];
+  onTodoDrop?: (draggedTodo: DraggedTodo, droppedOnBoard: IBoard) => void;
 };
 
 type Inputs = {
@@ -32,6 +33,7 @@ export default function Board({
   order,
   _id: boardId,
   todos,
+  onTodoDrop,
 }: BoardProps) {
   const [updateTodo, todoUpdateResult] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = todoUpdateResult;
@@ -43,7 +45,7 @@ export default function Board({
 
   const dispatch = useAppDispatch();
 
-  console.log('Board - ' + title);
+  // console.log('Board - ' + title);
 
   useEffect(() => {
     setBoardTodos(getSortedBoardTodos(boardId, todos || []));
@@ -77,21 +79,45 @@ export default function Board({
       ?.classList.remove('board__drag-over');
   };
 
-  const handleTodoOnDrop = (e: React.DragEvent) => {
+  const handleTodoOnBoardDrop = (e: React.DragEvent) => {
     const draggedTodoBoardId = e.dataTransfer.getData('boardId');
     const draggedTodoId = e.dataTransfer.getData('todoId');
+    const draggedTodoOrder = parseInt(e.dataTransfer.getData('todoOrder'));
+    // if dropped on Todo card or dropped on the same board
+    const targetElement = e.target as EventTarget & HTMLElement;
+    if (
+      targetElement.closest('.todo-wrapper') ||
+      draggedTodoBoardId === boardId
+    ) {
+      return;
+    }
+    console.log('ON BOARD');
+
     document
       .getElementById(boardId || '')
       ?.classList.remove('board__drag-over');
+
+    const draggedTodo = {
+      _id: draggedTodoId,
+      order: draggedTodoOrder,
+      boardId: draggedTodoBoardId,
+    };
+
+    addTodoFromAnotherBoard(draggedTodo);
   };
 
-  const handleTodoDrop = (draggedTodo: DraggedTodo, droppedOnTodo: ITodo) => {
+  const handleTodoOnTodoDrop = (
+    draggedTodo: DraggedTodo,
+    droppedOnTodo: ITodo
+  ) => {
     // drop inside the same board
+    console.log('ON TODO');
     if (draggedTodo.boardId === droppedOnTodo.boardId) {
       sortTodosInsideBoard(draggedTodo, droppedOnTodo);
       return;
     }
     // drop todo from another board
+
     addTodoFromAnotherBoard(draggedTodo, droppedOnTodo);
   };
 
@@ -145,27 +171,47 @@ export default function Board({
     }
   };
 
-  const addTodoFromAnotherBoard = (
+  const addTodoFromAnotherBoard = async (
     draggedTodo: DraggedTodo,
-    droppedOnTodo: ITodo
+    droppedOnTodo?: ITodo
   ) => {
-    console.log('DROP - BETWEEN');
+    console.log('DROP - addTodoFromAnotherBoard');
     const addedTodo = todos?.find((todo) => todo._id === draggedTodo._id);
-    let updatedBoardTodos = addedTodo
-      ? [...boardTodos, { ...addedTodo, boardId: boardId }]
-      : [...boardTodos];
+    console.log({ addedTodo });
 
-    updatedBoardTodos = updatedBoardTodos.map((boardTodo, index) => {
-      if (index <= droppedOnTodo.order) {
-        return boardTodo;
+    let updatedBoardTodos = addedTodo
+      ? [
+          ...boardTodos,
+          { ...addedTodo, boardId: boardId, order: boardTodos.length },
+        ]
+      : [...boardTodos];
+    // if todo dropped on certain Todo card
+    if (droppedOnTodo) {
+      updatedBoardTodos = updatedBoardTodos.map((boardTodo, index) => {
+        if (index <= droppedOnTodo.order) {
+          return boardTodo;
+        }
+        if (boardTodo._id === draggedTodo._id) {
+          return { ...boardTodo, order: droppedOnTodo.order + 1 };
+        }
+        return { ...boardTodo, order: index + 1 };
+      });
+    }
+    console.log({ updatedBoardTodos });
+    for (let todo of updatedBoardTodos) {
+      await updateTodo(todo);
+    }
+    if (draggedTodo.boardId && todos && draggedTodo._id) {
+      const refreshedOrderTodos = refreshOrderOfTodosOnSourceBoard(
+        draggedTodo.boardId,
+        todos,
+        draggedTodo._id
+      );
+      for (let todo of refreshedOrderTodos) {
+        await updateTodo(todo);
       }
-      if (boardTodo._id === draggedTodo._id) {
-        return { ...boardTodo, order: droppedOnTodo.order + 1 };
-      }
-      return { ...boardTodo, order: index + 1 };
-    });
+    }
     setBoardTodos(getSortedBoardTodos(boardId, updatedBoardTodos));
-    updatedBoardTodos.forEach((todo) => updateTodo(todo));
   };
 
   const handleDeleteBoard = async (e: React.FormEvent) => {
@@ -182,13 +228,33 @@ export default function Board({
     );
   };
 
+  // 0 1 3 4
+  // 0 1 2 3
+
+  const refreshOrderOfTodosOnSourceBoard = (
+    sourceBoardId: string,
+    todos: ITodo[],
+    draggedTodoId: string
+  ) => {
+    const todosWithOutDraggedOne = todos.filter(
+      (todo) => todo._id !== draggedTodoId && todo.boardId === sourceBoardId
+    );
+
+    const reorderedTodos = todosWithOutDraggedOne.map((todo, ind) => ({
+      ...todo,
+      order: ind,
+    }));
+    console.log({ reorderedTodos });
+    return reorderedTodos;
+  };
+
   return (
     <section
       id={boardId}
       className='board__wrapper'
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onDrop={handleTodoOnDrop}
+      onDrop={handleTodoOnBoardDrop}
     >
       {isUpdateBoardLoading && <Spinner text='Updating...' />}
       <form
@@ -231,7 +297,7 @@ export default function Board({
               key={todo._id}
               todo={todo}
               boardTodos={boardTodos}
-              onTodoDrop={handleTodoDrop}
+              onTodoDrop={handleTodoOnTodoDrop}
             />
           ))}
         <NewTodo boardId={boardId} index={todos?.length || 0} />

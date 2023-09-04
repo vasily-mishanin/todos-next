@@ -15,10 +15,12 @@ import { useUpdateTodoMutation } from '@/store/services/todosApi';
 import { TodoProps, CardStatus, ValidationError } from './types';
 import { Button } from '@/components/Button/Button';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { usePathname } from 'next/navigation';
 
 export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
   const [status, setStatus] = useState<CardStatus>('IDLE');
+  const currentRoute = usePathname();
 
   const [updateTodo, result] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = result;
@@ -171,6 +173,7 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
   };
 
   const handleTodoOnDrop = (e: React.DragEvent) => {
+    e.stopPropagation();
     const draggedTodoBoardId = e.dataTransfer.getData('boardId');
     const draggedTodoId = e.dataTransfer.getData('todoId');
     const draggedTodoOrder = parseInt(e.dataTransfer.getData('todoOrder'));
@@ -188,15 +191,23 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
       .forEach((el) => el.classList.remove('todo__dimmed'));
   };
 
+  const handleDragEnd = (e: React.DragEvent) => {
+    e.stopPropagation();
+    document
+      .querySelectorAll('.todo-wrapper')
+      .forEach((el) => el.classList.remove('todo__dimmed'));
+  };
+
   return (
     <article
-      draggable
+      draggable={currentRoute.startsWith('/todoapp/boards')}
       className={todoCardStyle}
       ref={wrapperRef}
       id={todo._id}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
+      onDragEnd={handleDragEnd}
       onDrop={handleTodoOnDrop}
     >
       <p
