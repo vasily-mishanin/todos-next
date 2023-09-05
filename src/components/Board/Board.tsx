@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
 import { useAppDispatch } from '@/store/hooks';
 import { setOpenModal } from '@/store/modalSlice';
+import { useAppSelector } from '@/store/hooks';
 
 type BoardProps = {
   title: string;
@@ -35,6 +36,7 @@ export default function Board({
   todos,
   onBoardDrop,
 }: BoardProps) {
+  const { user } = useAppSelector((state) => state.auth);
   const [updateTodo, todoUpdateResult] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = todoUpdateResult;
   const [deleteBoard, deleteBoardResult] = useDeleteBoardMutation();
@@ -251,7 +253,7 @@ export default function Board({
 
   const handleDeleteBoard = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (boardTodos.length != 0) {
+    if (boardTodos.length !== 0) {
       return;
     }
     dispatch(
@@ -282,7 +284,7 @@ export default function Board({
   return (
     <section
       id={boardId}
-      draggable
+      draggable={user.isAdmin}
       className='board__wrapper'
       onDragStart={handleBoardDragStart}
       onDragEnd={handleBoardDragEnd}
@@ -331,7 +333,12 @@ export default function Board({
           <ArrowPathIcon />
         </Button>
 
-        <Button type='button' btnType='delete' clickHandler={handleDeleteBoard}>
+        <Button
+          type='button'
+          btnType='delete'
+          clickHandler={handleDeleteBoard}
+          disabled={boardTodos.length > 0}
+        >
           <ArchiveBoxIcon />
         </Button>
       </form>
