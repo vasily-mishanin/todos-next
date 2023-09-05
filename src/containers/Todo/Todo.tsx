@@ -204,9 +204,12 @@ export default function Todo({ todo, onTodoDrop }: TodoProps) {
       );
   };
 
+  const isTodoDraggable =
+    currentRoute.startsWith('/todoapp/boards') && user.isAdmin;
+
   return (
     <article
-      draggable={currentRoute.startsWith('/todoapp/boards')}
+      draggable={isTodoDraggable}
       className={todoCardStyle}
       ref={wrapperRef}
       id={todo._id}

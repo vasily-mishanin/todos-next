@@ -101,33 +101,24 @@ export default function BoardPage({}: KanbanBoardProps) {
   };
 
   return (
-    <>
-      <section className='flex gap-4'>
-        {(boardsIsLoading || todosIsLoading) && (
-          <Spinner text='Loading todos and boards ...' />
-        )}
-        <div className='flex gap-4 justify-center'>
-          {sortedBoards &&
-            sortedBoards.map((board) => (
-              <Board
-                key={board._id}
-                title={board.title}
-                order={board.order}
-                _id={board._id || ''}
-                todos={todos}
-                onBoardDrop={handleOnBoardDrop}
-              />
-            ))}
-          <NewBoard order={sortedBoards?.length || 0} />
-        </div>
-      </section>
-      <p>- Minimize Todo+NewTodo ✅</p>
-      <p>- Add Todos to Boards ✅ </p>
-      <p>- Update Board ✅</p>
-      <p>- Filter Todo By Order Board ✅</p>
-      <p>- Delete Board if it has no todos ✅</p>
-      <p>- Only Admin can sort todos</p>
-      <p>- Add Giff to README</p>
-    </>
+    <section className='flex gap-4'>
+      {(boardsIsLoading || todosIsLoading) && (
+        <Spinner text='Loading todos and boards ...' />
+      )}
+      <div className='flex gap-4 justify-center'>
+        {sortedBoards &&
+          sortedBoards.map((board) => (
+            <Board
+              key={board._id}
+              title={board.title}
+              order={board.order}
+              _id={board._id || ''}
+              todos={todos}
+              onBoardDrop={handleOnBoardDrop}
+            />
+          ))}
+        <NewBoard order={sortedBoards?.length || 0} />
+      </div>
+    </section>
   );
 }
