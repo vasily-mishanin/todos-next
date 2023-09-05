@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const board = await request.json();
-    const { title } = board;
+    const { title, order } = board;
 
     const existingBoard = await Board.findOne({ title });
     console.log({ existingBoard });
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const newBoard = await new Board({ title });
+    const newBoard = await new Board({ title, order });
     const savedBoard = await newBoard.save();
 
     return NextResponse.json({

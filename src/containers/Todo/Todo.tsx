@@ -17,7 +17,7 @@ import { Button } from '@/components/Button/Button';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { usePathname } from 'next/navigation';
 
-export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
+export default function Todo({ todo, onTodoDrop }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
   const [status, setStatus] = useState<CardStatus>('IDLE');
   const currentRoute = usePathname();
@@ -145,14 +145,15 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
       : ''
   }`;
 
-  //DND
+  //DnD
   const handleDragStart = (e: React.DragEvent) => {
+    e.stopPropagation();
     if (todo._id) {
       e.dataTransfer.setData('todoId', todo._id);
       e.dataTransfer.setData('boardId', todo.boardId || '');
       e.dataTransfer.setData('todoOrder', todo.order.toString());
       console.log(
-        'Start',
+        'TODO Drag Start',
         e.dataTransfer.getData('todoId'),
         e.dataTransfer.getData('boardId')
       );
@@ -196,6 +197,11 @@ export default function Todo({ todo, boardTodos, onTodoDrop }: TodoProps) {
     document
       .querySelectorAll('.todo-wrapper')
       .forEach((el) => el.classList.remove('todo__dimmed'));
+    document
+      .querySelectorAll('.board__wrapper')
+      .forEach((el) =>
+        el.classList.remove('board__dimmed', 'board__drag-over')
+      );
   };
 
   return (
