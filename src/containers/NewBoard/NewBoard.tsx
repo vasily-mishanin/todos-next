@@ -6,13 +6,15 @@ import './NewBoard.css';
 import { useAddBoardMutation } from '@/store/services/boardsApi';
 import toast from 'react-hot-toast';
 
-type NewBoardProps = {};
+type NewBoardProps = {
+  order: number;
+};
 
 type Inputs = {
   title: string;
 };
 
-export function NewBoard({}: NewBoardProps) {
+export function NewBoard({ order }: NewBoardProps) {
   const {
     register,
     handleSubmit,
@@ -30,9 +32,9 @@ export function NewBoard({}: NewBoardProps) {
     toast.error(data.message);
   }
 
-  const onAddNewBoard: SubmitHandler<Inputs> = (formData) => {
+  const onAddNewBoard: SubmitHandler<Inputs> = async (formData) => {
     console.log(formData);
-    addBoard(formData);
+    await addBoard({ ...formData, order });
     reset();
   };
 

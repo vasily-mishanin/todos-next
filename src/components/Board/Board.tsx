@@ -1,4 +1,4 @@
-import { IBoard, ITodo, ModalTypes } from '@/store/types';
+import { IBoard, IDraggedBoard, ITodo, ModalTypes } from '@/store/types';
 import './Board.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ArchiveBoxIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
@@ -21,7 +21,7 @@ type BoardProps = {
   order: number;
   _id: string;
   todos?: ITodo[];
-  onTodoDrop?: (draggedTodo: DraggedTodo, droppedOnBoard: IBoard) => void;
+  onBoardDrop: (draggedBoard: IDraggedBoard) => void;
 };
 
 type Inputs = {
@@ -33,7 +33,7 @@ export default function Board({
   order,
   _id: boardId,
   todos,
-  onTodoDrop,
+  onBoardDrop,
 }: BoardProps) {
   const [updateTodo, todoUpdateResult] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = todoUpdateResult;
@@ -45,10 +45,13 @@ export default function Board({
 
   const dispatch = useAppDispatch();
 
-  // console.log('Board - ' + title);
-
   useEffect(() => {
-    setBoardTodos(getSortedBoardTodos(boardId, todos || []));
+    // check if new todos the same as now
+    const newBoardTodos = getSortedBoardTodos(boardId, todos || []);
+    console.log({ newBoardTodos }, { boardTodos });
+    if (newBoardTodos.length !== boardTodos.length) {
+      setBoardTodos(newBoardTodos);
+    }
   }, [todos]);
 
   const {
@@ -67,9 +70,31 @@ export default function Board({
     updateBoard({ ...formData, order, _id: boardId });
   };
 
+  // DnD
+
+  const handleBoardDragStart = (e: React.DragEvent) => {
+    e.dataTransfer.setData('item', 'BOARD');
+    e.dataTransfer.setData('boardId', boardId);
+    e.dataTransfer.setData('boardOrder', order.toString());
+    console.log(
+      'Board Drag Start',
+      e.dataTransfer.getData('boardId'),
+      e.dataTransfer.getData('boardOrder')
+    );
+    document.getElementById(boardId)?.classList.add('board__dimmed');
+  };
+
+  const handleBoardDragEnd = (e: React.DragEvent) => {
+    document
+      .querySelectorAll('.board__wrapper')
+      .forEach((el) =>
+        el.classList.remove('board__dimmed', 'board__drag-over')
+      );
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    document.getElementById(boardId || '')?.classList.add('board__drag-over');
+    document.getElementById(boardId)?.classList.add('board__drag-over');
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
@@ -79,7 +104,19 @@ export default function Board({
       ?.classList.remove('board__drag-over');
   };
 
-  const handleTodoOnBoardDrop = (e: React.DragEvent) => {
+  const handleOnBoardDrop = (e: React.DragEvent) => {
+    const draggedItem = e.dataTransfer.getData('item');
+    if (draggedItem === 'BOARD') {
+      const draggedBoardId = e.dataTransfer.getData('boardId');
+      const draggedBoardOrder = +e.dataTransfer.getData('boardOrder');
+      onBoardDrop({
+        draggedBoardId,
+        draggedBoardOrder,
+        droppedOnBoardId: boardId,
+        droppedOnBoardOrder: order,
+      });
+      return;
+    }
     const draggedTodoBoardId = e.dataTransfer.getData('boardId');
     const draggedTodoId = e.dataTransfer.getData('todoId');
     const draggedTodoOrder = parseInt(e.dataTransfer.getData('todoOrder'));
@@ -117,7 +154,6 @@ export default function Board({
       return;
     }
     // drop todo from another board
-
     addTodoFromAnotherBoard(draggedTodo, droppedOnTodo);
   };
 
@@ -125,7 +161,6 @@ export default function Board({
     draggedTodo: DraggedTodo,
     droppedOnTodo: ITodo
   ) => {
-    console.log('DROP');
     if (draggedTodo.order <= droppedOnTodo.order) {
       console.log('from UP');
 
@@ -177,8 +212,6 @@ export default function Board({
   ) => {
     console.log('DROP - addTodoFromAnotherBoard');
     const addedTodo = todos?.find((todo) => todo._id === draggedTodo._id);
-    console.log({ addedTodo });
-
     let updatedBoardTodos = addedTodo
       ? [
           ...boardTodos,
@@ -197,21 +230,23 @@ export default function Board({
         return { ...boardTodo, order: index + 1 };
       });
     }
-    console.log({ updatedBoardTodos });
     for (let todo of updatedBoardTodos) {
       await updateTodo(todo);
     }
+    // refresh source board
     if (draggedTodo.boardId && todos && draggedTodo._id) {
       const refreshedOrderTodos = refreshOrderOfTodosOnSourceBoard(
         draggedTodo.boardId,
         todos,
         draggedTodo._id
       );
+      console.log({ refreshedOrderTodos });
+
+      //setBoardTodos(refreshedOrderTodos);
       for (let todo of refreshedOrderTodos) {
         await updateTodo(todo);
       }
     }
-    setBoardTodos(getSortedBoardTodos(boardId, updatedBoardTodos));
   };
 
   const handleDeleteBoard = async (e: React.FormEvent) => {
@@ -228,34 +263,44 @@ export default function Board({
     );
   };
 
-  // 0 1 3 4
-  // 0 1 2 3
-
   const refreshOrderOfTodosOnSourceBoard = (
     sourceBoardId: string,
     todos: ITodo[],
     draggedTodoId: string
   ) => {
-    const todosWithOutDraggedOne = todos.filter(
+    const todosWithoutDraggedOne = todos.filter(
       (todo) => todo._id !== draggedTodoId && todo.boardId === sourceBoardId
     );
 
-    const reorderedTodos = todosWithOutDraggedOne.map((todo, ind) => ({
+    const reorderedTodos = todosWithoutDraggedOne.map((todo, ind) => ({
       ...todo,
       order: ind,
     }));
-    console.log({ reorderedTodos });
     return reorderedTodos;
   };
 
   return (
     <section
       id={boardId}
+      draggable
       className='board__wrapper'
+      onDragStart={handleBoardDragStart}
+      onDragEnd={handleBoardDragEnd}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onDrop={handleTodoOnBoardDrop}
+      onDrop={handleOnBoardDrop}
     >
+      <p
+        style={{
+          position: 'absolute',
+          top: '1.5rem',
+          right: '1rem',
+          color: 'red',
+        }}
+      >
+        {order}
+      </p>
+
       {isUpdateBoardLoading && <Spinner text='Updating...' />}
       <form
         className='flex items-center justify-between gap-2 mb-4'
@@ -296,7 +341,6 @@ export default function Board({
             <Todo
               key={todo._id}
               todo={todo}
-              boardTodos={boardTodos}
               onTodoDrop={handleTodoOnTodoDrop}
             />
           ))}

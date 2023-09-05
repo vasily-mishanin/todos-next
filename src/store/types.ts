@@ -104,6 +104,13 @@ export enum ModalTypes {
 
 export interface IBoard {
   _id?: string;
-  order?: number;
+  order: number;
   title: string;
+}
+
+export interface IDraggedBoard {
+  draggedBoardId: string;
+  draggedBoardOrder: number;
+  droppedOnBoardId: string;
+  droppedOnBoardOrder: number;
 }

@@ -15,5 +15,9 @@
 }
 
 .board__drag-over {
-  @apply shadow-xl;
+  @apply shadow-2xl translate-y-2;
+}
+
+.board__dimmed {
+  @apply opacity-50;
 }
