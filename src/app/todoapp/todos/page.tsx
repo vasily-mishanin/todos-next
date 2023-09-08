@@ -23,14 +23,6 @@ export default function Todos() {
           todos.map((todo: ITodo) => <Todo key={todo._id} todo={todo} />)}
         <NewTodo index={todos?.length || 0} />
       </div>
-
-      <p>- Minimize Todo+NewTodo ✅</p>
-      <p>- Add Todos to Boards ✅ </p>
-      <p>- Update Board ✅</p>
-      <p>- Filter Todo By Order Board ✅</p>
-      <p>- Delete Board if it has no todos ✅</p>
-      <p>- Only Admin can sort todos</p>
-      <p>- Add Giff to README</p>
     </section>
   );
 }

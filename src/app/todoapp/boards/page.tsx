@@ -8,12 +8,10 @@ import {
   useUpdateBoardMutation,
 } from '@/store/services/boardsApi';
 import { useGetTodosQuery } from '@/store/services/todosApi';
-import { IBoard, IDraggedBoard, ITodo } from '@/store/types';
+import { IDraggedBoard, ITodo } from '@/store/types';
 import toast from 'react-hot-toast';
 
-type KanbanBoardProps = {};
-
-export default function BoardPage({}: KanbanBoardProps) {
+export default function BoardPage() {
   const {
     isLoading: boardsIsLoading,
     isFetching: boardsIsFetching,
@@ -39,17 +37,14 @@ export default function BoardPage({}: KanbanBoardProps) {
   const todos = todosData?.data.filter((todo) => todo.order >= 0); // TODO  - remove filter later
 
   if (!boardsIsLoading && !boardsIsFetching && boardsError) {
-    console.log({ boardsError });
     toast.error(`Boards fetch failed: ${boardsError}`);
   }
 
   if (!todosIsLoading && !todosIsFetching && todosError) {
-    console.log({ todosError });
     toast.error(`Todos fetch failed: ${todosError}`);
   }
 
   const handleOnBoardDrop = (draggedBoard: IDraggedBoard) => {
-    console.log({ draggedBoard });
     sortBoardsInsidePage(draggedBoard);
   };
 
@@ -101,7 +96,7 @@ export default function BoardPage({}: KanbanBoardProps) {
   };
 
   return (
-    <section className='flex gap-4'>
+    <section className='flex gap-4 w-full overflow-auto'>
       {(boardsIsLoading || todosIsLoading) && (
         <Spinner text='Loading todos and boards ...' />
       )}
