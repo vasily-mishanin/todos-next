@@ -96,7 +96,7 @@ export default function NewTodo({ boardId, index }: NewTodoProps) {
         <div className='flex flex-col bg-green-400 text-gray-600'>
           <label htmlFor='details'></label>
           <textarea
-            className='new-todo__text-area w-full h-full overflow-scroll resize-none'
+            className='new-todo__text-area'
             rows={3}
             name='details'
             id='details'

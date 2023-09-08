@@ -152,11 +152,6 @@ export default function Todo({ todo, onTodoDrop }: TodoProps) {
       e.dataTransfer.setData('todoId', todo._id);
       e.dataTransfer.setData('boardId', todo.boardId || '');
       e.dataTransfer.setData('todoOrder', todo.order.toString());
-      console.log(
-        'TODO Drag Start',
-        e.dataTransfer.getData('todoId'),
-        e.dataTransfer.getData('boardId')
-      );
     }
     document.getElementById(todo._id || '')?.classList.add('todo__dimmed');
   };
@@ -219,16 +214,6 @@ export default function Todo({ todo, onTodoDrop }: TodoProps) {
       onDragEnd={handleDragEnd}
       onDrop={handleTodoOnDrop}
     >
-      <p
-        style={{
-          position: 'absolute',
-          top: '1.5rem',
-          right: '1rem',
-          color: 'red',
-        }}
-      >
-        {todo.order}
-      </p>
       <form
         className='flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}
@@ -253,7 +238,7 @@ export default function Todo({ todo, onTodoDrop }: TodoProps) {
         <div className='flex flex-col bg-green-400 text-gray-600 text-xs'>
           <label htmlFor='details'></label>
           <textarea
-            className='todo__text-area w-full h-full overflow-scroll resize-none'
+            className='todo__text-area'
             rows={3}
             name='details'
             id='details'

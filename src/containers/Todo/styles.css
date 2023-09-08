@@ -1,5 +1,5 @@
 .todo-wrapper {
-  @apply relative p-2 pt-7 border rounded w-56 h-32  lg:w-64 lg:h-36  hover:shadow-md;
+  @apply relative p-2 pt-7 border rounded w-56 h-32  lg:w-64 lg:h-36  hover:shadow-md bg-green-50;
   transition: all 0.2s;
   box-sizing: border-box;
 }
@@ -11,7 +11,7 @@
 }
 
 .todo__text-area {
-  @apply outline-none border border-transparent pl-2 text-xs lg:p-1 focus:border-green-200 bg-transparent;
+  @apply w-full resize-none outline-none border border-transparent pl-2 text-xs lg:p-1 focus:border-green-200 bg-transparent;
 }
 
 .by {

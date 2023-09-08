@@ -10,7 +10,7 @@
 }
 
 .new-todo__text-area {
-  @apply outline-none border border-transparent pl-2 text-xs lg:p-1 focus:border-green-200 bg-transparent;
+  @apply w-full  overflow-auto resize-none outline-none border border-transparent pl-2 text-xs lg:p-1 focus:border-green-200 bg-transparent;
 }
 
 .new-todo__validation-error {

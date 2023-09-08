@@ -50,7 +50,6 @@ export default function Board({
   useEffect(() => {
     // check if new todos the same as now
     const newBoardTodos = getSortedBoardTodos(boardId, todos || []);
-    console.log({ newBoardTodos }, { boardTodos });
     if (newBoardTodos.length !== boardTodos.length) {
       setBoardTodos(newBoardTodos);
     }
@@ -292,17 +291,6 @@ export default function Board({
       onDragLeave={handleDragLeave}
       onDrop={handleOnBoardDrop}
     >
-      <p
-        style={{
-          position: 'absolute',
-          top: '1.5rem',
-          right: '1rem',
-          color: 'red',
-        }}
-      >
-        {order}
-      </p>
-
       {isUpdateBoardLoading && <Spinner text='Updating...' />}
       <form
         className='flex items-center justify-between gap-2 mb-4'
