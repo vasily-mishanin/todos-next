@@ -15,7 +15,7 @@
 }
 
 .board__drag-over {
-  @apply shadow-2xl translate-y-2;
+  @apply shadow-2xl translate-y-1;
 }
 
 .board__dimmed {

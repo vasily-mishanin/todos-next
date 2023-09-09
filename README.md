@@ -19,4 +19,6 @@ Deploy: https://todos-next-self.vercel.app/
 - Authentication
 - Authorization
 - CRUD operations with todo items
-- Comprehensive responsive UI/UX
+- Comprehensive responsive UI/UX with DnD features
+
+![Demo](./public/todosnext-demo.gif)
