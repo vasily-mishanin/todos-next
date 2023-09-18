@@ -1,39 +1,18 @@
 .new-todo-wrapper {
-  @apply p-6 pt-10 border-2 border-dashed rounded w-80 h-40  lg:w-96 lg:h-48 hover:shadow-md max-[600px]:w-80;
+  @apply relative p-2 pt-7 border rounded w-56 h-32  lg:w-64 lg:h-36  hover:shadow-md inline-block;
   box-sizing: border-box;
 }
 
-.text-input {
-  @apply outline-none border-transparent text-sm lg:p-1 lg:text-base;
-  border-width: 1px;
-  border-style: solid;
+.new-todo__text-input {
+  border-bottom: 1px solid gray;
+  font-weight: bold;
+  @apply outline-none border-b border-gray-300  pl-2 text-xs lg:p-1 focus:border-green-200 bg-transparent;
 }
 
-.text-input:focus {
-  @apply border-green-200 rounded;
-  border-width: 1px;
-  border-style: solid;
+.new-todo__text-area {
+  @apply w-full  overflow-auto resize-none outline-none border border-transparent pl-2 text-xs lg:p-1 focus:border-green-200 bg-transparent;
 }
 
-.submit-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}
-
-.submit-btn:enabled:hover {
-  opacity: 0.75;
-}
-
-.submit-btn:disabled {
-  opacity: 0.5;
-}
-
-textarea {
-  @apply text-sm lg:text-base;
-  resize: none;
-}
-
-.todo-validation-error {
-  @apply absolute text-sm text-red-300 right-1 top-1;
+.new-todo__validation-error {
+  @apply absolute text-xs text-red-300 right-1;
 }

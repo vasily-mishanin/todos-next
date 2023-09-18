@@ -3,6 +3,7 @@ import { Navigation } from '@/components/Navigation/Navigation';
 import './styles.css';
 
 import { useAppSelector } from '@/store/hooks';
+import { useRef } from 'react';
 
 export function Header() {
   const auth = useAppSelector((state) => state.auth);

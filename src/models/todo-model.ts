@@ -16,6 +16,11 @@ const todoSchema = new mongoose.Schema({
     required: [true, 'Please, provide user Id'],
   },
 
+  boardId: {
+    type: String,
+    //required: [true, 'Todo should have board Id'],
+  },
+
   done: {
     type: Boolean,
     default: false,
@@ -23,6 +28,10 @@ const todoSchema = new mongoose.Schema({
 
   by: {
     type: String,
+  },
+
+  order: {
+    type: Number,
   },
 });
 

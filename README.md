@@ -2,6 +2,10 @@
 
 Deploy: https://todos-next-self.vercel.app/
 
+Only admin allowed DnD:  
+login: "admin@mail.com",  
+pwd: "admin123"
+
 #### Core Development Stack
 
 - Next JS 13 - https://nextjs.org/
@@ -19,4 +23,6 @@ Deploy: https://todos-next-self.vercel.app/
 - Authentication
 - Authorization
 - CRUD operations with todo items
-- Comprehensive responsive UI/UX
+- Comprehensive responsive UI/UX with DnD features
+
+![Demo](./public/todosnext-demo.gif)

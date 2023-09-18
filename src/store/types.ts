@@ -9,10 +9,12 @@ export interface User {
 }
 
 export interface ITodo {
+  _id?: string;
+  boardId?: string;
+  order: number;
   title: string;
   details: string;
   userId: string;
-  _id?: string;
   done: boolean;
   by: string;
 }
@@ -20,7 +22,7 @@ export interface ITodo {
 export interface Modal {
   id: ModalTypes;
   isOpen: boolean;
-  data?: Record<any, any>;
+  data?: Record<string, any>;
 }
 
 export interface IAuthState {
@@ -96,4 +98,19 @@ export enum ModalTypes {
   NONE = 'NONE',
   DELETE_TODO = 'DELETE_TODO',
   UPDATE_TODO = 'UPDATE_TODO',
+  DELETE_BOARD = 'DELETE_BOARD',
+  UPDATE_BOARD = 'UPDATE_BOARD',
+}
+
+export interface IBoard {
+  _id?: string;
+  order: number;
+  title: string;
+}
+
+export interface IDraggedBoard {
+  draggedBoardId: string;
+  draggedBoardOrder: number;
+  droppedOnBoardId: string;
+  droppedOnBoardOrder: number;
 }

@@ -7,23 +7,26 @@ import {
   UserIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/solid';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { closeModal, setOpenModal } from '@/store/modalSlice';
+import { setOpenModal } from '@/store/modalSlice';
 import { ITodo, ModalTypes } from '@/store/types';
 import { useUpdateTodoMutation } from '@/store/services/todosApi';
-import { TodoProps, TodoStatus, ValidationError } from './types';
+import { TodoProps, CardStatus, ValidationError } from './types';
 import { Button } from '@/components/Button/Button';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { usePathname } from 'next/navigation';
 
-export default function Todo({ todo }: TodoProps) {
+export default function Todo({ todo, onTodoDrop }: TodoProps) {
   const [currentTodo, setCurrentTodo] = useState<ITodo>(todo);
-  const [status, setStatus] = useState<TodoStatus>('IDLE');
+  const [status, setStatus] = useState<CardStatus>('IDLE');
+  const currentRoute = usePathname();
 
   const [updateTodo, result] = useUpdateTodoMutation();
   const { isLoading, isError, error, data } = result;
 
   const wrapperRef = useRef<HTMLElement>(null);
+  useOutsideClick(wrapperRef, handleTodoOutsideClick);
 
   const modalState = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
@@ -56,22 +59,7 @@ export default function Todo({ todo }: TodoProps) {
     } else {
       setStatus('IDLE');
     }
-  }, [currentTodo]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: Event) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(e.target as Node)
-      ) {
-        handleTodoOutsideClick();
-      }
-    };
-    document.addEventListener('click', handleClickOutside, true);
-    return () => {
-      document.removeEventListener('click', handleClickOutside, true);
-    };
-  });
+  }, [currentTodo, todo]);
 
   const validateTodo = (name: string, enteredValue: string) => {
     if (name === 'title' && !enteredValue) {
@@ -157,16 +145,83 @@ export default function Todo({ todo }: TodoProps) {
       : ''
   }`;
 
+  //DnD
+  const handleDragStart = (e: React.DragEvent) => {
+    e.stopPropagation();
+    if (todo._id) {
+      e.dataTransfer.setData('todoId', todo._id);
+      e.dataTransfer.setData('boardId', todo.boardId || '');
+      e.dataTransfer.setData('todoOrder', todo.order.toString());
+    }
+    document.getElementById(todo._id || '')?.classList.add('todo__dimmed');
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    document.getElementById(todo._id || '')?.classList.add('todo__drag-over');
+    e.preventDefault();
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    document
+      .getElementById(todo._id || '')
+      ?.classList.remove('todo__drag-over');
+  };
+
+  const handleTodoOnDrop = (e: React.DragEvent) => {
+    e.stopPropagation();
+    const draggedTodoBoardId = e.dataTransfer.getData('boardId');
+    const draggedTodoId = e.dataTransfer.getData('todoId');
+    const draggedTodoOrder = parseInt(e.dataTransfer.getData('todoOrder'));
+    const draggedTodo = {
+      _id: draggedTodoId,
+      order: draggedTodoOrder,
+      boardId: draggedTodoBoardId,
+    };
+    onTodoDrop && onTodoDrop(draggedTodo, todo);
+    document
+      .getElementById(todo._id || '')
+      ?.classList.remove('todo__drag-over');
+    document
+      .querySelectorAll('.todo-wrapper')
+      .forEach((el) => el.classList.remove('todo__dimmed'));
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    e.stopPropagation();
+    document
+      .querySelectorAll('.todo-wrapper')
+      .forEach((el) => el.classList.remove('todo__dimmed'));
+    document
+      .querySelectorAll('.board__wrapper')
+      .forEach((el) =>
+        el.classList.remove('board__dimmed', 'board__drag-over')
+      );
+  };
+
+  const isTodoDraggable =
+    currentRoute.startsWith('/todoapp/boards') && user.isAdmin;
+
   return (
-    <article className={todoCardStyle} ref={wrapperRef}>
+    <article
+      draggable={isTodoDraggable}
+      className={todoCardStyle}
+      ref={wrapperRef}
+      id={todo._id}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDragEnd={handleDragEnd}
+      onDrop={handleTodoOnDrop}
+    >
       <form
         className='flex flex-col gap-2 w-full h-full'
         onSubmit={handleUpdateTodo}
       >
-        <div className='relative flex flex-col bg-green-400 text-xl'>
+        <div className='relative flex flex-col bg-green-400'>
           <label htmlFor='title'></label>
           <input
-            className='text-input'
+            className='todo__text-input'
             type='text'
             name='title'
             id='title'
@@ -180,12 +235,10 @@ export default function Todo({ todo }: TodoProps) {
           )}
         </div>
 
-        <hr />
-
-        <div className='flex flex-col bg-green-400 text-gray-600 text-sm'>
+        <div className='flex flex-col bg-green-400 text-gray-600 text-xs'>
           <label htmlFor='details'></label>
           <textarea
-            className='text-input w-full h-full overflow-scroll resize-none'
+            className='todo__text-area'
             rows={3}
             name='details'
             id='details'

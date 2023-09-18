@@ -58,6 +58,15 @@ export function Navigation() {
           <>
             <li>
               <Link
+                href='/todoapp/boards'
+                className={linkStyle('/todoapp/boards')}
+                onClick={() => toggleMenu()}
+              >
+                Kanban
+              </Link>
+            </li>
+            <li>
+              <Link
                 href='/todoapp/todos'
                 className={linkStyle('/todoapp/todos')}
                 onClick={() => toggleMenu()}

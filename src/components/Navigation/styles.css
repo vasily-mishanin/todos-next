@@ -7,7 +7,7 @@
 }
 
 .nav-items {
-  @apply flex items-center gap-4 p-4;
+  @apply flex items-center gap-2 p-4;
   box-sizing: border-box;
 }
 
@@ -23,7 +23,7 @@
   @apply text-gray-600 bg-green-200;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .nav-btn {
     display: block;
   }
