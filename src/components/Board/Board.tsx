@@ -16,6 +16,7 @@ import { Button } from '../Button/Button';
 import { useAppDispatch } from '@/store/hooks';
 import { setOpenModal } from '@/store/modalSlice';
 import { useAppSelector } from '@/store/hooks';
+import { CommonList } from '../common/CommonList';
 
 type BoardProps = {
   title: string;
@@ -331,19 +332,32 @@ export default function Board({
         </Button>
       </form>
       <div className='flex flex-col gap-1 items-center'>
-        {boardTodos &&
-          boardTodos.map((todo) => (
-            <Todo
-              key={todo._id}
-              todo={todo}
-              onTodoDrop={handleTodoOnTodoDrop}
-            />
-          ))}
-        <NewTodo boardId={boardId} index={todos?.length || 0} />
+        {boardTodos && (
+          <CommonList
+            items={boardTodos}
+            itemComponent={Todo}
+            resourceName='todo'
+            handler={{
+              handlerName: 'onTodoDrop',
+              handlerBody: handleTodoOnTodoDrop,
+            }}
+            listStyleClasses='flex flex-col gap-1 items-center'
+          >
+            <NewTodo boardId={boardId} index={todos?.length || 0} />
+          </CommonList>
+        )}
       </div>
     </section>
   );
 }
+
+// boardTodos.map((todo) => (
+//   <Todo
+//     key={todo._id}
+//     todo={todo}
+//     onTodoDrop={handleTodoOnTodoDrop}
+//   />
+// ))
 
 function sortTodosByOrder(todos: ITodo[]) {
   return todos?.sort((a, b) => {

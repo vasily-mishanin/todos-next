@@ -6,6 +6,7 @@ import Todo from '@/containers/Todo/Todo';
 import { ITodo } from '@/store/types';
 import { useGetTodosQuery } from '@/store/services/todosApi';
 import { toast } from 'react-hot-toast';
+import { CommonList } from '@/components/common/CommonList';
 
 export default function Todos() {
   const { isLoading, isFetching, data, error } = useGetTodosQuery(null);
@@ -18,10 +19,17 @@ export default function Todos() {
   return (
     <section className='flex flex-col gap-4 py-4 lg:p-8'>
       {isLoading || (isFetching && <Spinner text='Loading todos ...' />)}
-      <div className='flex flex-wrap gap-4 justify-center'>
-        {todos &&
-          todos.map((todo: ITodo) => <Todo key={todo._id} todo={todo} />)}
-        <NewTodo index={todos?.length || 0} />
+      <div>
+        {todos && (
+          <CommonList
+            items={todos}
+            itemComponent={Todo}
+            resourceName='todo'
+            listStyleClasses='flex flex-wrap gap-4 justify-center'
+          >
+            <NewTodo index={todos?.length || 0} />
+          </CommonList>
+        )}
       </div>
     </section>
   );

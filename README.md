@@ -2,6 +2,10 @@
 
 Deploy: https://todos-next-self.vercel.app/
 
+Only admin allowed DnD:
+login: admin@mail.com
+pwd: admin123
+
 #### Core Development Stack
 
 - Next JS 13 - https://nextjs.org/
