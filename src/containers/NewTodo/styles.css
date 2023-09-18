@@ -1,5 +1,5 @@
 .new-todo-wrapper {
-  @apply relative p-2 pt-7 border rounded w-56 h-32  lg:w-64 lg:h-36  hover:shadow-md;
+  @apply relative p-2 pt-7 border rounded w-56 h-32  lg:w-64 lg:h-36  hover:shadow-md inline-block;
   box-sizing: border-box;
 }
 
