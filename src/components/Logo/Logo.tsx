@@ -6,7 +6,7 @@ export function Logo() {
     <Link className='flex items-center gap-2' href='/'>
       <Image
         src='/icon-done-200.svg'
-        alt='logo toods'
+        alt='todos logo'
         width='75'
         height='75'
         priority={true}
